@@ -75,7 +75,9 @@ body {
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   body {
-    padding-bottom: 6rem;
+    padding-top: 0;
+    padding-bottom: 7rem;
+    background: white;
   }
 }
 
