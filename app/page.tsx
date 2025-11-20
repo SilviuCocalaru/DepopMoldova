@@ -22,8 +22,8 @@ export default async function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Category Navigation */}
-      <nav className="border-b border-gray-200 sticky top-16 bg-white z-40">
+      {/* Category Navigation - Desktop Only */}
+      <nav className="border-b border-gray-200 sticky top-16 bg-white z-40 hidden md:block">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center space-x-8 overflow-x-auto py-4">
             <Link href="/search?category=women" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">

@@ -5,7 +5,8 @@ import { useRouter, usePathname } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Heart, MessageCircle, User as UserIcon, LogOut, Menu, X, ChevronDown, Home, Plus, Search } from 'lucide-react'
+import { Heart, MessageCircle, User as UserIcon, LogOut } from 'lucide-react'
+import MobileFloatingIslands from './MobileFloatingIslands'
 
 interface Profile {
   id: string
@@ -163,6 +164,13 @@ export default function Header() {
 
   return (
     <>
+      {/* Mobile Floating Islands */}
+      <MobileFloatingIslands 
+        user={user} 
+        profile={profile} 
+        unreadMessages={unreadMessages} 
+      />
+
       {/* Desktop Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 hidden md:block">
         <nav className="max-w-7xl mx-auto px-4">
@@ -297,72 +305,13 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile Floating Island Navigation */}
-      {user && (
-        <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
-          <div className="glass-nav flex items-center justify-around px-6 py-4 rounded-full">
-            <Link 
-              href="/" 
-              className={`nav-item ${pathname === '/' ? 'active' : ''}`}
-            >
-              <Home className="w-6 h-6" />
+      {/* Mobile - Show login/signup if not authenticated */}
+      {!user && (
+        <header className="md:hidden bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-40">
+          <div className="flex justify-between items-center h-14 px-4">
+            <Link href="/" className="text-xl font-bold text-red-500 lowercase">
+              depop
             </Link>
-            
-            <Link 
-              href="/search" 
-              className={`nav-item ${pathname === '/search' ? 'active' : ''}`}
-            >
-              <Search className="w-6 h-6" />
-            </Link>
-            
-            <Link 
-              href="/sell" 
-              className="nav-item-center"
-            >
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg">
-                <Plus className="w-7 h-7 text-white" strokeWidth={2.5} />
-              </div>
-            </Link>
-            
-            <Link 
-              href="/messages" 
-              className={`nav-item relative ${pathname === '/messages' ? 'active' : ''}`}
-            >
-              <MessageCircle className="w-6 h-6" />
-              {unreadMessages > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {unreadMessages > 9 ? '9+' : unreadMessages}
-                </span>
-              )}
-            </Link>
-            
-            <Link 
-              href="/profile" 
-              className={`nav-item ${pathname === '/profile' ? 'active' : ''}`}
-            >
-              {profile?.avatar_url ? (
-                <img
-                  src={profile.avatar_url}
-                  alt={profile.username}
-                  className="w-7 h-7 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
-                  <UserIcon className="w-4 h-4 text-gray-600" />
-                </div>
-              )}
-            </Link>
-          </div>
-        </nav>
-      )}
-
-      {/* Mobile Top Bar (minimal, only logo) */}
-      <header className="md:hidden bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-40">
-        <div className="flex justify-between items-center h-14 px-4">
-          <Link href="/" className="text-xl font-bold text-red-500 lowercase">
-            depop
-          </Link>
-          {!user && (
             <div className="flex gap-2">
               <Link
                 href="/login"
@@ -377,9 +326,9 @@ export default function Header() {
                 Sign up
               </Link>
             </div>
-          )}
-        </div>
-      </header>
+          </div>
+        </header>
+      )}
     </>
   )
 }
