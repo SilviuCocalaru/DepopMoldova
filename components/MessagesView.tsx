@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Database } from '@/types/database.types'
 import Image from 'next/image'
-import { Send, Bell } from 'lucide-react'
+import { Send, Bell, ArrowLeft } from 'lucide-react'
 import Header from './Header'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 type Message = Database['public']['Tables']['messages']['Row'] & {
   sender: Database['public']['Tables']['profiles']['Row']
@@ -30,6 +30,7 @@ interface Conversation {
 
 export default function MessagesView({ currentUserId, initialMessages }: MessagesViewProps) {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -37,6 +38,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   const [unreadCount, setUnreadCount] = useState(0)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [profile, setProfile] = useState<any>(null)
+  const [showChatList, setShowChatList] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const supabase = createClient()
@@ -60,16 +62,20 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     const userId = searchParams.get('user')
     if (userId) {
       setSelectedConversation(userId)
+      setShowChatList(false) // Show chat when opening from URL
       localStorage.setItem('lastConversation', userId)
     } else {
       // Try to restore last conversation from localStorage
       const lastConv = localStorage.getItem('lastConversation')
       if (lastConv && conversations.some(c => c.userId === lastConv)) {
         setSelectedConversation(lastConv)
+        setShowChatList(false)
+        
+        // Mark messages as read
+        markMessagesAsRead(lastConv)
       } else if (conversations.length > 0) {
-        // Default to most recent conversation
-        setSelectedConversation(conversations[0].userId)
-        localStorage.setItem('lastConversation', conversations[0].userId)
+        // Default to showing chat list on mobile
+        setShowChatList(true)
       }
     }
   }, [searchParams, conversations])
@@ -284,6 +290,31 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     }
   }
 
+  const markMessagesAsRead = async (userId: string) => {
+    await supabase
+      .from('messages')
+      .update({ is_read: true })
+      .eq('receiver_id', currentUserId)
+      .eq('sender_id', userId)
+      .eq('is_read', false)
+  }
+
+  const handleSelectConversation = (userId: string) => {
+    setSelectedConversation(userId)
+    setShowChatList(false)
+    localStorage.setItem('lastConversation', userId)
+    markMessagesAsRead(userId)
+  }
+
+  const handleBackToChatList = () => {
+    setShowChatList(true)
+    setSelectedConversation(null)
+  }
+
+  const handleBackToMenu = () => {
+    router.push('/')
+  }
+
   const getRelativeTime = (date: string) => {
     const now = currentTime.getTime()
     const msgTime = new Date(date).getTime()
@@ -302,11 +333,35 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
+      
+      {/* Mobile Floating Island - Back Navigation */}
+      <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
+        <div className="floating-island-top">
+          {!showChatList && selectedConversation ? (
+            <button 
+              onClick={handleBackToChatList}
+              className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
+            >
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span className="font-semibold text-sm">Back to Chat List</span>
+            </button>
+          ) : (
+            <button 
+              onClick={handleBackToMenu}
+              className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
+            >
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span className="font-semibold text-sm">Back to Menu</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+        <div className="bg-white rounded-lg shadow overflow-hidden" style={{ height: 'calc(100vh - 180px)' }}>
           <div className="flex h-full">
             {/* Conversations List */}
-            <div className="w-1/3 border-r border-gray-200 overflow-y-auto">
+            <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
               <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
                 {unreadCount > 0 && (
@@ -326,7 +381,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                 conversations.map((conv) => (
                   <button
                     key={conv.userId}
-                    onClick={() => setSelectedConversation(conv.userId)}
+                    onClick={() => handleSelectConversation(conv.userId)}
                     className={`w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
                       selectedConversation === conv.userId ? 'bg-indigo-50' : ''
                     }`}
@@ -356,7 +411,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 flex flex-col">
+            <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto`}>
               {selectedConversation ? (
                 <>
                   {/* Messages */}
