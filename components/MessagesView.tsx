@@ -320,6 +320,24 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     }
   }, [])
 
+  // Prevent viewport resize on keyboard open
+  useEffect(() => {
+    if (isInputFocused) {
+      // Lock scroll position
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+    } else {
+      // Restore scroll position
+      const scrollY = document.body.style.top
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    }
+  }, [isInputFocused])
+
   const getRelativeTime = (date: string) => {
     const now = currentTime.getTime()
     const msgTime = new Date(date).getTime()
@@ -484,7 +502,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   {/* Message Input - Fixed at bottom on mobile */}
                   <form 
                     onSubmit={handleSendMessage} 
-                    className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto p-3 md:p-4 border-t border-gray-200 bg-white z-20"
+                    className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 border-t border-gray-200 bg-white z-20 shadow-lg md:shadow-none"
                   >
                     <div className="flex gap-2">
                       <input
