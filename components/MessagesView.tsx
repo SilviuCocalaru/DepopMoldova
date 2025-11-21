@@ -39,8 +39,10 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   const [currentTime, setCurrentTime] = useState(new Date())
   const [profile, setProfile] = useState<any>(null)
   const [showChatList, setShowChatList] = useState(true)
+  const [isInputFocused, setIsInputFocused] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
   // Load current user profile
@@ -341,17 +343,45 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       </div>
       
       {/* Mobile Floating Island - Back Navigation */}
-      <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
-        <div className="floating-island-top">
-          {!showChatList && selectedConversation ? (
-            <button 
-              onClick={handleBackToChatList}
-              className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-              <span className="font-semibold text-sm">Back to Chats</span>
-            </button>
-          ) : (
+      {!showChatList && selectedConversation ? (
+        <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
+          <div className="floating-island-top-large">
+            <div className="flex items-center gap-3 w-full">
+              {/* Avatar */}
+              <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
+                  <Image
+                    src={conversations.find(c => c.userId === selectedConversation)!.avatar_url!}
+                    alt={conversations.find(c => c.userId === selectedConversation)!.username}
+                    width={48}
+                    height={48}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <span className="text-xl font-semibold text-gray-600">
+                    {conversations.find(c => c.userId === selectedConversation)?.username.charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+              {/* Username and Back Button */}
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-base text-gray-900 truncate">
+                  {conversations.find(c => c.userId === selectedConversation)?.username}
+                </p>
+                <button 
+                  onClick={handleBackToChatList}
+                  className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-all duration-300 group mt-0.5"
+                >
+                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+                  <span className="font-medium text-xs">Back to Chats</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
+          <div className="floating-island-top">
             <button 
               onClick={handleBackToMenu}
               className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
@@ -359,9 +389,9 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
               <span className="font-semibold text-sm">Back to Menu</span>
             </button>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
         {/* Full screen on mobile when in chat, normal on desktop */}
@@ -425,32 +455,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto`}>
               {selectedConversation ? (
                 <>
-                  {/* Chat Header with Username */}
-                  <div className="md:hidden bg-white border-b border-gray-200 p-4 pt-20 flex items-center gap-3 sticky top-0 z-30">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                      {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
-                        <Image
-                          src={conversations.find(c => c.userId === selectedConversation)!.avatar_url!}
-                          alt={conversations.find(c => c.userId === selectedConversation)!.username}
-                          width={40}
-                          height={40}
-                          className="rounded-full"
-                        />
-                      ) : (
-                        <span className="text-lg font-semibold text-gray-600">
-                          {conversations.find(c => c.userId === selectedConversation)?.username.charAt(0).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-base text-gray-900 truncate">
-                        {conversations.find(c => c.userId === selectedConversation)?.username}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50">
+                  {/* Messages - with padding for top island */}
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 pt-24 md:pt-4 space-y-3 md:space-y-4 bg-gray-50">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
@@ -476,12 +482,20 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   </div>
 
                   {/* Message Input */}
-                  <form onSubmit={handleSendMessage} className="p-3 md:p-4 border-t border-gray-200">
+                  <form 
+                    onSubmit={handleSendMessage} 
+                    className={`p-3 md:p-4 border-t border-gray-200 bg-white transition-all duration-300 ${
+                      isInputFocused ? 'md:transform-none transform -translate-y-0' : ''
+                    }`}
+                  >
                     <div className="flex gap-2">
                       <input
+                        ref={inputRef}
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
+                        onFocus={() => setIsInputFocused(true)}
+                        onBlur={() => setIsInputFocused(false)}
                         placeholder="Type a message..."
                         className="flex-1 px-3 md:px-4 py-2 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
