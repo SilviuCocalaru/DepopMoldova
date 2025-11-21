@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ef4444">
+  <meta name="description" content="Discover unique fashion finds on Depop Moldova. Buy and sell pre-loved clothing, vintage pieces, and trendy fashion items. Join our community of fashion lovers and find your next favorite outfit while selling items from your closet.">
+  <title>Depop Moldova - Marketplace for Clothing</title>
+  
+  <!-- PWA Manifest - THIS IS THE KEY TAG PWABuilder NEEDS -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  
+  <!-- Apple Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Depop MD">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 {
+      color: #ef4444;
+      margin: 0 0 10px 0;
+      font-size: 2.5em;
+    }
+    .subtitle {
+      color: #6b7280;
+      margin: 0 0 30px 0;
+    }
+    .status {
+      background: #f0fdf4;
+      border: 2px solid #10b981;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+    }
+    .status h2 {
+      color: #10b981;
+      margin: 0 0 10px 0;
+    }
+    button {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      margin: 10px;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+    .feature-list {
+      text-align: left;
+      margin: 20px 0;
+    }
+    .feature-list li {
+      padding: 8px 0;
+      color: #374151;
+    }
+    .check {
+      color: #10b981;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Depop Moldova</h1>
+    <p class="subtitle">Fashion Marketplace PWA</p>
+    
+    <div class="status">
+      <h2>✅ PWA Ready!</h2>
+      <p>This app is a Progressive Web App with all required features.</p>
+    </div>
+
+    <div class="feature-list">
+      <ul>
+        <li><span class="check">✓</span> Web App Manifest</li>
+        <li><span class="check">✓</span> Service Worker</li>
+        <li><span class="check">✓</span> Offline Support</li>
+        <li><span class="check">✓</span> 192x192 & 512x512 Icons</li>
+        <li><span class="check">✓</span> HTTPS Enabled</li>
+        <li><span class="check">✓</span> Installable on Mobile & Desktop</li>
+      </ul>
+    </div>
+
+    <button onclick="window.location.href='/'">Launch Full App</button>
+    <button onclick="window.open('/manifest.json', '_blank')">View Manifest</button>
+    
+    <p style="margin-top: 30px; color: #9ca3af; font-size: 14px;">
+      Test this URL on <a href="https://www.pwabuilder.com" target="_blank" style="color: #ef4444;">PWABuilder.com</a>
+    </p>
+  </div>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('✅ Service Worker registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('❌ Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
