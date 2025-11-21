@@ -304,3 +304,22 @@ body {
   }
 }
 
+/* Hide mobile navigation when in chat */
+body.hide-mobile-nav .floating-island-bottom {
+  transform: translateY(150px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Prevent scrolling outside chat area on mobile */
+@media (max-width: 768px) {
+  body.hide-mobile-nav {
+    overflow: hidden;
+  }
+  
+  body.hide-mobile-nav .max-w-7xl {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+

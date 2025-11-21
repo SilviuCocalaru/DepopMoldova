@@ -304,16 +304,31 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setShowChatList(false)
     localStorage.setItem('lastConversation', userId)
     markMessagesAsRead(userId)
+    
+    // Hide bottom navigation on mobile when entering chat
+    document.body.classList.add('hide-mobile-nav')
   }
 
   const handleBackToChatList = () => {
     setShowChatList(true)
     setSelectedConversation(null)
+    
+    // Show bottom navigation when going back to chat list
+    document.body.classList.remove('hide-mobile-nav')
   }
 
   const handleBackToMenu = () => {
+    // Show bottom navigation before navigating away
+    document.body.classList.remove('hide-mobile-nav')
     router.push('/')
   }
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('hide-mobile-nav')
+    }
+  }, [])
 
   const getRelativeTime = (date: string) => {
     const now = currentTime.getTime()
@@ -359,7 +374,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
         <div className="bg-white md:rounded-lg md:shadow overflow-hidden h-screen md:h-[calc(100vh-200px)]">
-          <div className="flex h-full">
+          <div className="flex h-full overflow-hidden">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
               <div className="p-3 md:p-4 border-b border-gray-200 flex items-center justify-between">

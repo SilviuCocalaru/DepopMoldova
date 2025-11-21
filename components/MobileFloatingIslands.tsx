@@ -33,25 +33,27 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
 
   return (
     <>
-      {/* Floating Top Island */}
-      <div className={`md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}>
-        <div className={`floating-island-top ${isProductPage ? 'expanded' : ''}`}>
-          {isProductPage ? (
-            <button 
-              onClick={handleBackToMenu}
-              className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-              <span className="font-semibold text-sm">Back to Menu</span>
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse-glow"></div>
-              <span className="text-xl font-bold text-red-500 lowercase tracking-tight">depop</span>
-            </div>
-          )}
+      {/* Floating Top Island - Only show on homepage and product pages, NOT on messages */}
+      {pathname !== '/messages' && (
+        <div className={`md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}>
+          <div className={`floating-island-top ${isProductPage ? 'expanded' : ''}`}>
+            {isProductPage ? (
+              <button 
+                onClick={handleBackToMenu}
+                className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
+              >
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+                <span className="font-semibold text-sm">Back to Menu</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse-glow"></div>
+                <span className="text-xl font-bold text-red-500 lowercase tracking-tight">depop</span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Floating Bottom Island - Only show if user is logged in */}
       {user && (
