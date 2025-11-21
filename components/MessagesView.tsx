@@ -347,7 +347,10 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      {/* Hide header on mobile when in active chat */}
+      <div className={`${!showChatList && selectedConversation ? 'hidden' : 'block'} md:block`}>
+        <Header />
+      </div>
       
       {/* Mobile Floating Island - Back Navigation */}
       <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
@@ -373,7 +376,12 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       </div>
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
-        <div className="bg-white md:rounded-lg md:shadow overflow-hidden h-screen md:h-[calc(100vh-200px)]">
+        {/* Full screen on mobile when in chat, normal on desktop */}
+        <div className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
+          !showChatList && selectedConversation 
+            ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
+            : 'h-screen md:h-[calc(100vh-200px)]'
+        }`}>
           <div className="flex h-full">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
@@ -430,7 +438,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
               {selectedConversation ? (
                 <>
                   {/* Chat Header with Username */}
-                  <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center gap-3 sticky top-0 z-10">
+                  <div className="md:hidden bg-white border-b border-gray-200 p-4 pt-20 flex items-center gap-3 sticky top-0 z-30">
                     <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                       {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
                         <Image
