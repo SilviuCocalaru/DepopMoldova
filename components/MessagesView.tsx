@@ -57,7 +57,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     loadProfile()
   }, [currentUserId])
 
-  // Initialize selected conversation from URL params or localStorage
+  // Initialize selected conversation from URL params only
   useEffect(() => {
     const userId = searchParams.get('user')
     if (userId) {
@@ -65,18 +65,9 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       setShowChatList(false) // Show chat when opening from URL
       localStorage.setItem('lastConversation', userId)
     } else {
-      // Try to restore last conversation from localStorage
-      const lastConv = localStorage.getItem('lastConversation')
-      if (lastConv && conversations.some(c => c.userId === lastConv)) {
-        setSelectedConversation(lastConv)
-        setShowChatList(false)
-        
-        // Mark messages as read
-        markMessagesAsRead(lastConv)
-      } else if (conversations.length > 0) {
-        // Default to showing chat list on mobile
-        setShowChatList(true)
-      }
+      // Always show chat list first on mobile
+      setShowChatList(true)
+      setSelectedConversation(null)
     }
   }, [searchParams, conversations])
 
