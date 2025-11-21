@@ -171,25 +171,27 @@ body {
 /* Center Plus Button - Elevated */
 .nav-icon-center {
   position: relative;
-  margin-top: -32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nav-icon-center:active {
-  transform: scale(0.9) translateY(2px);
+  transform: scale(0.9);
 }
 
 .floating-plus-button {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
   border-radius: 50%;
   box-shadow: 
-    0 12px 32px rgba(59, 130, 246, 0.4),
+    0 8px 24px rgba(59, 130, 246, 0.4),
     0 4px 12px rgba(59, 130, 246, 0.3),
     0 1px 0 rgba(255, 255, 255, 0.3) inset;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);

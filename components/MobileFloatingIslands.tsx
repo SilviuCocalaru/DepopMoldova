@@ -77,7 +77,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
               className="nav-icon-center group"
             >
               <div className="floating-plus-button">
-                <Plus className="w-8 h-8 text-white" strokeWidth={3} />
+                <Plus className="w-7 h-7 text-white" strokeWidth={3} />
                 <div className="plus-glow"></div>
               </div>
             </Link>
