@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ef4444">
+  <title>Depop Moldova - PWA Test Page</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  
+  <!-- Apple Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Depop MD">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f3f4f6;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #ef4444;
+      margin-bottom: 20px;
+    }
+    .status {
+      background: #f0fdf4;
+      border-left: 4px solid #10b981;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .test-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .pass {
+      color: #10b981;
+      font-weight: bold;
+    }
+    .fail {
+      color: #ef4444;
+      font-weight: bold;
+    }
+    button {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 10px 10px 10px 0;
+    }
+    button:hover {
+      background: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Depop Moldova PWA Test Page</h1>
+    
+    <div class="status">
+      <strong>✅ PWA Components Loaded</strong><br>
+      This page verifies that all PWA components are properly configured.
+    </div>
+
+    <h2>PWA Checks</h2>
+    <div id="tests"></div>
+
+    <h2>Actions</h2>
+    <button onclick="window.location.href='/'">Go to Main App</button>
+    <button onclick="window.open('/manifest.json')">View Manifest</button>
+    <button onclick="checkServiceWorker()">Check Service Worker</button>
+
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://depop-moldova.vercel.app/">Main App</a></li>
+      <li><a href="/manifest.json" target="_blank">Manifest JSON</a></li>
+      <li><a href="/service-worker.js" target="_blank">Service Worker</a></li>
+      <li><a href="https://www.pwabuilder.com" target="_blank">Test on PWABuilder</a></li>
+    </ul>
+  </div>
+
+  <script>
+    async function runTests() {
+      const tests = [];
+      
+      // Test 1: Manifest
+      try {
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        tests.push({
+          name: 'Manifest Link Tag',
+          status: manifestLink ? 'pass' : 'fail',
+          detail: manifestLink ? `Found: ${manifestLink.href}` : 'Not found'
+        });
+        
+        if (manifestLink) {
+          const response = await fetch(manifestLink.href);
+          const manifest = await response.json();
+          tests.push({
+            name: 'Manifest Fetchable',
+            status: response.ok ? 'pass' : 'fail',
+            detail: response.ok ? `Name: ${manifest.name}` : 'Failed to fetch'
+          });
+          tests.push({
+            name: 'Manifest Has Icons',
+            status: manifest.icons && manifest.icons.length > 0 ? 'pass' : 'fail',
+            detail: manifest.icons ? `${manifest.icons.length} icons defined` : 'No icons'
+          });
+        }
+      } catch (e) {
+        tests.push({
+          name: 'Manifest',
+          status: 'fail',
+          detail: e.message
+        });
+      }
+      
+      // Test 2: Service Worker
+      tests.push({
+        name: 'Service Worker API',
+        status: 'serviceWorker' in navigator ? 'pass' : 'fail',
+        detail: 'serviceWorker' in navigator ? 'Supported' : 'Not supported'
+      });
+      
+      // Test 3: HTTPS
+      tests.push({
+        name: 'HTTPS',
+        status: location.protocol === 'https:' ? 'pass' : 'fail',
+        detail: location.protocol
+      });
+      
+      // Test 4: Icons
+      const icon192 = document.querySelector('link[sizes="192x192"]');
+      tests.push({
+        name: '192x192 Icon',
+        status: icon192 ? 'pass' : 'fail',
+        detail: icon192 ? icon192.href : 'Not found'
+      });
+      
+      // Test 5: Theme Color
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      tests.push({
+        name: 'Theme Color',
+        status: themeColor ? 'pass' : 'fail',
+        detail: themeColor ? themeColor.content : 'Not found'
+      });
+      
+      // Render results
+      const testsDiv = document.getElementById('tests');
+      testsDiv.innerHTML = tests.map(test => `
+        <div class="test-item">
+          <span class="${test.status}">${test.status === 'pass' ? '✅' : '❌'}</span>
+          <strong>${test.name}:</strong> ${test.detail}
+        </div>
+      `).join('');
+    }
+    
+    function checkServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (reg) {
+            alert('✅ Service Worker is registered!\\nScope: ' + reg.scope);
+          } else {
+            alert('ℹ️ Service Worker not yet registered. Visit the main app to register it.');
+          }
+        });
+      } else {
+        alert('❌ Service Worker API not supported');
+      }
+    }
+    
+    // Run tests on load
+    runTests();
+    
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
