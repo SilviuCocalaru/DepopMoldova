@@ -1,6 +1,7 @@
 {
   "name": "Depop Moldova - Marketplace for Clothing",
   "short_name": "Depop MD",
+  "id": "/",
   "description": "Discover unique fashion finds on Depop Moldova. Buy and sell pre-loved clothing, vintage pieces, and trendy fashion items. Join our community of fashion lovers and find your next favorite outfit while selling items from your closet.",
   "start_url": "/",
   "display": "standalone",
@@ -61,20 +62,6 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Browse Items",
@@ -105,6 +92,5 @@
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ],
-  "prefer_related_applications": false,
-  "related_applications": []
+  "prefer_related_applications": false
 }
