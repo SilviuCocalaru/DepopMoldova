@@ -452,11 +452,11 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             </div>
 
             {/* Messages Area */}
-            <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto`}>
+            <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto relative`}>
               {selectedConversation ? (
                 <>
-                  {/* Messages - with padding for top island */}
-                  <div className="flex-1 overflow-y-auto p-3 md:p-4 pt-24 md:pt-4 space-y-3 md:space-y-4 bg-gray-50">
+                  {/* Messages - with padding for top island and bottom input */}
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 pt-24 pb-20 md:pt-4 md:pb-4 space-y-3 md:space-y-4 bg-gray-50">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
@@ -481,12 +481,10 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                     <div ref={messagesEndRef} />
                   </div>
 
-                  {/* Message Input */}
+                  {/* Message Input - Fixed at bottom on mobile */}
                   <form 
                     onSubmit={handleSendMessage} 
-                    className={`p-3 md:p-4 border-t border-gray-200 bg-white transition-all duration-300 ${
-                      isInputFocused ? 'md:transform-none transform -translate-y-0' : ''
-                    }`}
+                    className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto p-3 md:p-4 border-t border-gray-200 bg-white z-20"
                   >
                     <div className="flex gap-2">
                       <input
