@@ -64,12 +64,9 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       setSelectedConversation(userId)
       setShowChatList(false) // Show chat when opening from URL
       localStorage.setItem('lastConversation', userId)
-    } else {
-      // Always show chat list first on mobile
-      setShowChatList(true)
-      setSelectedConversation(null)
     }
-  }, [searchParams, conversations])
+    // Don't reset to chat list if user has manually selected a conversation
+  }, [searchParams])
 
   // Update current time every minute for relative timestamps
   useEffect(() => {
