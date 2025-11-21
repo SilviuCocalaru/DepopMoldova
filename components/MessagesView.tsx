@@ -343,7 +343,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
               className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-              <span className="font-semibold text-sm">Back to Chat List</span>
+              <span className="font-semibold text-sm">Back to Chats</span>
             </button>
           ) : (
             <button 
@@ -357,13 +357,13 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
-        <div className="bg-white rounded-lg shadow overflow-hidden" style={{ height: 'calc(100vh - 180px)' }}>
+      <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
+        <div className="bg-white md:rounded-lg md:shadow overflow-hidden h-screen md:h-[calc(100vh-200px)]">
           <div className="flex h-full">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
-              <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
+              <div className="p-3 md:p-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 className="text-base md:text-lg font-semibold text-gray-900">Messages</h2>
                 {unreadCount > 0 && (
                   <div className="flex items-center gap-2">
                     <Bell className="w-5 h-5 text-red-500" />
@@ -382,11 +382,11 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   <button
                     key={conv.userId}
                     onClick={() => handleSelectConversation(conv.userId)}
-                    className={`w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
+                    className={`w-full p-3 md:p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
                       selectedConversation === conv.userId ? 'bg-indigo-50' : ''
                     }`}
                   >
-                    <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                       {conv.avatar_url ? (
                         <Image
                           src={conv.avatar_url}
@@ -396,14 +396,14 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                           className="rounded-full"
                         />
                       ) : (
-                        <span className="text-xl font-semibold text-gray-600">
+                        <span className="text-lg md:text-xl font-semibold text-gray-600">
                           {conv.username.charAt(0).toUpperCase()}
                         </span>
                       )}
                     </div>
-                    <div className="flex-1 text-left">
-                      <p className="font-medium text-gray-900">{conv.username}</p>
-                      <p className="text-sm text-gray-500 truncate">{conv.lastMessage}</p>
+                    <div className="flex-1 text-left min-w-0">
+                      <p className="font-medium text-sm md:text-base text-gray-900 truncate">{conv.username}</p>
+                      <p className="text-xs md:text-sm text-gray-500 truncate">{conv.lastMessage}</p>
                     </div>
                   </button>
                 ))
@@ -415,20 +415,20 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
               {selectedConversation ? (
                 <>
                   {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
                         className={`flex ${msg.sender_id === currentUserId ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
-                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                          className={`max-w-[75%] md:max-w-xs lg:max-w-md px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
                             msg.sender_id === currentUserId
                               ? 'bg-indigo-600 text-white'
                               : 'bg-gray-200 text-gray-900'
                           }`}
                         >
-                          <p>{msg.content}</p>
+                          <p className="break-words">{msg.content}</p>
                           <p className={`text-xs mt-1 ${
                             msg.sender_id === currentUserId ? 'text-indigo-200' : 'text-gray-500'
                           }`}>
@@ -441,27 +441,27 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   </div>
 
                   {/* Message Input */}
-                  <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200">
+                  <form onSubmit={handleSendMessage} className="p-3 md:p-4 border-t border-gray-200">
                     <div className="flex gap-2">
                       <input
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="flex-1 px-3 md:px-4 py-2 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                       <button
                         type="submit"
                         disabled={!newMessage.trim()}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-3 md:px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                       >
-                        <Send className="w-5 h-5" />
+                        <Send className="w-4 h-4 md:w-5 md:h-5" />
                       </button>
                     </div>
                   </form>
                 </>
               ) : (
-                <div className="flex-1 flex items-center justify-center text-gray-500">
+                <div className="flex-1 flex items-center justify-center text-gray-500 text-sm md:text-base px-4">
                   Select a conversation to start messaging
                 </div>
               )}
