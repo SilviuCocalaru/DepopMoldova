@@ -374,7 +374,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
         <div className="bg-white md:rounded-lg md:shadow overflow-hidden h-screen md:h-[calc(100vh-200px)]">
-          <div className="flex h-full overflow-hidden">
+          <div className="flex h-full">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
               <div className="p-3 md:p-4 border-b border-gray-200 flex items-center justify-between">
@@ -429,8 +429,32 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto`}>
               {selectedConversation ? (
                 <>
+                  {/* Chat Header with Username */}
+                  <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center gap-3 sticky top-0 z-10">
+                    <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                      {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
+                        <Image
+                          src={conversations.find(c => c.userId === selectedConversation)!.avatar_url!}
+                          alt={conversations.find(c => c.userId === selectedConversation)!.username}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <span className="text-lg font-semibold text-gray-600">
+                          {conversations.find(c => c.userId === selectedConversation)?.username.charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-base text-gray-900 truncate">
+                        {conversations.find(c => c.userId === selectedConversation)?.username}
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}

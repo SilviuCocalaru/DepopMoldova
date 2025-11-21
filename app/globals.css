@@ -304,6 +304,11 @@ body {
   }
 }
 
+/* Smooth transition for bottom nav */
+.floating-island-bottom {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
 /* Hide mobile navigation when in chat */
 body.hide-mobile-nav .floating-island-bottom {
   transform: translateY(150px);
