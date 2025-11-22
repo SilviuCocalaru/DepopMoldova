@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { AuthProvider } from "./providers/AuthProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -62,7 +63,9 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <Script
           id="sw-register"
           strategy="afterInteractive"
