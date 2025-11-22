@@ -29,11 +29,20 @@ export default function Header() {
 
   useEffect(() => {
     let mounted = true
+    let minLoadingTimer: NodeJS.Timeout | null = null
     
     const loadUserAndProfile = async () => {
       try {
+        // Set minimum loading time to prevent flickering
+        const minLoadingTime = new Promise(resolve => {
+          minLoadingTimer = setTimeout(resolve, 300)
+        })
+        
         // Get session from Supabase
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+        
+        // Wait for minimum loading time
+        await minLoadingTime
         
         if (!mounted) return
         
@@ -74,6 +83,8 @@ export default function Header() {
       } catch (error) {
         if (!mounted) return
         console.error('Error loading user:', error)
+        setUser(null)
+        setProfile(null)
       } finally {
         if (mounted) {
           setIsLoading(false)
@@ -88,26 +99,38 @@ export default function Header() {
       if (!mounted) return
       
       console.log('Header auth event:', event, session?.user?.email || 'No user')
-      setUser(session?.user ?? null)
       
-      if (session?.user) {
+      const currentUser = session?.user ?? null
+      setUser(currentUser)
+      
+      if (currentUser) {
         const { data: profileData } = await supabase
           .from('profiles')
           .select('id, username, full_name, avatar_url')
-          .eq('id', session.user.id)
+          .eq('id', currentUser.id)
           .maybeSingle()
         
-        setProfile(profileData)
+        if (mounted) {
+          setProfile(profileData || {
+            id: currentUser.id,
+            username: currentUser.email?.split('@')[0] || 'User',
+            full_name: currentUser.user_metadata?.full_name || null,
+            avatar_url: currentUser.user_metadata?.avatar_url || null
+          })
+        }
       } else {
-        setProfile(null)
+        if (mounted) {
+          setProfile(null)
+        }
       }
     })
 
     return () => {
       mounted = false
+      if (minLoadingTimer) clearTimeout(minLoadingTimer)
       subscription.unsubscribe()
     }
-  }, [pathname]) // Re-run when pathname changes
+  }, []) // Only run once on mount
 
   // Subscribe to new messages for unread count
   useEffect(() => {

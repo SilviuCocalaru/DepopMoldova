@@ -40,7 +40,14 @@ export async function updateSession(request: NextRequest) {
   // We need to call getSession() to ensure the session is refreshed if needed
   const {
     data: { session },
+    error: sessionError,
   } = await supabase.auth.getSession()
+
+  // If there's an error getting the session, clear any stale auth cookies
+  if (sessionError) {
+    console.error('Middleware session error:', sessionError)
+    // Don't redirect, just let the request through
+  }
 
   const user = session?.user ?? null
 
@@ -48,7 +55,8 @@ export async function updateSession(request: NextRequest) {
 
   // Set cache headers to prevent stale auth state
   supabaseResponse.headers.set('x-middleware-cache', 'no-cache')
-  supabaseResponse.headers.set('Cache-Control', 'no-store, must-revalidate')
+  supabaseResponse.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate')
+  supabaseResponse.headers.set('Pragma', 'no-cache')
 
   if (
     !user &&
