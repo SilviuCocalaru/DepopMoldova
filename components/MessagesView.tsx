@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -66,9 +66,22 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       setSelectedConversation(userId)
       setShowChatList(false) // Show chat when opening from URL
       localStorage.setItem('lastConversation', userId)
+      // Hide bottom nav when opening a chat from URL
+      document.body.classList.add('hide-mobile-nav')
     }
     // Don't reset to chat list if user has manually selected a conversation
   }, [searchParams])
+
+  // Manage bottom nav visibility based on chat state
+  useEffect(() => {
+    if (!showChatList && selectedConversation) {
+      // In active chat - hide bottom nav
+      document.body.classList.add('hide-mobile-nav')
+    } else {
+      // In chat list - show bottom nav
+      document.body.classList.remove('hide-mobile-nav')
+    }
+  }, [showChatList, selectedConversation])
 
   // Update current time every minute for relative timestamps
   useEffect(() => {
@@ -294,17 +307,13 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setShowChatList(false)
     localStorage.setItem('lastConversation', userId)
     markMessagesAsRead(userId)
-    
-    // Hide bottom navigation on mobile when entering chat
-    document.body.classList.add('hide-mobile-nav')
+    // Bottom nav will be hidden by useEffect
   }
 
   const handleBackToChatList = () => {
     setShowChatList(true)
     setSelectedConversation(null)
-    
-    // Show bottom navigation when going back to chat list
-    document.body.classList.remove('hide-mobile-nav')
+    // Bottom nav will be shown by useEffect
   }
 
   const handleBackToMenu = () => {
@@ -313,18 +322,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     router.push('/')
   }
 
-  // Hide bottom navigation when on messages page (mobile)
-  useEffect(() => {
-    // Hide bottom nav on mount (messages page)
-    document.body.classList.add('hide-mobile-nav')
-    
-    return () => {
-      // Show it again when leaving the page
-      document.body.classList.remove('hide-mobile-nav')
-    }
-  }, [])
-
-  // Cleanup on unmount
+  // Cleanup on unmount - always show bottom nav when leaving messages
   useEffect(() => {
     return () => {
       document.body.classList.remove('hide-mobile-nav')
