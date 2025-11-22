@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Product = Database['public']['Tables']['products']['Row'] & {
   profiles: Database['public']['Tables']['profiles']['Row'] | null
@@ -21,12 +22,22 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
   const [isLiked, setIsLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(product.likes?.length || 0)
   const supabase = createClient()
+  const router = useRouter()
 
   useEffect(() => {
     if (currentUserId && product.likes) {
       setIsLiked(product.likes.some(like => like.user_id === currentUserId))
     }
   }, [currentUserId, product.likes])
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // If user is not logged in, redirect to signup
+    if (!currentUserId) {
+      e.preventDefault()
+      router.push('/signup')
+      return
+    }
+  }
 
   const handleLike = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -61,7 +72,11 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
   }
 
   return (
-    <Link href={`/product/${product.id}`} className="group block">
+    <Link 
+      href={currentUserId ? `/product/${product.id}` : '/signup'} 
+      onClick={handleCardClick}
+      className="group block"
+    >
       <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
         {product.images && product.images.length > 0 ? (
           <Image
