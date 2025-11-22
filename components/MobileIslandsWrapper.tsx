@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import MobileFloatingIslands from './MobileFloatingIslands'
 import { createClient } from '@/lib/supabase/client'
-import type { User } from '@supabase/supabase-js'
+import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 interface Profile {
   id: string
@@ -27,10 +27,13 @@ export default function MobileIslandsWrapper() {
       try {
         const { data: { session } } = await supabase.auth.getSession()
         
+        console.log('🏝️ Islands - Session:', session?.user?.email || 'No user')
+        
         if (isCancelled) return
         
         if (session?.user) {
           setUser(session.user)
+          console.log('🏝️ Islands - User set:', session.user.email)
 
           // Fetch profile
           const { data: profileData } = await supabase
@@ -66,7 +69,7 @@ export default function MobileIslandsWrapper() {
     loadData()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       // Ignore token refresh events
       if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
         return
@@ -87,6 +90,8 @@ export default function MobileIslandsWrapper() {
       subscription.unsubscribe()
     }
   }, [pathname])
+
+  console.log('🏝️ Islands Render - user:', user?.email || 'null', 'isLoading:', isLoading)
 
   return (
     <MobileFloatingIslands
