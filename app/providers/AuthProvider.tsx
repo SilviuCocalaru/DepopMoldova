@@ -92,11 +92,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true
 
+    // FAILSAFE: Force loading to end after 5 seconds max
+    const loadingTimeout = setTimeout(() => {
+      if (mounted) {
+        console.warn('Auth loading timeout - forcing end')
+        setIsLoading(false)
+      }
+    }, 5000)
+
     // Set up auth state listener FIRST - this is critical for catching login events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return
-        console.log('Auth event:', event, session?.user?.email || 'No user') // Debug log
+        console.log('🔐 Auth event:', event, session?.user?.email || 'No user') // Debug log
         setSession(session)
         setUser(session?.user ?? null)
         
@@ -129,16 +137,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
         
         // CRITICAL: Set loading false on ANY auth event to unblock UI
+        console.log('✅ Setting isLoading to false')
         setIsLoading(false)
       }
     )
 
     // Then check for existing session
+    console.log('🔍 Checking for existing session...')
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (!mounted) return
       if (error) {
         console.error('Initial session error:', error)
+        setIsLoading(false)
+        return
       }
+      
+      console.log('📋 Session found:', session?.user?.email || 'No session')
       setSession(session)
       setUser(session?.user ?? null)
       
@@ -167,6 +181,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
       
+      console.log('✅ Initial auth check complete - setting isLoading to false')
       setIsLoading(false)
     })
 
@@ -199,6 +214,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       mounted = false
+      clearTimeout(loadingTimeout)
       subscription.unsubscribe()
       document.removeEventListener('visibilitychange', handleVisibility)
     }
