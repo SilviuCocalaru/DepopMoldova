@@ -40,6 +40,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   const [profile, setProfile] = useState<any>(null)
   const [showChatList, setShowChatList] = useState(true)
   const [isInputFocused, setIsInputFocused] = useState(false)
+  const [onlineSellersCount, setOnlineSellersCount] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -82,6 +83,23 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       document.body.classList.remove('hide-mobile-nav')
     }
   }, [showChatList, selectedConversation])
+
+  // Simulate online sellers count (in real app, this would track actual online users)
+  useEffect(() => {
+    const updateOnlineCount = () => {
+      // Simulate 0-5 sellers online with some randomness
+      const count = Math.floor(Math.random() * 6)
+      setOnlineSellersCount(count)
+    }
+    
+    // Initial count
+    updateOnlineCount()
+    
+    // Update every 30 seconds
+    const interval = setInterval(updateOnlineCount, 30000)
+    
+    return () => clearInterval(interval)
+  }, [])
 
   // Update current time every minute for relative timestamps
   useEffect(() => {
@@ -409,17 +427,15 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       ) : (
         <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
           <div className="floating-island-top-large">
-            <div className="flex items-center gap-3 w-full">
-              {/* Messages Icon/Title */}
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-base text-gray-900 text-center">Messages</p>
-                <button 
-                  onClick={handleBackToMenu}
-                  className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-all duration-300 group mt-0.5 mx-auto"
-                >
-                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-                  <span className="font-medium text-xs">Back to Menu</span>
-                </button>
+            <div className="flex flex-col items-center w-full py-1">
+              {/* Messages Title */}
+              <p className="font-bold text-base text-gray-900">Messages</p>
+              {/* Online Sellers Status */}
+              <div className="flex items-center gap-1.5 mt-1">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-xs text-gray-600 font-medium">
+                  {onlineSellersCount} {onlineSellersCount === 1 ? 'seller' : 'sellers'} online now
+                </span>
               </div>
             </div>
           </div>
