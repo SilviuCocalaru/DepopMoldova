@@ -2,24 +2,279 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, usePathname } from 'next/navigation'
+import { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Heart, MessageCircle, User as UserIcon, LogOut } from 'lucide-react'
 import MobileFloatingIslands from './MobileFloatingIslands'
-import { useAuth } from '@/app/providers/AuthProvider'
+
+interface Profile {
+  id: string
+  username: string
+  full_name: string | null
+  avatar_url: string | null
+}
 
 export default function Header() {
-  const { user, profile, isLoading: authLoading } = useAuth()
+  const [user, setUser] = useState<User | null>(null)
+  const [profile, setProfile] = useState<Profile | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const [unreadMessages, setUnreadMessages] = useState(0)
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createClient()
 
-  // Remove all the auth state management - now handled by AuthProvider
-  // Keep only the unread messages subscription
+  useEffect(() => {
+    let mounted = true
+    let minLoadingTimer: NodeJS.Timeout | null = null
+    
+    const loadUserAndProfile = async () => {
+      try {
+        // Set minimum loading time to prevent flickering
+        const minLoadingTime = new Promise(resolve => {
+          minLoadingTimer = setTimeout(resolve, 300)
+        })
+        
+        // Get session from Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+        
+        // Wait for minimum loading time
+        await minLoadingTime
+        
+        if (!mounted) return
+        
+        if (sessionError) {
+          console.error('Session error:', sessionError)
+          setUser(null)
+          setProfile(null)
+          setIsLoading(false)
+          return
+        }
+        
+        const currentUser = session?.user ?? null
+        setUser(currentUser)
+        
+        if (currentUser) {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, full_name, avatar_url')
+            .eq('id', currentUser.id)
+            .maybeSingle()
+          
+          if (!mounted) return
+          
+          if (profileData) {
+            setProfile(profileData)
+          } else {
+            // Fallback profile from auth metadata
+            setProfile({
+              id: currentUser.id,
+              username: currentUser.email?.split('@')[0] || 'User',
+              full_name: currentUser.user_metadata?.full_name || null,
+              avatar_url: currentUser.user_metadata?.avatar_url || null
+            })
+          }
+        } else {
+          setProfile(null)
+        }
+      } catch (error) {
+        if (!mounted) return
+        console.error('Error loading user:', error)
+        setUser(null)
+        setProfile(null)
+      } finally {
+        if (mounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+    
+    loadUserAndProfile()
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return
+      
+      console.log('Header auth event:', event, session?.user?.email || 'No user')
+      
+      const currentUser = session?.user ?? null
+      setUser(currentUser)
+      
+      if (currentUser) {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('id, username, full_name, avatar_url')
+          .eq('id', currentUser.id)
+          .maybeSingle()
+        
+        if (mounted) {
+          setProfile(profileData || {
+            id: currentUser.id,
+            username: currentUser.email?.split('@')[0] || 'User',
+            full_name: currentUser.user_metadata?.full_name || null,
+            avatar_url: currentUser.user_metadata?.avatar_url || null
+          })
+        }
+      } else {
+        if (mounted) {
+          setProfile(null)
+        }
+      }
+    })
+
+    return () => {
+      mounted = false
+      if (minLoadingTimer) clearTimeout(minLoadingTimer)
+      subscription.unsubscribe()
+    }
+  }, []) // Only run once on mount
+
+  // Handle browser back/forward cache (bfcache) restoration and visibility changes
+  useEffect(() => {
+    let isRefreshing = false
+
+    const refreshAuthState = async (retries = 3, isBackgroundRefresh = false) => {
+      if (isRefreshing) return
+      isRefreshing = true
+      
+      console.log('Refreshing auth state...', isBackgroundRefresh ? '(background)' : '')
+      
+      // Only show loading state for non-background refreshes
+      if (!isBackgroundRefresh) {
+        setIsLoading(true)
+      }
+      
+      try {
+        // First try to refresh the session if a refresh token exists
+        const { data: { session: refreshedSession }, error: refreshError } = 
+          await supabase.auth.refreshSession()
+        
+        let session = refreshedSession
+        
+        // If refresh fails, try to get the existing session
+        if (refreshError || !session) {
+          console.log('Refresh failed, trying getSession...', refreshError?.message)
+          const { data: { session: existingSession }, error: getError } = 
+            await supabase.auth.getSession()
+          session = existingSession
+          
+          if (getError) {
+            console.error('Session fetch error:', getError)
+            // Retry if we have attempts left
+            if (retries > 0) {
+              isRefreshing = false
+              await new Promise(resolve => setTimeout(resolve, 1000))
+              return refreshAuthState(retries - 1, isBackgroundRefresh)
+            }
+            // Only clear user state if this is not a background refresh
+            // to prevent UI flickering
+            if (!isBackgroundRefresh) {
+              setUser(null)
+              setProfile(null)
+            }
+            setIsLoading(false)
+            return
+          }
+        }
+        
+        const currentUser = session?.user ?? null
+        console.log('Auth state refreshed:', currentUser?.email || 'No user')
+        
+        // Only update state if it actually changed
+        setUser(prevUser => {
+          if (prevUser?.id === currentUser?.id) return prevUser
+          return currentUser
+        })
+        
+        if (currentUser) {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, full_name, avatar_url')
+            .eq('id', currentUser.id)
+            .maybeSingle()
+          
+          const newProfile = profileData || {
+            id: currentUser.id,
+            username: currentUser.email?.split('@')[0] || 'User',
+            full_name: currentUser.user_metadata?.full_name || null,
+            avatar_url: currentUser.user_metadata?.avatar_url || null
+          }
+          
+          // Only update if profile changed
+          setProfile(prevProfile => {
+            if (prevProfile?.id === newProfile.id && 
+                prevProfile?.username === newProfile.username) {
+              return prevProfile
+            }
+            return newProfile
+          })
+        } else if (!isBackgroundRefresh) {
+          // Only clear profile if not a background refresh
+          setProfile(null)
+        }
+      } catch (error) {
+        console.error('Error refreshing auth:', error)
+        // Retry if we have attempts left
+        if (retries > 0) {
+          isRefreshing = false
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          return refreshAuthState(retries - 1, isBackgroundRefresh)
+        }
+        // Don't clear state on background refresh errors
+        if (!isBackgroundRefresh) {
+          setUser(null)
+          setProfile(null)
+        }
+      } finally {
+        setIsLoading(false)
+        isRefreshing = false
+      }
+    }
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // Page was restored from bfcache
+        console.log('Page restored from bfcache')
+        refreshAuthState(3, true) // Background refresh
+      }
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // Page became visible (e.g., phone unlocked, tab switched back)
+        console.log('Page became visible, checking auth state')
+        refreshAuthState(3, true) // Background refresh to avoid UI flicker
+      }
+    }
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.includes('supabase.auth.token')) {
+        console.log('Auth storage changed, refreshing...')
+        refreshAuthState(3, true) // Background refresh
+      }
+    }
+
+    const handleFocus = () => {
+      // Extra safeguard when window regains focus
+      console.log('Window focused, verifying auth state')
+      refreshAuthState(3, true) // Background refresh
+    }
+
+    window.addEventListener('pageshow', handlePageShow)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('storage', handleStorageChange)
+    window.addEventListener('focus', handleFocus)
+    
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleFocus)
+    }
+  }, [])
 
   // Subscribe to new messages for unread count
   useEffect(() => {
@@ -114,7 +369,7 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <div className="flex items-center space-x-6">
-              {authLoading ? (
+              {isLoading ? (
                 <>
                   <div className="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
                   <div className="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>

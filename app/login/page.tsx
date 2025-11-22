@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -11,19 +11,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
-
-  // Listen for successful login and redirect
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        console.log('Login successful, redirecting...')
-        router.push('/')
-        router.refresh()
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [router, supabase])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,8 +25,10 @@ export default function LoginPage() {
     if (error) {
       setError(error.message)
       setLoading(false)
+    } else {
+      router.push('/')
+      router.refresh()
     }
-    // Don't set loading to false on success - let the auth state change redirect
   }
 
   return (
