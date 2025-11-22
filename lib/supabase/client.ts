@@ -27,6 +27,3 @@ export function createClient() {
 }
 
 export const getSupabaseClient = () => createClient()
-
-// Export a function that gets the client, not the client itself
-export const getSupabaseClient = () => createClient()
