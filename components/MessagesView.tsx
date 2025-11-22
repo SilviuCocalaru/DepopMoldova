@@ -351,22 +351,40 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     }
   }, [])
 
-  // Simple keyboard handling - only lock scroll when typing in active chat
+  // Simple keyboard handling - prevent viewport scroll on mobile
   useEffect(() => {
     if (!selectedConversation) return // Only apply in active chat
     
+    const handleFocus = (e: FocusEvent) => {
+      if (isInputFocused && inputRef.current) {
+        // Prevent the browser from scrolling to the input
+        e.preventDefault()
+        window.scrollTo(0, 0)
+        
+        // Lock the viewport
+        document.body.style.position = 'fixed'
+        document.body.style.top = '0'
+        document.body.style.left = '0'
+        document.body.style.right = '0'
+        document.body.style.bottom = '0'
+      }
+    }
+
     if (isInputFocused) {
-      // Only prevent body scroll, not the chat container
-      document.body.style.overflow = 'hidden'
-      document.body.style.height = '100dvh'
+      window.addEventListener('scroll', () => window.scrollTo(0, 0), { passive: false })
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+      document.body.style.top = '0'
     } else {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
     }
 
     return () => {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
     }
   }, [isInputFocused, selectedConversation])
 
