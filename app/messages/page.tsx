@@ -18,24 +18,30 @@ export default function MessagesPage() {
     let loadingTimeout: NodeJS.Timeout | null = null
 
     const checkAuthAndLoadMessages = async () => {
+      console.log('🔵 Starting checkAuthAndLoadMessages, isLoading:', isLoading)
+      
       try {
         // Prevent infinite loading - max 3 seconds
         loadingTimeout = setTimeout(() => {
-          if (mounted && isLoading) {
-            console.warn('Loading timeout - forcing completion')
+          console.log('⏰ TIMEOUT FIRED - forcing completion')
+          if (mounted) {
             setIsLoading(false)
           }
         }, 3000)
 
         // Get session from client
+        console.log('🔍 Calling getSession...')
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
         
-        console.log('Messages page - session:', session?.user?.email)
+        console.log('📋 Messages page - session:', session?.user?.email || 'NO SESSION')
         
-        if (!mounted) return
+        if (!mounted) {
+          console.log('❌ Component unmounted, aborting')
+          return
+        }
         
         if (sessionError) {
-          console.error('Session error:', sessionError)
+          console.error('❌ Session error:', sessionError)
           setError('Authentication error')
           setIsLoading(false)
           if (loadingTimeout) clearTimeout(loadingTimeout)
@@ -43,7 +49,7 @@ export default function MessagesPage() {
         }
         
         if (!session?.user) {
-          console.log('No session, redirecting to login')
+          console.log('🔒 No session, redirecting to login')
           setIsLoading(false)
           if (loadingTimeout) clearTimeout(loadingTimeout)
           router.push('/login')
@@ -53,6 +59,7 @@ export default function MessagesPage() {
         setCurrentUserId(session.user.id)
 
         // Load messages
+        console.log('📨 Loading messages for user:', session.user.id)
         const { data: messages, error: messagesError } = await supabase
           .from('messages')
           .select(`
@@ -64,19 +71,24 @@ export default function MessagesPage() {
           .or(`sender_id.eq.${session.user.id},receiver_id.eq.${session.user.id}`)
           .order('created_at', { ascending: false })
 
-        if (!mounted) return
-
-        if (messagesError) {
-          console.error('Messages error:', messagesError)
-          setError('Failed to load messages: ' + messagesError.message)
-          setIsLoading(false)
+        if (!mounted) {
+          console.log('❌ Component unmounted after loading messages')
           return
         }
 
-        console.log('Loaded messages:', messages?.length || 0)
+        if (messagesError) {
+          console.error('❌ Messages error:', messagesError)
+          setError('Failed to load messages: ' + messagesError.message)
+          setIsLoading(false)
+          if (loadingTimeout) clearTimeout(loadingTimeout)
+          return
+        }
+
+        console.log('✅ Loaded messages:', messages?.length || 0)
         setInitialMessages(messages || [])
         setIsLoading(false)
         if (loadingTimeout) clearTimeout(loadingTimeout)
+        console.log('✅ Loading complete, isLoading set to false')
       } catch (err) {
         if (!mounted) return
         console.error('Unexpected error:', err)
