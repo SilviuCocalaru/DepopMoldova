@@ -20,29 +20,13 @@ export function createClient() {
     )
   }
 
-  // Use @supabase/ssr's built-in cookie handling instead of localStorage
-  // This ensures session is synced between client and server
-  clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return document.cookie
-          .split('; ')
-          .filter(Boolean)
-          .map(cookie => {
-            const [name, ...value] = cookie.split('=')
-            return { name, value: value.join('=') }
-          })
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          document.cookie = `${name}=${value}; path=${options?.path || '/'}; max-age=${options?.maxAge || 31536000}; SameSite=${options?.sameSite || 'Lax'}`
-        })
-      },
-    },
-  })
+  // createBrowserClient from @supabase/ssr handles cookies automatically
+  clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey)
 
   return clientInstance
 }
+
+export const getSupabaseClient = () => createClient()
 
 // Export a function that gets the client, not the client itself
 export const getSupabaseClient = () => createClient()
