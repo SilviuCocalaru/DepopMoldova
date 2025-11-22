@@ -136,12 +136,16 @@ export default function Header() {
   useEffect(() => {
     let isRefreshing = false
 
-    const refreshAuthState = async (retries = 3) => {
+    const refreshAuthState = async (retries = 3, isBackgroundRefresh = false) => {
       if (isRefreshing) return
       isRefreshing = true
       
-      console.log('Refreshing auth state...')
-      setIsLoading(true)
+      console.log('Refreshing auth state...', isBackgroundRefresh ? '(background)' : '')
+      
+      // Only show loading state for non-background refreshes
+      if (!isBackgroundRefresh) {
+        setIsLoading(true)
+      }
       
       try {
         // First try to refresh the session if a refresh token exists
@@ -163,10 +167,14 @@ export default function Header() {
             if (retries > 0) {
               isRefreshing = false
               await new Promise(resolve => setTimeout(resolve, 1000))
-              return refreshAuthState(retries - 1)
+              return refreshAuthState(retries - 1, isBackgroundRefresh)
             }
-            setUser(null)
-            setProfile(null)
+            // Only clear user state if this is not a background refresh
+            // to prevent UI flickering
+            if (!isBackgroundRefresh) {
+              setUser(null)
+              setProfile(null)
+            }
             setIsLoading(false)
             return
           }
@@ -174,7 +182,12 @@ export default function Header() {
         
         const currentUser = session?.user ?? null
         console.log('Auth state refreshed:', currentUser?.email || 'No user')
-        setUser(currentUser)
+        
+        // Only update state if it actually changed
+        setUser(prevUser => {
+          if (prevUser?.id === currentUser?.id) return prevUser
+          return currentUser
+        })
         
         if (currentUser) {
           const { data: profileData } = await supabase
@@ -183,13 +196,23 @@ export default function Header() {
             .eq('id', currentUser.id)
             .maybeSingle()
           
-          setProfile(profileData || {
+          const newProfile = profileData || {
             id: currentUser.id,
             username: currentUser.email?.split('@')[0] || 'User',
             full_name: currentUser.user_metadata?.full_name || null,
             avatar_url: currentUser.user_metadata?.avatar_url || null
+          }
+          
+          // Only update if profile changed
+          setProfile(prevProfile => {
+            if (prevProfile?.id === newProfile.id && 
+                prevProfile?.username === newProfile.username) {
+              return prevProfile
+            }
+            return newProfile
           })
-        } else {
+        } else if (!isBackgroundRefresh) {
+          // Only clear profile if not a background refresh
           setProfile(null)
         }
       } catch (error) {
@@ -198,10 +221,13 @@ export default function Header() {
         if (retries > 0) {
           isRefreshing = false
           await new Promise(resolve => setTimeout(resolve, 1000))
-          return refreshAuthState(retries - 1)
+          return refreshAuthState(retries - 1, isBackgroundRefresh)
         }
-        setUser(null)
-        setProfile(null)
+        // Don't clear state on background refresh errors
+        if (!isBackgroundRefresh) {
+          setUser(null)
+          setProfile(null)
+        }
       } finally {
         setIsLoading(false)
         isRefreshing = false
@@ -212,7 +238,7 @@ export default function Header() {
       if (event.persisted) {
         // Page was restored from bfcache
         console.log('Page restored from bfcache')
-        refreshAuthState()
+        refreshAuthState(3, true) // Background refresh
       }
     }
 
@@ -220,25 +246,33 @@ export default function Header() {
       if (document.visibilityState === 'visible') {
         // Page became visible (e.g., phone unlocked, tab switched back)
         console.log('Page became visible, checking auth state')
-        refreshAuthState()
+        refreshAuthState(3, true) // Background refresh to avoid UI flicker
       }
     }
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key?.includes('supabase.auth.token')) {
         console.log('Auth storage changed, refreshing...')
-        refreshAuthState()
+        refreshAuthState(3, true) // Background refresh
       }
+    }
+
+    const handleFocus = () => {
+      // Extra safeguard when window regains focus
+      console.log('Window focused, verifying auth state')
+      refreshAuthState(3, true) // Background refresh
     }
 
     window.addEventListener('pageshow', handlePageShow)
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('storage', handleStorageChange)
+    window.addEventListener('focus', handleFocus)
     
     return () => {
       window.removeEventListener('pageshow', handlePageShow)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleFocus)
     }
   }, [])
 

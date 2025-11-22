@@ -22,5 +22,18 @@ export function createClient() {
       storageKey: 'supabase.auth.token',
       debug: process.env.NODE_ENV === 'development',
     },
+    global: {
+      headers: {
+        'X-Client-Info': 'depop-moldova-web',
+      },
+    },
+    db: {
+      schema: 'public',
+    },
+    realtime: {
+      params: {
+        eventsPerSecond: 10,
+      },
+    },
   })
 }
