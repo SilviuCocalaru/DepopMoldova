@@ -9,9 +9,10 @@ interface MobileFloatingIslandsProps {
   user: any
   profile: any
   unreadMessages: number
+  isLoading?: boolean
 }
 
-export default function MobileFloatingIslands({ user, profile, unreadMessages }: MobileFloatingIslandsProps) {
+export default function MobileFloatingIslands({ user, profile, unreadMessages, isLoading = false }: MobileFloatingIslandsProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [isProductPage, setIsProductPage] = useState(false)
@@ -65,8 +66,8 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
         </div>
       )}
 
-      {/* Floating Bottom Island - Only show if user is logged in */}
-      {user && (
+      {/* Floating Bottom Island - Only show if user is logged in, or still loading */}
+      {(user || isLoading) && (
         <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
           <div className={`floating-island-bottom ${shouldAnimate ? 'animate-slide-up' : ''}`}>
             <Link 

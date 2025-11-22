@@ -335,7 +335,8 @@ export default function Header() {
       <MobileFloatingIslands 
         user={user} 
         profile={profile} 
-        unreadMessages={unreadMessages} 
+        unreadMessages={unreadMessages}
+        isLoading={isLoading}
       />
 
       {/* Desktop Header */}
