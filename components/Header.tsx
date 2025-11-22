@@ -473,7 +473,7 @@ export default function Header() {
       </header>
 
       {/* Mobile - Show login/signup if not authenticated */}
-      {!user && (
+      {!isLoading && !user && (
         <header className="md:hidden bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-40">
           <div className="flex justify-between items-center h-14 px-4">
             <Link href="/" className="text-xl font-bold text-red-500 lowercase">
