@@ -9,8 +9,8 @@ export function createClient() {
     return clientInstance
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
@@ -20,27 +20,23 @@ export function createClient() {
     )
   }
 
+  // Use @supabase/ssr's built-in cookie handling instead of localStorage
+  // This ensures session is synced between client and server
   clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: false, // DISABLED - causing lock contention, we'll handle manually if needed
-      detectSessionInUrl: true,
-      storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-      flowType: 'pkce',
-      storageKey: 'supabase.auth.token',
-      debug: false,
-    },
-    global: {
-      headers: {
-        'X-Client-Info': 'depop-moldova-web',
+    cookies: {
+      getAll() {
+        return document.cookie
+          .split('; ')
+          .filter(Boolean)
+          .map(cookie => {
+            const [name, ...value] = cookie.split('=')
+            return { name, value: value.join('=') }
+          })
       },
-    },
-    db: {
-      schema: 'public',
-    },
-    realtime: {
-      params: {
-        eventsPerSecond: 10,
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          document.cookie = `${name}=${value}; path=${options?.path || '/'}; max-age=${options?.maxAge || 31536000}; SameSite=${options?.sameSite || 'Lax'}`
+        })
       },
     },
   })
