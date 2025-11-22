@@ -132,18 +132,74 @@ export default function Header() {
     }
   }, []) // Only run once on mount
 
-  // Handle browser back/forward cache (bfcache) restoration
+  // Handle browser back/forward cache (bfcache) restoration and visibility changes
   useEffect(() => {
+    const refreshAuthState = async () => {
+      console.log('Refreshing auth state...')
+      setIsLoading(true)
+      
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          console.error('Session refresh error:', error)
+          setUser(null)
+          setProfile(null)
+          setIsLoading(false)
+          return
+        }
+        
+        const currentUser = session?.user ?? null
+        setUser(currentUser)
+        
+        if (currentUser) {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, full_name, avatar_url')
+            .eq('id', currentUser.id)
+            .maybeSingle()
+          
+          setProfile(profileData || {
+            id: currentUser.id,
+            username: currentUser.email?.split('@')[0] || 'User',
+            full_name: currentUser.user_metadata?.full_name || null,
+            avatar_url: currentUser.user_metadata?.avatar_url || null
+          })
+        } else {
+          setProfile(null)
+        }
+      } catch (error) {
+        console.error('Error refreshing auth:', error)
+        setUser(null)
+        setProfile(null)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
-        // Page was restored from bfcache, reload auth state
-        console.log('Page restored from bfcache, reloading auth state')
-        window.location.reload()
+        // Page was restored from bfcache
+        console.log('Page restored from bfcache')
+        refreshAuthState()
+      }
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // Page became visible (e.g., phone unlocked, tab switched back)
+        console.log('Page became visible, checking auth state')
+        refreshAuthState()
       }
     }
 
     window.addEventListener('pageshow', handlePageShow)
-    return () => window.removeEventListener('pageshow', handlePageShow)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [])
 
   // Subscribe to new messages for unread count

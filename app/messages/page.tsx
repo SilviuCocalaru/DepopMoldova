@@ -14,12 +14,25 @@ export default function MessagesPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let mounted = true
+    let loadingTimeout: NodeJS.Timeout | null = null
+
     const checkAuthAndLoadMessages = async () => {
       try {
+        // Prevent infinite loading - max 10 seconds
+        loadingTimeout = setTimeout(() => {
+          if (mounted && isLoading) {
+            console.warn('Loading timeout - forcing completion')
+            setIsLoading(false)
+          }
+        }, 10000)
+
         // Get session from client
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
         
         console.log('Messages page - session:', session?.user?.email)
+        
+        if (!mounted) return
         
         if (sessionError) {
           console.error('Session error:', sessionError)
@@ -48,6 +61,8 @@ export default function MessagesPage() {
           .or(`sender_id.eq.${session.user.id},receiver_id.eq.${session.user.id}`)
           .order('created_at', { ascending: false })
 
+        if (!mounted) return
+
         if (messagesError) {
           console.error('Messages error:', messagesError)
           setError('Failed to load messages: ' + messagesError.message)
@@ -59,13 +74,28 @@ export default function MessagesPage() {
         setInitialMessages(messages || [])
         setIsLoading(false)
       } catch (err) {
+        if (!mounted) return
         console.error('Unexpected error:', err)
         setError('An unexpected error occurred')
         setIsLoading(false)
       }
     }
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !isLoading) {
+        console.log('Messages page became visible, refreshing auth')
+        checkAuthAndLoadMessages()
+      }
+    }
+
     checkAuthAndLoadMessages()
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      mounted = false
+      if (loadingTimeout) clearTimeout(loadingTimeout)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [router])
 
   if (error) {
