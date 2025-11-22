@@ -327,8 +327,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     localStorage.setItem('lastConversation', userId)
     markMessagesAsRead(userId)
     
-    // Use Next.js router instead of pushState to avoid bfcache issues
-    router.replace(`/messages?user=${userId}`, { scroll: false })
+    // Use router.push to create history entry for proper back navigation
+    router.push(`/messages?user=${userId}`, { scroll: false })
     
     // Bottom nav will be hidden by useEffect
   }
@@ -337,8 +337,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setShowChatList(true)
     setSelectedConversation(null)
     
-    // Use Next.js router to update URL
-    router.replace('/messages', { scroll: false })
+    // Use router.push to maintain history
+    router.push('/messages', { scroll: false })
     
     // Bottom nav will be shown by useEffect
   }
