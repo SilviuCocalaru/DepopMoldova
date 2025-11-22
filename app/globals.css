@@ -79,6 +79,17 @@ body {
     padding-bottom: 7rem;
     background: white;
   }
+
+  /* Support dynamic viewport height */
+  :root {
+    --viewport-height: 100dvh;
+  }
+
+  @supports not (height: 100dvh) {
+    :root {
+      --viewport-height: 100vh;
+    }
+  }
 }
 
 /* ========================================

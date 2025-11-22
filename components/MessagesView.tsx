@@ -344,49 +344,37 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   useEffect(() => {
     return () => {
       document.body.classList.remove('hide-mobile-nav')
-      // Clean up any scroll locks
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.height = ''
     }
   }, [])
 
-  // Simple keyboard handling - prevent viewport scroll on mobile
+  // Visual Viewport API - handle keyboard appearance
   useEffect(() => {
-    if (!selectedConversation) return // Only apply in active chat
-    
-    const handleFocus = (e: FocusEvent) => {
-      if (isInputFocused && inputRef.current) {
-        // Prevent the browser from scrolling to the input
-        e.preventDefault()
-        window.scrollTo(0, 0)
-        
-        // Lock the viewport
-        document.body.style.position = 'fixed'
-        document.body.style.top = '0'
-        document.body.style.left = '0'
-        document.body.style.right = '0'
-        document.body.style.bottom = '0'
+    if (!selectedConversation || typeof window === 'undefined') return
+
+    const updateViewportHeight = () => {
+      if (window.visualViewport) {
+        const height = window.visualViewport.height
+        document.documentElement.style.setProperty('--viewport-height', `${height}px`)
       }
     }
 
-    if (isInputFocused) {
-      window.addEventListener('scroll', () => window.scrollTo(0, 0), { passive: false })
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = '0'
-    } else {
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
+    // Set initial viewport height
+    updateViewportHeight()
+
+    // Listen for viewport changes (keyboard open/close)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', updateViewportHeight)
+      window.visualViewport.addEventListener('scroll', updateViewportHeight)
     }
 
     return () => {
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', updateViewportHeight)
+        window.visualViewport.removeEventListener('scroll', updateViewportHeight)
+      }
+      document.documentElement.style.removeProperty('--viewport-height')
     }
-  }, [isInputFocused, selectedConversation])
+  }, [selectedConversation])
 
   const getRelativeTime = (date: string) => {
     const now = currentTime.getTime()
@@ -466,13 +454,20 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       )}
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
-        {/* Full screen on mobile, normal on desktop */}
-        <div className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
-          !showChatList && selectedConversation 
-            ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
-            : 'fixed inset-0 md:relative md:h-[calc(100vh-200px)]'
-        }`}>
-          <div className="flex h-full">
+        {/* Chat container with dynamic viewport height */}
+        <div 
+          className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
+            !showChatList && selectedConversation 
+              ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
+              : 'fixed inset-0 md:relative md:h-[calc(100vh-200px)]'
+          }`}
+          style={{
+            height: !showChatList && selectedConversation 
+              ? 'var(--viewport-height, 100dvh)' 
+              : 'var(--viewport-height, 100dvh)'
+          }}
+        >
+          <div className="flex h-full flex-col md:flex-row">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 flex flex-col h-full`}>
               {/* Chat list header - hidden on mobile (shown in island), visible on desktop */}
@@ -528,12 +523,12 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
               </div>
             </div>
 
-            {/* Messages Area */}
-            <div className={`${!showChatList && selectedConversation ? 'block' : 'hidden'} md:block flex-1 flex flex-col w-full md:w-auto relative`}>
+            {/* Messages Area - Flex container */}
+            <div className={`${!showChatList && selectedConversation ? 'flex' : 'hidden'} md:flex flex-1 flex-col w-full md:w-auto h-full`}>
               {selectedConversation ? (
                 <>
-                  {/* Messages - with padding for top island and bottom input */}
-                  <div className="flex-1 overflow-y-auto p-3 md:p-4 pt-24 pb-20 md:pt-4 md:pb-4 space-y-3 md:space-y-4 bg-gray-50">
+                  {/* Messages scrollable area */}
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 pt-24 md:pt-4 space-y-3 md:space-y-4 bg-gray-50" style={{ WebkitOverflowScrolling: 'touch' }}>
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
@@ -558,10 +553,10 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                     <div ref={messagesEndRef} />
                   </div>
 
-                  {/* Message Input - Fixed at bottom */}
+                  {/* Message Input - flex-shrink-0 to stay at bottom */}
                   <form 
                     onSubmit={handleSendMessage} 
-                    className="fixed md:relative bottom-0 left-0 right-0 p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 border-t border-gray-200 bg-white z-50"
+                    className="flex-shrink-0 p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 border-t border-gray-200 bg-white"
                   >
                     <div className="flex gap-2">
                       <input
