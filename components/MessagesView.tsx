@@ -427,7 +427,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       ) : (
         <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
           <div className="floating-island-top-large">
-            <div className="flex flex-col items-center w-full py-1">
+            <div className="flex flex-col items-center w-full">
               {/* Messages Title */}
               <p className="font-bold text-base text-gray-900">Messages</p>
               {/* Online Sellers Status */}
