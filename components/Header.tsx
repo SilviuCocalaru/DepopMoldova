@@ -134,22 +134,46 @@ export default function Header() {
 
   // Handle browser back/forward cache (bfcache) restoration and visibility changes
   useEffect(() => {
-    const refreshAuthState = async () => {
+    let isRefreshing = false
+
+    const refreshAuthState = async (retries = 3) => {
+      if (isRefreshing) return
+      isRefreshing = true
+      
       console.log('Refreshing auth state...')
       setIsLoading(true)
       
       try {
-        const { data: { session }, error } = await supabase.auth.getSession()
+        // First try to refresh the session if a refresh token exists
+        const { data: { session: refreshedSession }, error: refreshError } = 
+          await supabase.auth.refreshSession()
         
-        if (error) {
-          console.error('Session refresh error:', error)
-          setUser(null)
-          setProfile(null)
-          setIsLoading(false)
-          return
+        let session = refreshedSession
+        
+        // If refresh fails, try to get the existing session
+        if (refreshError || !session) {
+          console.log('Refresh failed, trying getSession...', refreshError?.message)
+          const { data: { session: existingSession }, error: getError } = 
+            await supabase.auth.getSession()
+          session = existingSession
+          
+          if (getError) {
+            console.error('Session fetch error:', getError)
+            // Retry if we have attempts left
+            if (retries > 0) {
+              isRefreshing = false
+              await new Promise(resolve => setTimeout(resolve, 1000))
+              return refreshAuthState(retries - 1)
+            }
+            setUser(null)
+            setProfile(null)
+            setIsLoading(false)
+            return
+          }
         }
         
         const currentUser = session?.user ?? null
+        console.log('Auth state refreshed:', currentUser?.email || 'No user')
         setUser(currentUser)
         
         if (currentUser) {
@@ -170,10 +194,17 @@ export default function Header() {
         }
       } catch (error) {
         console.error('Error refreshing auth:', error)
+        // Retry if we have attempts left
+        if (retries > 0) {
+          isRefreshing = false
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          return refreshAuthState(retries - 1)
+        }
         setUser(null)
         setProfile(null)
       } finally {
         setIsLoading(false)
+        isRefreshing = false
       }
     }
 
@@ -199,6 +230,19 @@ export default function Header() {
     return () => {
       window.removeEventListener('pageshow', handlePageShow)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+      if (e.key?.includes('supabase.auth.token')) {
+        console.log('Auth storage changed, refreshing...')
+        refreshAuthState()
+      }
+    }
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('storage', handleStorageChange)
     }
   }, [])
 

@@ -19,6 +19,8 @@ export function createClient() {
       detectSessionInUrl: true,
       storage: typeof window !== 'undefined' ? window.localStorage : undefined,
       flowType: 'pkce',
+      storageKey: 'supabase.auth.token',
+      debug: process.env.NODE_ENV === 'development',
     },
   })
 }
