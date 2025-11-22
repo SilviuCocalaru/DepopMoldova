@@ -27,6 +27,7 @@ export default async function LikesPage() {
     .order('created_at', { ascending: false })
 
   const likedProducts = likes?.map(like => like.product).filter(Boolean) || []
+  const userId = session.user.id
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -44,7 +45,7 @@ export default async function LikesPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                currentUserId={user.id}
+                currentUserId={userId}
               />
             ))}
           </div>
