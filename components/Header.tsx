@@ -132,6 +132,20 @@ export default function Header() {
     }
   }, []) // Only run once on mount
 
+  // Handle browser back/forward cache (bfcache) restoration
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // Page was restored from bfcache, reload auth state
+        console.log('Page restored from bfcache, reloading auth state')
+        window.location.reload()
+      }
+    }
+
+    window.addEventListener('pageshow', handlePageShow)
+    return () => window.removeEventListener('pageshow', handlePageShow)
+  }, [])
+
   // Subscribe to new messages for unread count
   useEffect(() => {
     if (!user) return

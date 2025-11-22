@@ -6,7 +6,7 @@ import { Database } from '@/types/database.types'
 import Image from 'next/image'
 import { Send, Bell, ArrowLeft } from 'lucide-react'
 import Header from './Header'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 
 type Message = Database['public']['Tables']['messages']['Row'] & {
   sender: Database['public']['Tables']['profiles']['Row']
@@ -31,6 +31,7 @@ interface Conversation {
 export default function MessagesView({ currentUserId, initialMessages }: MessagesViewProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const pathname = usePathname()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -326,10 +327,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     localStorage.setItem('lastConversation', userId)
     markMessagesAsRead(userId)
     
-    // Add to browser history so back button works
-    const url = new URL(window.location.href)
-    url.searchParams.set('user', userId)
-    window.history.pushState({}, '', url)
+    // Use Next.js router instead of pushState to avoid bfcache issues
+    router.replace(`/messages?user=${userId}`, { scroll: false })
     
     // Bottom nav will be hidden by useEffect
   }
@@ -338,10 +337,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setShowChatList(true)
     setSelectedConversation(null)
     
-    // Update URL to remove user param
-    const url = new URL(window.location.href)
-    url.searchParams.delete('user')
-    window.history.pushState({}, '', url)
+    // Use Next.js router to update URL
+    router.replace('/messages', { scroll: false })
     
     // Bottom nav will be shown by useEffect
   }
@@ -352,25 +349,22 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     router.push('/')
   }
 
-  // Handle browser back button
+  // Sync state with URL on mount and navigation
   useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search)
-      const userId = params.get('user')
-      
-      if (!userId && selectedConversation) {
-        // User went back from chat to messages list
-        setShowChatList(true)
-        setSelectedConversation(null)
-      }
-    }
-
-    window.addEventListener('popstate', handlePopState)
+    const params = new URLSearchParams(window.location.search)
+    const userId = params.get('user')
     
-    return () => {
-      window.removeEventListener('popstate', handlePopState)
+    if (userId && userId !== selectedConversation) {
+      // URL has user param, show that conversation
+      setSelectedConversation(userId)
+      setShowChatList(false)
+      markMessagesAsRead(userId)
+    } else if (!userId && selectedConversation) {
+      // No user param, show chat list
+      setShowChatList(true)
+      setSelectedConversation(null)
     }
-  }, [selectedConversation])
+  }, [pathname])
 
   // Cleanup on unmount - always show bottom nav when leaving messages
   useEffect(() => {
