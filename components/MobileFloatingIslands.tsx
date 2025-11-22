@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Home, Search as SearchIcon, Plus, MessageCircle, User as UserIcon, X } from 'lucide-react'
+import { Home, Search as SearchIcon, Plus, MessageCircle, User as UserIcon, X, Video } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface MobileFloatingIslandsProps {
@@ -124,28 +124,29 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
       {pathname !== '/messages' && !isSearchOpen && (
         <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
           <div className="flex items-center gap-2">
-            {/* Depop Logo - 1/5 width */}
-            <div className="floating-island-top" style={{ flex: '0 0 auto' }}>
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse-glow"></div>
-                <span className="text-lg font-bold text-red-500 lowercase tracking-tight">depop</span>
-              </Link>
-            </div>
+            {/* Video/Reels Icon - Square shape, same height as others */}
+            <Link 
+              href="/reels" 
+              className="floating-island-top p-3 flex items-center justify-center"
+              style={{ flex: '0 0 auto', aspectRatio: '1/1' }}
+            >
+              <Video className="w-5 h-5 text-red-500" strokeWidth={2.5} fill="currentColor" />
+            </Link>
             
-            {/* Search Bar - 3/5 width (when logged out) or 4/5 width (when logged in) */}
+            {/* Search Bar - Flexible width */}
             <button
               onClick={handleSearchClick}
-              className="floating-island-top flex-1 flex items-center gap-2 text-left"
+              className="floating-island-top flex-1 flex items-center gap-2 text-left h-[44px]"
             >
               <SearchIcon className="w-4 h-4 text-gray-400" />
               <span className="text-sm text-gray-400 truncate">Search...</span>
             </button>
             
-            {/* Sign Up Button - 1/5 width - only show if not logged in */}
+            {/* Sign Up Button - Same height as others, only show if not logged in */}
             {!user && !isLoading && (
               <Link 
                 href="/signup"
-                className="floating-island-top px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors whitespace-nowrap"
+                className="floating-island-top px-5 flex items-center justify-center text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors whitespace-nowrap h-[44px]"
                 style={{ flex: '0 0 auto' }}
               >
                 Sign Up
