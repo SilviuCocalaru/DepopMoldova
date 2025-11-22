@@ -431,13 +431,13 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             {/* Back Button Island - 1/4 width */}
             <button
               onClick={handleBackToChatList}
-              className="floating-island-top w-14 h-14 flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform"
+              className="floating-island-top h-16 w-16 flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform"
             >
-              <ArrowLeft className="w-6 h-6 text-gray-700" />
+              <ArrowLeft className="w-7 h-7 text-gray-700" />
             </button>
 
             {/* User Info Island - 3/4 width */}
-            <div className="floating-island-top flex-1 flex items-center gap-3 px-4">
+            <div className="floating-island-top h-16 flex-1 flex items-center gap-3 px-4">
               {/* User Avatar */}
               <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                 {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
