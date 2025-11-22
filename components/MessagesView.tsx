@@ -424,39 +424,44 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
         <Header />
       </div>
       
-      {/* Mobile Floating Island - Back Navigation */}
+      {/* Mobile Floating Islands - Split Layout for Active Chat */}
       {!showChatList && selectedConversation ? (
         <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
-          <div className="floating-island-top-large">
-            <div className="flex items-center gap-3 w-full">
-              {/* Avatar */}
-              <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="flex gap-2">
+            {/* Back Button Island - 1/4 width */}
+            <button
+              onClick={handleBackToChatList}
+              className="floating-island-top w-14 h-14 flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform"
+            >
+              <ArrowLeft className="w-6 h-6 text-gray-700" />
+            </button>
+
+            {/* User Info Island - 3/4 width */}
+            <div className="floating-island-top flex-1 flex items-center gap-3 px-4">
+              {/* User Avatar */}
+              <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                 {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
                   <Image
                     src={conversations.find(c => c.userId === selectedConversation)!.avatar_url!}
                     alt={conversations.find(c => c.userId === selectedConversation)!.username}
-                    width={48}
-                    height={48}
+                    width={40}
+                    height={40}
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="text-xl font-semibold text-gray-600">
+                  <span className="text-lg font-semibold text-gray-600">
                     {conversations.find(c => c.userId === selectedConversation)?.username.charAt(0).toUpperCase()}
                   </span>
                 )}
               </div>
-              {/* Username and Back Button */}
+              {/* User Info */}
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-base text-gray-900 truncate">
+                <p className="font-bold text-sm text-gray-900 truncate">
                   {conversations.find(c => c.userId === selectedConversation)?.username}
                 </p>
-                <button 
-                  onClick={handleBackToChatList}
-                  className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-all duration-300 group mt-0.5"
-                >
-                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-                  <span className="font-medium text-xs">Back to Chats</span>
-                </button>
+                <p className="text-xs text-gray-500">
+                  Active {Math.floor(Math.random() * 30) + 1}m ago
+                </p>
               </div>
             </div>
           </div>
