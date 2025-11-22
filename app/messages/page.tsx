@@ -19,13 +19,13 @@ export default function MessagesPage() {
 
     const checkAuthAndLoadMessages = async () => {
       try {
-        // Prevent infinite loading - max 10 seconds
+        // Prevent infinite loading - max 3 seconds
         loadingTimeout = setTimeout(() => {
           if (mounted && isLoading) {
             console.warn('Loading timeout - forcing completion')
             setIsLoading(false)
           }
-        }, 10000)
+        }, 3000)
 
         // Get session from client
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
@@ -38,11 +38,14 @@ export default function MessagesPage() {
           console.error('Session error:', sessionError)
           setError('Authentication error')
           setIsLoading(false)
+          if (loadingTimeout) clearTimeout(loadingTimeout)
           return
         }
         
         if (!session?.user) {
           console.log('No session, redirecting to login')
+          setIsLoading(false)
+          if (loadingTimeout) clearTimeout(loadingTimeout)
           router.push('/login')
           return
         }
@@ -73,11 +76,13 @@ export default function MessagesPage() {
         console.log('Loaded messages:', messages?.length || 0)
         setInitialMessages(messages || [])
         setIsLoading(false)
+        if (loadingTimeout) clearTimeout(loadingTimeout)
       } catch (err) {
         if (!mounted) return
         console.error('Unexpected error:', err)
         setError('An unexpected error occurred')
         setIsLoading(false)
+        if (loadingTimeout) clearTimeout(loadingTimeout)
       }
     }
 
