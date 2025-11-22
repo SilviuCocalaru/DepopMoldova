@@ -127,8 +127,8 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
             {/* Video/Reels Icon - Square shape, same height as others */}
             <Link 
               href="/reels" 
-              className="floating-island-top p-3 flex items-center justify-center"
-              style={{ flex: '0 0 auto', aspectRatio: '1/1' }}
+              className="floating-island-top flex items-center justify-center h-[44px] aspect-square"
+              style={{ flex: '0 0 auto' }}
             >
               <Video className="w-5 h-5 text-red-500" strokeWidth={2.5} fill="currentColor" />
             </Link>
