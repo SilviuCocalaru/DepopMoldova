@@ -72,13 +72,13 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
                   <>
                     <Link 
                       href="/login"
-                      className="floating-island-top px-4 py-2 text-sm font-semibold text-gray-700 hover:text-red-500 transition-colors"
+                      className="floating-island-top px-4 py-2 text-sm font-semibold text-gray-700 hover:text-red-500 transition-colors whitespace-nowrap"
                     >
                       Log In
                     </Link>
                     <Link 
                       href="/signup"
-                      className="floating-island-top px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors"
+                      className="floating-island-top px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors whitespace-nowrap"
                     >
                       Sign Up
                     </Link>

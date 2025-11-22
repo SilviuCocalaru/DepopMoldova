@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ProductDetail from '@/components/ProductDetail'
-import Header from '@/components/Header'
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
@@ -25,7 +24,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   return (
     <>
-      <Header />
       <ProductDetail product={product} currentUserId={user?.id} />
     </>
   )

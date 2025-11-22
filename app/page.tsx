@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import Header from '@/components/Header'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 
@@ -20,7 +19,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
       
       {/* Category Navigation - Desktop Only */}
       <nav className="border-b border-gray-200 sticky top-16 bg-white z-40 hidden md:block">
