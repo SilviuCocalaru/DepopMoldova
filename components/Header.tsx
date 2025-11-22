@@ -224,19 +224,15 @@ export default function Header() {
       }
     }
 
-    window.addEventListener('pageshow', handlePageShow)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [])
+    const handleStorageChange = (e: StorageEvent) => {
       if (e.key?.includes('supabase.auth.token')) {
         console.log('Auth storage changed, refreshing...')
         refreshAuthState()
       }
     }
+
+    window.addEventListener('pageshow', handlePageShow)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('storage', handleStorageChange)
     
     return () => {
