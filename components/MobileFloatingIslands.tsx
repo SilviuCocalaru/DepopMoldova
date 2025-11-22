@@ -15,11 +15,26 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
   const pathname = usePathname()
   const router = useRouter()
   const [isProductPage, setIsProductPage] = useState(false)
+  const [shouldAnimate, setShouldAnimate] = useState(false)
 
   useEffect(() => {
     // Check if we're on a product detail page
     const productPagePattern = /^\/product\/[^/]+$/
     setIsProductPage(productPagePattern.test(pathname))
+
+    // Check if island was previously shown
+    const wasIslandShown = sessionStorage.getItem('bottomIslandShown')
+    const currentPageHasIsland = pathname !== '/messages' || pathname.includes('?user=')
+    
+    // Only animate if:
+    // 1. Island was never shown before (first visit)
+    // 2. Coming from a page without island (like /messages chat view)
+    if (!wasIslandShown || wasIslandShown === 'false') {
+      setShouldAnimate(true)
+      sessionStorage.setItem('bottomIslandShown', 'true')
+    } else {
+      setShouldAnimate(false)
+    }
   }, [pathname])
 
   const handleBackToMenu = () => {
@@ -53,7 +68,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
       {/* Floating Bottom Island - Only show if user is logged in */}
       {user && (
         <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
-          <div className="floating-island-bottom">
+          <div className={`floating-island-bottom ${shouldAnimate ? 'animate-slide-up' : ''}`}>
             <Link 
               href="/" 
               className={`nav-icon ${pathname === '/' ? 'active' : ''}`}
