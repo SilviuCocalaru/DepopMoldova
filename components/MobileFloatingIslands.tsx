@@ -15,7 +15,6 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
   const pathname = usePathname()
   const router = useRouter()
   const [isProductPage, setIsProductPage] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     // Check if we're on a product detail page
@@ -24,18 +23,14 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages }:
   }, [pathname])
 
   const handleBackToMenu = () => {
-    setIsAnimating(true)
-    setTimeout(() => {
-      router.push('/')
-      setTimeout(() => setIsAnimating(false), 300)
-    }, 200)
+    router.push('/')
   }
 
   return (
     <>
       {/* Floating Top Island - Only show on homepage and product pages, NOT on messages */}
       {pathname !== '/messages' && (
-        <div className={`md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}>
+        <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
           <div className={`floating-island-top ${isProductPage ? 'expanded' : ''}`}>
             {isProductPage ? (
               <button 
