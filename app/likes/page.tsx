@@ -3,11 +3,13 @@ import { redirect } from 'next/navigation'
 import Header from '@/components/Header'
 import ProductCard from '@/components/ProductCard'
 
+export const dynamic = 'force-dynamic'
+
 export default async function LikesPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { session } } = await supabase.auth.getSession()
 
-  if (!user) {
+  if (!session?.user) {
     redirect('/login')
   }
 
@@ -21,7 +23,7 @@ export default async function LikesPage() {
         likes (user_id)
       )
     `)
-    .eq('user_id', user.id)
+    .eq('user_id', session.user.id)
     .order('created_at', { ascending: false })
 
   const likedProducts = likes?.map(like => like.product).filter(Boolean) || []
