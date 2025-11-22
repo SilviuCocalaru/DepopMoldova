@@ -29,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext)
 
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
@@ -89,16 +90,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, loadProfile])
 
   useEffect(() => {
+    let mounted = true
+
     // Set up auth state listener FIRST - this is critical for catching login events
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!mounted) return
         console.log('Auth event:', event, session?.user?.email || 'No user') // Debug log
         setSession(session)
         setUser(session?.user ?? null)
         
         // Load profile when user signs in
         if (session?.user) {
-          await loadProfile(session.user.id, session.user)
+          try {
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('id, username, full_name, avatar_url')
+              .eq('id', session.user.id)
+              .maybeSingle()
+
+            if (!mounted) return
+
+            if (profileData) {
+              setProfile(profileData)
+            } else {
+              setProfile({
+                id: session.user.id,
+                username: session.user.email?.split('@')[0] || 'User',
+                full_name: session.user.user_metadata?.full_name || null,
+                avatar_url: session.user.user_metadata?.avatar_url || null,
+              })
+            }
+          } catch (error) {
+            console.error('Profile load error:', error)
+          }
         } else {
           setProfile(null)
         }
@@ -110,6 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Then check for existing session
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      if (!mounted) return
       if (error) {
         console.error('Initial session error:', error)
       }
@@ -117,25 +143,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null)
       
       if (session?.user) {
-        await loadProfile(session.user.id, session.user)
+        try {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, full_name, avatar_url')
+            .eq('id', session.user.id)
+            .maybeSingle()
+
+          if (!mounted) return
+
+          if (profileData) {
+            setProfile(profileData)
+          } else {
+            setProfile({
+              id: session.user.id,
+              username: session.user.email?.split('@')[0] || 'User',
+              full_name: session.user.user_metadata?.full_name || null,
+              avatar_url: session.user.user_metadata?.avatar_url || null,
+            })
+          }
+        } catch (error) {
+          console.error('Profile load error:', error)
+        }
       }
       
       setIsLoading(false)
     })
 
     // Handle visibility change for background resume
-    const handleVisibility = () => {
+    const handleVisibility = async () => {
       if (document.visibilityState === 'visible') {
-        refreshAuth()
+        try {
+          const { data: { session }, error } = await supabase.auth.getSession()
+          if (!mounted) return
+          if (!error) {
+            setSession(session)
+            setUser(session?.user ?? null)
+            if (session?.user) {
+              const { data: profileData } = await supabase
+                .from('profiles')
+                .select('id, username, full_name, avatar_url')
+                .eq('id', session.user.id)
+                .maybeSingle()
+              if (mounted && profileData) {
+                setProfile(profileData)
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Visibility refresh error:', err)
+        }
       }
     }
     document.addEventListener('visibilitychange', handleVisibility)
 
     return () => {
+      mounted = false
       subscription.unsubscribe()
       document.removeEventListener('visibilitychange', handleVisibility)
     }
-  }, [supabase, refreshAuth, loadProfile])
+  }, [supabase])
 
   // Show loading spinner while initializing
   if (isLoading) {
