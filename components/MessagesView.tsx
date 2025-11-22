@@ -454,17 +454,17 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       )}
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
-        {/* Chat container with dynamic viewport height */}
+        {/* Chat container - only fixed when in active chat */}
         <div 
           className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
             !showChatList && selectedConversation 
               ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
-              : 'fixed inset-0 md:relative md:h-[calc(100vh-200px)]'
+              : 'h-screen md:h-[calc(100vh-200px)]'
           }`}
           style={{
             height: !showChatList && selectedConversation 
               ? 'var(--viewport-height, 100dvh)' 
-              : 'var(--viewport-height, 100dvh)'
+              : undefined
           }}
         >
           <div className="flex h-full flex-col md:flex-row">
