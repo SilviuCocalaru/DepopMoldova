@@ -7,40 +7,28 @@ import MessagesView from '@/components/MessagesView'
 
 export default function MessagesPage() {
   const router = useRouter()
-  const [supabase] = useState(() => createClient())
+  const supabase = createClient()
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [initialMessages, setInitialMessages] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    let mounted = true
+    let isCancelled = false
 
-    const checkAuthAndLoadMessages = async () => {
-      console.log('🔵 Starting checkAuthAndLoadMessages')
-      
+    const loadMessages = async () => {
       try {
-        // Get session from client - use cached session first
-        console.log('🔍 Getting session from cache...')
         const { data: { session } } = await supabase.auth.getSession()
         
-        console.log('📋 Session:', session?.user?.email || 'NO SESSION')
-        
-        if (!mounted) {
-          console.log('❌ Component unmounted, aborting')
-          return
-        }
+        if (isCancelled) return
         
         if (!session?.user) {
-          console.log('🔒 No session, redirecting to login')
           router.push('/login')
           return
         }
 
         setCurrentUserId(session.user.id)
 
-        // Load messages
-        console.log('📨 Loading messages for user:', session.user.id)
         const { data: messages, error: messagesError } = await supabase
           .from('messages')
           .select(`
@@ -52,36 +40,31 @@ export default function MessagesPage() {
           .or(`sender_id.eq.${session.user.id},receiver_id.eq.${session.user.id}`)
           .order('created_at', { ascending: false })
 
-        if (!mounted) {
-          console.log('❌ Component unmounted after loading messages')
-          return
-        }
+        if (isCancelled) return
 
         if (messagesError) {
-          console.error('❌ Messages error:', messagesError)
-          setError('Failed to load messages: ' + messagesError.message)
-          setIsLoading(false)
-          return
+          console.error('Messages error:', messagesError)
+          setError('Failed to load messages')
+        } else {
+          setInitialMessages(messages || [])
         }
-
-        console.log('✅ Loaded messages:', messages?.length || 0)
-        setInitialMessages(messages || [])
-        setIsLoading(false)
-        console.log('✅ Loading complete')
       } catch (err) {
-        if (!mounted) return
-        console.error('❌ Unexpected error:', err)
+        if (isCancelled) return
+        console.error('Load error:', err)
         setError('An unexpected error occurred')
-        setIsLoading(false)
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false)
+        }
       }
     }
 
-    checkAuthAndLoadMessages()
+    loadMessages()
 
     return () => {
-      mounted = false
+      isCancelled = true
     }
-  }, [router, supabase])
+  }, [])
 
   if (error) {
     return (

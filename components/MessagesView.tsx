@@ -33,6 +33,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
   const router = useRouter()
   const pathname = usePathname()
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const [isProcessing, setIsProcessing] = useState(true)
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
@@ -139,7 +140,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setConversations(Array.from(conversationMap.values()).sort((a, b) => 
       new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
     ))
-  }, [initialMessages, currentUserId, messages])
+    setIsProcessing(false)
+  }, [initialMessages, currentUserId])
 
   // Load messages for selected conversation
   useEffect(() => {
@@ -174,7 +176,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
           schema: 'public',
           table: 'messages',
         },
-        async (payload) => {
+        async (payload: any) => {
           const newMsg = payload.new as any
           
           // Check if message is for this conversation
@@ -242,7 +244,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
           schema: 'public',
           table: 'messages',
         },
-        (payload) => {
+        (payload: any) => {
           const newMsg = payload.new as any
           // If message is for current user and not in current conversation
           if (newMsg.receiver_id === currentUserId && newMsg.sender_id !== selectedConversation) {
@@ -424,10 +426,16 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hide header on mobile when in active chat */}
-      <div className={`${!showChatList && selectedConversation ? 'hidden' : 'block'} md:block`}>
-        <Header />
-      </div>
+      {isProcessing && conversations.length === 0 ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+        </div>
+      ) : (
+        <>
+          {/* Hide header on mobile when in active chat */}
+          <div className={`${!showChatList && selectedConversation ? 'hidden' : 'block'} md:block`}>
+            <Header />
+          </div>
       
       {/* Mobile Floating Islands - Split Layout for Active Chat */}
       {!showChatList && selectedConversation ? (
@@ -624,6 +632,8 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
           </div>
         </div>
       </div>
+        </>
+      )}
     </div>
   )
 }

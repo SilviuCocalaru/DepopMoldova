@@ -46,7 +46,7 @@ export default function ConfirmEmailPage() {
     checkUser()
 
     // Listen for auth state changes (email confirmation)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
       console.log('Auth event:', event, 'Session:', session?.user?.email)
       
       if (event === 'SIGNED_IN' && session?.user) {
