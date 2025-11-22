@@ -59,6 +59,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       if (data) setProfile(data)
     }
     loadProfile()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserId])
 
   // Initialize selected conversation from URL params only
@@ -364,6 +365,7 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       setShowChatList(true)
       setSelectedConversation(null)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   // Cleanup on unmount - always show bottom nav when leaving messages
@@ -417,6 +419,9 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     return new Date(date).toLocaleDateString()
   }
 
+  // Cache current conversation to avoid repeated lookups
+  const currentConversation = conversations.find(c => c.userId === selectedConversation)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hide header on mobile when in active chat */}
@@ -440,24 +445,24 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
             <div className="floating-island-top h-16 flex-1 flex items-center gap-3 px-4">
               {/* User Avatar */}
               <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                {conversations.find(c => c.userId === selectedConversation)?.avatar_url ? (
+                {currentConversation?.avatar_url ? (
                   <Image
-                    src={conversations.find(c => c.userId === selectedConversation)!.avatar_url!}
-                    alt={conversations.find(c => c.userId === selectedConversation)!.username}
+                    src={currentConversation.avatar_url}
+                    alt={currentConversation.username}
                     width={40}
                     height={40}
                     className="rounded-full"
                   />
                 ) : (
                   <span className="text-lg font-semibold text-gray-600">
-                    {conversations.find(c => c.userId === selectedConversation)?.username.charAt(0).toUpperCase()}
+                    {currentConversation?.username?.charAt(0).toUpperCase() || '?'}
                   </span>
                 )}
               </div>
               {/* User Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-sm text-gray-900 truncate">
-                  {conversations.find(c => c.userId === selectedConversation)?.username}
+                  {currentConversation?.username || 'User'}
                 </p>
                 <p className="text-xs text-gray-500">
                   Active {Math.floor(Math.random() * 30) + 1}m ago

@@ -39,16 +39,8 @@ body {
   }
 }
 
-.animate-fadeIn {
-  /* Disabled for instant transitions */
-}
-
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.page-transition {
-  /* Disabled for instant transitions */
 }
 
 /* Glassmorphic Navigation */
@@ -61,15 +53,22 @@ body {
 }
 
 .nav-item {
-  @apply text-gray-600 transition-all duration-300 relative;
+  color: rgb(75 85 99);
+  transition: all 0.3s;
+  position: relative;
 }
 
 .nav-item.active {
-  @apply text-blue-500;
+  color: rgb(59 130 246);
 }
 
 .nav-item-center {
-  @apply -mt-6 transition-transform duration-300 hover:scale-110;
+  margin-top: -1.5rem;
+  transition: transform 0.3s;
+}
+
+.nav-item-center:hover {
+  transform: scale(1.1);
 }
 
 /* Mobile responsive adjustments */
