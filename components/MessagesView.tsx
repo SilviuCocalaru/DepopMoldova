@@ -325,12 +325,24 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     setShowChatList(false)
     localStorage.setItem('lastConversation', userId)
     markMessagesAsRead(userId)
+    
+    // Add to browser history so back button works
+    const url = new URL(window.location.href)
+    url.searchParams.set('user', userId)
+    window.history.pushState({}, '', url)
+    
     // Bottom nav will be hidden by useEffect
   }
 
   const handleBackToChatList = () => {
     setShowChatList(true)
     setSelectedConversation(null)
+    
+    // Update URL to remove user param
+    const url = new URL(window.location.href)
+    url.searchParams.delete('user')
+    window.history.pushState({}, '', url)
+    
     // Bottom nav will be shown by useEffect
   }
 
@@ -339,6 +351,26 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     document.body.classList.remove('hide-mobile-nav')
     router.push('/')
   }
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search)
+      const userId = params.get('user')
+      
+      if (!userId && selectedConversation) {
+        // User went back from chat to messages list
+        setShowChatList(true)
+        setSelectedConversation(null)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [selectedConversation])
 
   // Cleanup on unmount - always show bottom nav when leaving messages
   useEffect(() => {
