@@ -347,21 +347,45 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     }
   }, [])
 
-  // Prevent viewport resize on keyboard open
+  // Enhanced keyboard handling for mobile - prevent page scroll
   useEffect(() => {
+    // Prevent page scroll on mobile when keyboard opens
+    const handleResize = () => {
+      if (isInputFocused && window.visualViewport) {
+        const viewport = window.visualViewport
+        // Adjust for keyboard height
+        document.documentElement.style.setProperty('--keyboard-height', `${window.innerHeight - viewport.height}px`)
+      }
+    }
+
     if (isInputFocused) {
-      // Lock scroll position
-      const scrollY = window.scrollY
+      // Disable body scroll completely
+      document.documentElement.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden'
       document.body.style.position = 'fixed'
-      document.body.style.top = `-${scrollY}px`
       document.body.style.width = '100%'
+      document.body.style.height = '100%'
+      
+      // Listen to visual viewport changes for keyboard
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleResize)
+        window.visualViewport.addEventListener('scroll', handleResize)
+      }
     } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top
+      // Restore scrolling
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
       document.body.style.position = ''
-      document.body.style.top = ''
       document.body.style.width = ''
-      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      document.body.style.height = ''
+      document.documentElement.style.removeProperty('--keyboard-height')
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize)
+        window.visualViewport.removeEventListener('scroll', handleResize)
+      }
     }
   }, [isInputFocused])
 
@@ -443,13 +467,13 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
       )}
 
       <div className="max-w-7xl mx-auto md:px-4 md:sm:px-6 md:lg:px-8 md:py-8">
-        {/* Full screen on mobile when in chat, normal on desktop */}
+        {/* Full screen on mobile with dvh, normal on desktop */}
         <div className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
           !showChatList && selectedConversation 
-            ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
-            : 'fixed inset-0 md:relative md:h-[calc(100vh-200px)]'
+            ? 'fixed inset-0 z-40 h-[100dvh] md:relative md:h-[calc(100vh-200px)]' 
+            : 'fixed inset-0 h-[100dvh] md:relative md:h-[calc(100vh-200px)]'
         }`}>
-          <div className="flex h-full">
+          <div className="flex h-full overflow-hidden">
             {/* Conversations List */}
             <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 flex flex-col h-full`}>
               {/* Chat list header - hidden on mobile (shown in island), visible on desktop */}
@@ -535,10 +559,10 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                     <div ref={messagesEndRef} />
                   </div>
 
-                  {/* Message Input - Fixed at bottom on mobile */}
+                  {/* Message Input - Fixed at bottom with safe area */}
                   <form 
                     onSubmit={handleSendMessage} 
-                    className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 border-t border-gray-200 bg-white z-20 shadow-lg md:shadow-none"
+                    className="flex-shrink-0 p-3 md:p-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-gray-200 bg-white md:relative fixed bottom-0 left-0 right-0 z-50"
                   >
                     <div className="flex gap-2">
                       <input

@@ -78,6 +78,21 @@ body {
     padding-top: 0;
     padding-bottom: 7rem;
     background: white;
+    /* Support dynamic viewport for mobile keyboards */
+    min-height: 100dvh;
+  }
+
+  html {
+    /* Prevent rubber-band scrolling on mobile */
+    overscroll-behavior: none;
+  }
+  
+  /* Prevent page scroll when input is focused */
+  body.input-focused {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -344,11 +359,25 @@ body.hide-mobile-nav .floating-island-bottom {
 @media (max-width: 768px) {
   body.hide-mobile-nav {
     overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100dvh;
   }
   
   body.hide-mobile-nav .max-w-7xl {
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
+  }
+
+  /* Support for browsers that don't support dvh */
+  @supports not (height: 100dvh) {
+    body.hide-mobile-nav {
+      height: 100vh;
+    }
+    
+    body.hide-mobile-nav .max-w-7xl {
+      height: 100vh;
+    }
   }
 }
 
