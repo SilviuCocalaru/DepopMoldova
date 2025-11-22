@@ -7,7 +7,7 @@ import MessagesView from '@/components/MessagesView'
 
 export default function MessagesPage() {
   const router = useRouter()
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [initialMessages, setInitialMessages] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -15,45 +15,24 @@ export default function MessagesPage() {
 
   useEffect(() => {
     let mounted = true
-    let loadingTimeout: NodeJS.Timeout | null = null
 
     const checkAuthAndLoadMessages = async () => {
-      console.log('🔵 Starting checkAuthAndLoadMessages, isLoading:', isLoading)
+      console.log('🔵 Starting checkAuthAndLoadMessages')
       
       try {
-        // Prevent infinite loading - max 8 seconds (mobile can be slower)
-        loadingTimeout = setTimeout(() => {
-          console.log('⏰ TIMEOUT FIRED - forcing completion')
-          if (mounted) {
-            setError('Connection timeout - please check your internet and retry')
-            setIsLoading(false)
-          }
-        }, 8000)
-
-        // Get session from client
-        console.log('🔍 Calling getSession...')
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+        // Get session from client - use cached session first
+        console.log('🔍 Getting session from cache...')
+        const { data: { session } } = await supabase.auth.getSession()
         
-        console.log('📋 Messages page - session:', session?.user?.email || 'NO SESSION')
+        console.log('📋 Session:', session?.user?.email || 'NO SESSION')
         
         if (!mounted) {
           console.log('❌ Component unmounted, aborting')
           return
         }
         
-        // Clear timeout since we got a response
-        if (loadingTimeout) clearTimeout(loadingTimeout)
-        
-        if (sessionError) {
-          console.error('❌ Session error:', sessionError)
-          setError('Authentication error')
-          setIsLoading(false)
-          return
-        }
-        
         if (!session?.user) {
           console.log('🔒 No session, redirecting to login')
-          setIsLoading(false)
           router.push('/login')
           return
         }
@@ -82,40 +61,27 @@ export default function MessagesPage() {
           console.error('❌ Messages error:', messagesError)
           setError('Failed to load messages: ' + messagesError.message)
           setIsLoading(false)
-          if (loadingTimeout) clearTimeout(loadingTimeout)
           return
         }
 
         console.log('✅ Loaded messages:', messages?.length || 0)
         setInitialMessages(messages || [])
         setIsLoading(false)
-        if (loadingTimeout) clearTimeout(loadingTimeout)
-        console.log('✅ Loading complete, isLoading set to false')
+        console.log('✅ Loading complete')
       } catch (err) {
         if (!mounted) return
-        console.error('Unexpected error:', err)
+        console.error('❌ Unexpected error:', err)
         setError('An unexpected error occurred')
         setIsLoading(false)
-        if (loadingTimeout) clearTimeout(loadingTimeout)
-      }
-    }
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && !isLoading) {
-        console.log('Messages page became visible, refreshing auth')
-        checkAuthAndLoadMessages()
       }
     }
 
     checkAuthAndLoadMessages()
-    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       mounted = false
-      if (loadingTimeout) clearTimeout(loadingTimeout)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [router])
+  }, [router, supabase])
 
   if (error) {
     return (
