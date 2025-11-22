@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -489,26 +489,6 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   ))
                 )}
               </div>
-            </div>
-                          src={conv.avatar_url}
-                          alt={conv.username}
-                          width={48}
-                          height={48}
-                          className="rounded-full"
-                        />
-                      ) : (
-                        <span className="text-lg md:text-xl font-semibold text-gray-600">
-                          {conv.username.charAt(0).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex-1 text-left min-w-0">
-                      <p className="font-medium text-sm md:text-base text-gray-900 truncate">{conv.username}</p>
-                      <p className="text-xs md:text-sm text-gray-500 truncate">{conv.lastMessage}</p>
-                    </div>
-                  </button>
-                ))
-              )}
             </div>
 
             {/* Messages Area */}
