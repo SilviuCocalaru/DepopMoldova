@@ -313,6 +313,17 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
     router.push('/')
   }
 
+  // Hide bottom navigation when on messages page (mobile)
+  useEffect(() => {
+    // Hide bottom nav on mount (messages page)
+    document.body.classList.add('hide-mobile-nav')
+    
+    return () => {
+      // Show it again when leaving the page
+      document.body.classList.remove('hide-mobile-nav')
+    }
+  }, [])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -398,15 +409,21 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
           </div>
         </div>
       ) : (
-        <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50">
-          <div className="floating-island-top">
-            <button 
-              onClick={handleBackToMenu}
-              className="flex items-center gap-2 text-gray-700 hover:text-red-500 transition-all duration-300 group"
-            >
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-              <span className="font-semibold text-sm">Back to Menu</span>
-            </button>
+        <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
+          <div className="floating-island-top-large">
+            <div className="flex items-center gap-3 w-full">
+              {/* Messages Icon/Title */}
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-base text-gray-900 text-center">Messages</p>
+                <button 
+                  onClick={handleBackToMenu}
+                  className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-all duration-300 group mt-0.5 mx-auto"
+                >
+                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+                  <span className="font-medium text-xs">Back to Menu</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -416,12 +433,13 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
         <div className={`bg-white md:rounded-lg md:shadow overflow-hidden ${
           !showChatList && selectedConversation 
             ? 'fixed inset-0 z-40 md:relative md:h-[calc(100vh-200px)]' 
-            : 'h-screen md:h-[calc(100vh-200px)]'
+            : 'fixed inset-0 md:relative md:h-[calc(100vh-200px)]'
         }`}>
           <div className="flex h-full">
             {/* Conversations List */}
-            <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 overflow-y-auto`}>
-              <div className="p-3 md:p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className={`${showChatList ? 'block' : 'hidden'} md:block w-full md:w-1/3 border-r border-gray-200 flex flex-col h-full`}>
+              {/* Chat list header - hidden on mobile (shown in island), visible on desktop */}
+              <div className="hidden md:block p-3 md:p-4 border-b border-gray-200 flex-shrink-0">
                 <h2 className="text-base md:text-lg font-semibold text-gray-900">Messages</h2>
                 {unreadCount > 0 && (
                   <div className="flex items-center gap-2">
@@ -432,22 +450,46 @@ export default function MessagesView({ currentUserId, initialMessages }: Message
                   </div>
                 )}
               </div>
-              {conversations.length === 0 ? (
-                <div className="p-4 text-center text-gray-500">
-                  No conversations yet
-                </div>
-              ) : (
-                conversations.map((conv) => (
-                  <button
-                    key={conv.userId}
-                    onClick={() => handleSelectConversation(conv.userId)}
-                    className={`w-full p-3 md:p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                      selectedConversation === conv.userId ? 'bg-indigo-50' : ''
-                    }`}
-                  >
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                      {conv.avatar_url ? (
-                        <Image
+              
+              {/* Conversations - with padding for mobile island */}
+              <div className="flex-1 overflow-y-auto pt-24 md:pt-0">
+                {conversations.length === 0 ? (
+                  <div className="p-4 text-center text-gray-500">
+                    No conversations yet
+                  </div>
+                ) : (
+                  conversations.map((conv) => (
+                    <button
+                      key={conv.userId}
+                      onClick={() => handleSelectConversation(conv.userId)}
+                      className={`w-full p-3 md:p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
+                        selectedConversation === conv.userId ? 'bg-indigo-50' : ''
+                      }`}
+                    >
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                        {conv.avatar_url ? (
+                          <Image
+                            src={conv.avatar_url}
+                            alt={conv.username}
+                            width={48}
+                            height={48}
+                            className="rounded-full"
+                          />
+                        ) : (
+                          <span className="text-lg md:text-xl font-semibold text-gray-600">
+                            {conv.username.charAt(0).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 text-left min-w-0">
+                        <p className="font-medium text-sm md:text-base text-gray-900 truncate">{conv.username}</p>
+                        <p className="text-xs md:text-sm text-gray-500 truncate">{conv.lastMessage}</p>
+                      </div>
+                    </button>
+                  ))
+                )}
+              </div>
+            </div>
                           src={conv.avatar_url}
                           alt={conv.username}
                           width={48}
