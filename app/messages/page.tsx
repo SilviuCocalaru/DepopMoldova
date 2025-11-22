@@ -21,13 +21,14 @@ export default function MessagesPage() {
       console.log('🔵 Starting checkAuthAndLoadMessages, isLoading:', isLoading)
       
       try {
-        // Prevent infinite loading - max 3 seconds
+        // Prevent infinite loading - max 8 seconds (mobile can be slower)
         loadingTimeout = setTimeout(() => {
           console.log('⏰ TIMEOUT FIRED - forcing completion')
           if (mounted) {
+            setError('Connection timeout - please check your internet and retry')
             setIsLoading(false)
           }
-        }, 3000)
+        }, 8000)
 
         // Get session from client
         console.log('🔍 Calling getSession...')
@@ -40,18 +41,19 @@ export default function MessagesPage() {
           return
         }
         
+        // Clear timeout since we got a response
+        if (loadingTimeout) clearTimeout(loadingTimeout)
+        
         if (sessionError) {
           console.error('❌ Session error:', sessionError)
           setError('Authentication error')
           setIsLoading(false)
-          if (loadingTimeout) clearTimeout(loadingTimeout)
           return
         }
         
         if (!session?.user) {
           console.log('🔒 No session, redirecting to login')
           setIsLoading(false)
-          if (loadingTimeout) clearTimeout(loadingTimeout)
           router.push('/login')
           return
         }
