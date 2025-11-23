@@ -19,12 +19,14 @@ export default async function ProfileEditPage() {
     .eq('id', session.user.id)
     .single()
 
+  const isDark = profile?.theme === 'dark'
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors`}>
       <Header />
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">Edit Profile</h1>
-        <ProfileEditForm profile={profile} />
+        <h1 className={`text-2xl font-bold mb-8 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Edit Profile</h1>
+        <ProfileEditForm profile={profile} isDark={isDark} />
       </div>
     </div>
   )

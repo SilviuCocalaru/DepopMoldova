@@ -15,9 +15,10 @@ interface ProfileEditFormProps {
     website?: string | null
     avatar_url?: string | null
   }
+  isDark?: boolean
 }
 
-export default function ProfileEditForm({ profile }: ProfileEditFormProps) {
+export default function ProfileEditForm({ profile, isDark = false }: ProfileEditFormProps) {
   const router = useRouter()
   const supabase = createClient()
   const [loading, setLoading] = useState(false)
@@ -103,11 +104,19 @@ export default function ProfileEditForm({ profile }: ProfileEditFormProps) {
               className="rounded-full object-cover"
             />
           ) : (
-            <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+            <div className={`w-[120px] h-[120px] rounded-full flex items-center justify-center ${
+              isDark 
+                ? 'bg-gradient-to-br from-gray-700 to-gray-800' 
+                : 'bg-gradient-to-br from-gray-100 to-gray-200'
+            }`}>
               <UserIcon className="w-12 h-12 text-gray-400" />
             </div>
           )}
-          <label className="absolute bottom-0 right-0 bg-black text-white p-2 rounded-full cursor-pointer hover:bg-gray-800 transition-colors">
+          <label className={`absolute bottom-0 right-0 p-2 rounded-full cursor-pointer transition-colors ${
+            isDark 
+              ? 'bg-blue-500 text-white hover:bg-blue-600' 
+              : 'bg-black text-white hover:bg-gray-800'
+          }`}>
             <Camera className="w-5 h-5" />
             <input
               type="file"
@@ -118,54 +127,66 @@ export default function ProfileEditForm({ profile }: ProfileEditFormProps) {
             />
           </label>
         </div>
-        {uploading && <p className="text-sm text-gray-500 mt-2">Uploading...</p>}
+        {uploading && <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Uploading...</p>}
       </div>
 
       {/* Username */}
       <div>
-        <label className="block text-sm font-semibold text-gray-900 mb-2">
+        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           Username
         </label>
         <input
           type="text"
           value={formData.username}
           onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
+          }`}
           required
         />
       </div>
 
       {/* Full Name */}
       <div>
-        <label className="block text-sm font-semibold text-gray-900 mb-2">
+        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           Full Name
         </label>
         <input
           type="text"
           value={formData.full_name}
           onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
+          }`}
         />
       </div>
 
       {/* Bio */}
       <div>
-        <label className="block text-sm font-semibold text-gray-900 mb-2">
+        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           Bio
         </label>
         <textarea
           value={formData.bio}
           onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none"
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
+          }`}
           maxLength={150}
         />
-        <p className="text-xs text-gray-500 mt-1">{formData.bio.length}/150</p>
+        <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{formData.bio.length}/150</p>
       </div>
 
       {/* Website */}
       <div>
-        <label className="block text-sm font-semibold text-gray-900 mb-2">
+        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           Website
         </label>
         <input
@@ -173,7 +194,11 @@ export default function ProfileEditForm({ profile }: ProfileEditFormProps) {
           value={formData.website}
           onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
           placeholder="https://example.com"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            isDark 
+              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500 placeholder:text-gray-500' 
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
+          }`}
         />
       </div>
 
@@ -182,14 +207,22 @@ export default function ProfileEditForm({ profile }: ProfileEditFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+          className={`flex-1 font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 ${
+            isDark 
+              ? 'bg-blue-500 text-white hover:bg-blue-600' 
+              : 'bg-black text-white hover:bg-gray-800'
+          }`}
         >
           {loading ? 'Saving...' : 'Save Changes'}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="flex-1 bg-white text-black font-semibold py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+          className={`flex-1 font-semibold py-3 rounded-lg border transition-colors ${
+            isDark 
+              ? 'bg-gray-800 text-white border-gray-700 hover:bg-gray-700' 
+              : 'bg-white text-black border-gray-300 hover:bg-gray-50'
+          }`}
         >
           Cancel
         </button>

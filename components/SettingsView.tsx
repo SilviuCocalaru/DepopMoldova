@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, Globe, Heart, MapPin, Palette, Check } from 'lucide-react'
+import { ChevronLeft, Globe, Heart, MapPin, Palette, Check, LogOut } from 'lucide-react'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
 interface SettingsViewProps {
   profile: any
@@ -48,7 +49,9 @@ const MOLDOVA_LOCATIONS = [
 
 export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const router = useRouter()
+  const supabase = createClient()
   const [saving, setSaving] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
   
   // Settings state
   const [language, setLanguage] = useState(profile.language || 'en')
@@ -93,6 +96,20 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
       console.error('Error saving settings:', error)
       alert('Error saving settings')
       setSaving(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    if (!confirm('Are you sure you want to log out?')) return
+    
+    setLoggingOut(true)
+    try {
+      await supabase.auth.signOut()
+      router.push('/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Error logging out:', error)
+      setLoggingOut(false)
     }
   }
 
@@ -307,9 +324,19 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors mb-8"
+          className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           {saving ? 'Saving...' : 'Save Settings'}
+        </button>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="w-full py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 mb-8"
+        >
+          <LogOut className="w-5 h-5" />
+          {loggingOut ? 'Logging out...' : 'Log Out'}
         </button>
       </div>
     </div>
