@@ -52,7 +52,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
           <div 
             className={`
               floating-island-bottom
-              flex items-center justify-center gap-4 h-[60px] rounded-[30px] border px-4
+              flex items-center justify-around h-[60px] rounded-[30px] border
               ${profile?.theme === 'dark' 
                 ? 'bg-gray-800/75 border-gray-700/30' 
                 : 'bg-white/75 border-gray-200/30'}
