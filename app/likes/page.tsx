@@ -40,15 +40,7 @@ export default async function LikesPage() {
             <p className="text-gray-500 text-lg">You haven't liked any items yet</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {likedProducts.map((product: any) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                currentUserId={userId}
-              />
-            ))}
-          </div>
+          <ProductGrid products={likedProducts} currentUserId={userId} />
         )}
       </div>
     </div>
