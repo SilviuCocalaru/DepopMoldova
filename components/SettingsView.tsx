@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ChevronLeft, Globe, Heart, MapPin, Palette, Check, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { useTranslations } from 'next-intl'
 
 interface SettingsViewProps {
   profile: any
@@ -52,6 +53,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const supabase = createClient()
   const [saving, setSaving] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+  const t = useTranslations('settings')
   
   // Settings state
   const [language, setLanguage] = useState(profile.language || 'en')
@@ -86,21 +88,21 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         document.documentElement.classList.add(theme)
         document.documentElement.setAttribute('data-theme', theme)
         
-        // Redirect to profile page after successful save
+        // Force reload to apply new language
         window.location.href = '/profile'
       } else {
-        alert('Failed to save settings')
+        alert(t('saveError'))
         setSaving(false)
       }
     } catch (error) {
       console.error('Error saving settings:', error)
-      alert('Error saving settings')
+      alert(t('saveError'))
       setSaving(false)
     }
   }
 
   const handleLogout = async () => {
-    if (!confirm('Are you sure you want to log out?')) return
+    if (!confirm(t('logout') + '?')) return
     
     setLoggingOut(true)
     try {
@@ -128,7 +130,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
             <ChevronLeft className={`w-6 h-6 ${isDark ? 'text-white' : 'text-black'}`} />
           </Link>
           <h1 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-black'}`}>
-            Settings
+            {t('title')}
           </h1>
         </div>
       </div>
@@ -142,7 +144,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
           <div className="flex items-center gap-2 mb-4">
             <Globe className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
             <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>
-              Language
+              {t('language')}
             </h2>
           </div>
           
@@ -176,7 +178,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         }`}>
           <div className="flex items-center gap-2 mb-4">
             <Heart className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>Preferences</h2>
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('preferences')}</h2>
           </div>
 
           {/* Step 1: Gender */}
@@ -184,7 +186,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
             <label className={`block text-sm font-medium mb-3 ${
               isDark ? 'text-gray-300' : 'text-gray-700'
             }`}>
-              I am a...
+              {t('gender.title')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
@@ -202,7 +204,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 `}
               >
                 <div className="text-3xl mb-1">👨</div>
-                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Man</div>
+                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.man')}</div>
               </button>
               <button
                 onClick={() => {
@@ -219,7 +221,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 `}
               >
                 <div className="text-3xl mb-1">👩</div>
-                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Woman</div>
+                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.woman')}</div>
               </button>
             </div>
           </div>
@@ -230,7 +232,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               <label className={`block text-sm font-medium mb-3 ${
                 isDark ? 'text-gray-300' : 'text-gray-700'
               }`}>
-                My style
+                {t('style.title')}
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {styles.map((s) => (
@@ -247,7 +249,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                     `}
                   >
                     <div className="text-3xl mb-1">{s.emoji}</div>
-                    <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{s.name}</div>
+                    <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t(`style.${s.id}` as any)}</div>
                   </button>
                 ))}
               </div>
@@ -260,7 +262,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               isDark ? 'text-gray-300' : 'text-gray-700'
             }`}>
               <MapPin className="w-4 h-4" />
-              Where are you from?
+              {t('location.title')}
             </label>
             <select
               value={location}
@@ -271,7 +273,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                   : 'bg-white border-gray-200 text-black'
               }`}
             >
-              <option value="">Select location</option>
+              <option value="">{t('location.select')}</option>
               {MOLDOVA_LOCATIONS.map((loc) => (
                 <option key={loc} value={loc}>{loc}</option>
               ))}
@@ -285,7 +287,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         }`}>
           <div className="flex items-center gap-2 mb-4">
             <Palette className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>Theme</h2>
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('theme')}</h2>
           </div>
           
           <div className="grid grid-cols-2 gap-3">
@@ -301,7 +303,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               `}
             >
               <div className="text-3xl mb-1">☀️</div>
-              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Light</div>
+              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.light')}</div>
             </button>
             <button
               onClick={() => setTheme('dark')}
@@ -315,7 +317,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               `}
             >
               <div className="text-3xl mb-1">🌙</div>
-              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Dark</div>
+              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.dark')}</div>
             </button>
           </div>
         </div>
@@ -326,7 +328,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
           disabled={saving}
           className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
-          {saving ? 'Saving...' : 'Save Settings'}
+          {saving ? t('saving') : t('save')}
         </button>
 
         {/* Logout Button */}
@@ -336,7 +338,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
           className="w-full py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 mb-8"
         >
           <LogOut className="w-5 h-5" />
-          {loggingOut ? 'Logging out...' : 'Log Out'}
+          {loggingOut ? t('loggingOut') : t('logout')}
         </button>
       </div>
     </div>

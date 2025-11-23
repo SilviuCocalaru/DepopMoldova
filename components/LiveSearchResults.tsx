@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Package } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface Product {
   id: string
@@ -22,6 +23,8 @@ export default function LiveSearchResults({ query, isDark }: LiveSearchResultsPr
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
+  const t = useTranslations('search')
+  const tResults = useTranslations('searchResults')
 
   useEffect(() => {
     const searchProducts = async () => {
@@ -68,7 +71,7 @@ export default function LiveSearchResults({ query, isDark }: LiveSearchResultsPr
       ) : products.length > 0 ? (
         <div className="py-2">
           <div className={`px-4 py-2 text-xs font-semibold uppercase ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-            Products
+            {tResults('products')}
           </div>
           {products.map((product) => (
             <Link
@@ -105,8 +108,8 @@ export default function LiveSearchResults({ query, isDark }: LiveSearchResultsPr
       ) : (
         <div className="p-8 text-center">
           <div className="text-4xl mb-3">🔍</div>
-          <p className={`text-sm font-medium mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>No results found</p>
-          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Try searching for something else</p>
+          <p className={`text-sm font-medium mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{t('noResults')}</p>
+          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{tResults('trySearching')}</p>
         </div>
       )}
     </div>

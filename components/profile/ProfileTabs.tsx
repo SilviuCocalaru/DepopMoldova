@@ -2,6 +2,7 @@
 
 import { Video, Bookmark, Tag } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 type TabType = 'tagged' | 'reels' | 'saved'
 
@@ -11,11 +12,12 @@ interface ProfileTabsProps {
 
 export default function ProfileTabs({ isDark = false }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>('tagged')
+  const t = useTranslations('profile')
 
   const tabs = [
-    { id: 'tagged' as TabType, icon: Tag, label: 'On Sale' },
-    { id: 'reels' as TabType, icon: Video, label: 'Videos' },
-    { id: 'saved' as TabType, icon: Bookmark, label: 'Saved' },
+    { id: 'tagged' as TabType, icon: Tag, label: t('onSale') },
+    { id: 'reels' as TabType, icon: Video, label: t('videos') },
+    { id: 'saved' as TabType, icon: Bookmark, label: t('saved') },
   ]
 
   return (

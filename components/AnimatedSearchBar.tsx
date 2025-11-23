@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import { Search, X } from 'lucide-react'
 import LiveSearchResults from './LiveSearchResults'
 import { useTheme } from './ThemeProvider'
+import { useTranslations } from 'next-intl'
 
 export default function AnimatedSearchBar() {
   const { isDark } = useTheme()
+  const t = useTranslations('search')
   const [isExpanded, setIsExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const searchRef = useRef<HTMLDivElement>(null)
@@ -68,7 +70,7 @@ export default function AnimatedSearchBar() {
           <Search className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <input
             type="text"
-            placeholder={isExpanded ? "Search products..." : "Search..."}
+            placeholder={isExpanded ? t('placeholderExpanded') : t('placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`

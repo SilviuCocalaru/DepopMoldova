@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "home": "Home",
+    "reels": "Reels",
+    "messages": "Messages",
+    "profile": "Profile",
+    "sell": "Sell",
+    "settings": "Settings"
+  },
+  "profile": {
+    "editProfile": "Edit profile",
+    "shareProfile": "Share",
+    "settings": "Settings",
+    "posts": "posts",
+    "followers": "followers",
+    "following": "following",
+    "onSale": "On Sale",
+    "videos": "Videos",
+    "saved": "Saved",
+    "noPosts": "No Posts Yet",
+    "startSelling": "Start selling to see your products here",
+    "createFirstPost": "Create Your First Post"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "preferences": "Preferences",
+    "theme": "Theme",
+    "save": "Save Settings",
+    "saving": "Saving...",
+    "saveSuccess": "Settings saved successfully!",
+    "saveError": "Failed to save settings",
+    "logout": "Log Out",
+    "loggingOut": "Logging out...",
+    "gender": {
+      "title": "I am a...",
+      "man": "Man",
+      "woman": "Woman"
+    },
+    "style": {
+      "title": "My style",
+      "casual": "Casual",
+      "formal": "Formal",
+      "streetwear": "Streetwear",
+      "athletic": "Athletic",
+      "elegant": "Elegant",
+      "boho": "Boho",
+      "sporty": "Sporty"
+    },
+    "location": {
+      "title": "Where are you from?",
+      "select": "Select location"
+    },
+    "themeOptions": {
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "search": {
+    "placeholder": "Search...",
+    "placeholderExpanded": "Search products...",
+    "noResults": "No results found"
+  },
+  "auth": {
+    "login": "Sign in",
+    "signup": "Sign up",
+    "logout": "Log Out",
+    "signingIn": "Signing in...",
+    "email": "Email address",
+    "password": "Password",
+    "signInTitle": "Sign in to your account",
+    "createAccount": "create a new account"
+  },
+  "product": {
+    "shopNow": "Shop now",
+    "price": "Price",
+    "size": "Size",
+    "condition": "Condition",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "uploading": "Uploading..."
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "username": "Username",
+    "fullName": "Full Name",
+    "bio": "Bio",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "sell": {
+    "title": "List an Item",
+    "uploadPhotos": "Upload Photos",
+    "uploadLimit": "Up to 6 photos",
+    "title_label": "Title",
+    "description": "Description",
+    "price": "Price",
+    "category": "Category",
+    "size": "Size",
+    "brand": "Brand",
+    "condition": "Condition",
+    "listing": "Listing...",
+    "listItem": "List Item",
+    "optional": "(optional)"
+  },
+  "messages": {
+    "title": "Messages",
+    "noMessages": "No messages yet",
+    "startConversation": "Start a conversation"
+  },
+  "likes": {
+    "title": "Liked Items",
+    "noLikes": "No liked items yet",
+    "startLiking": "Start liking items you love"
+  },
+  "profileActions": {
+    "follow": "Follow",
+    "message": "Message",
+    "following": "Following"
+  },
+  "searchResults": {
+    "products": "Products",
+    "trySearching": "Try searching for something else"
+  }
+}

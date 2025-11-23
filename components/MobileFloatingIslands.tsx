@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Home, Plus, MessageCircle, User as UserIcon, Video } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import AnimatedSearchBar from './AnimatedSearchBar'
+import { useTranslations } from 'next-intl'
 
 interface MobileFloatingIslandsProps {
   user: any
@@ -16,6 +17,7 @@ interface MobileFloatingIslandsProps {
 export default function MobileFloatingIslands({ user, profile, unreadMessages, isLoading = false }: MobileFloatingIslandsProps) {
   const pathname = usePathname()
   const [shouldAnimate, setShouldAnimate] = useState(false)
+  const t = useTranslations('auth')
 
   useEffect(() => {
     // Check if island was previously shown
@@ -41,7 +43,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
             href="/signup"
             className="floating-island-top px-5 flex items-center justify-center text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors whitespace-nowrap h-[44px]"
           >
-            Sign Up
+            {t('signup')}
           </Link>
         </div>
       )}

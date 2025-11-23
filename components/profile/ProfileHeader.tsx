@@ -2,6 +2,7 @@
 
 import { User as UserIcon } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 interface ProfileHeaderProps {
   profile: {
@@ -25,6 +26,8 @@ export default function ProfileHeader({
   followingCount,
   isDark = false
 }: ProfileHeaderProps) {
+  const t = useTranslations('profile')
+  
   return (
     <div className="flex flex-col items-center text-center mb-3">
       {/* Profile Picture */}
@@ -87,15 +90,15 @@ export default function ProfileHeader({
       <div className="flex items-center justify-center gap-6 mt-2 mb-2 w-full max-w-md">
         <div className="flex flex-col items-center">
           <span className={`text-base font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{postsCount}</span>
-          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>posts</span>
+          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('posts')}</span>
         </div>
         <div className="flex flex-col items-center">
           <span className={`text-base font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{followersCount}</span>
-          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>followers</span>
+          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('followers')}</span>
         </div>
         <div className="flex flex-col items-center">
           <span className={`text-base font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{followingCount}</span>
-          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>following</span>
+          <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('following')}</span>
         </div>
       </div>
     </div>

@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "reels": "Reels",
+    "messages": "Mesaje",
+    "profile": "Profil",
+    "sell": "Vinde",
+    "settings": "Setări"
+  },
+  "profile": {
+    "editProfile": "Editează profilul",
+    "shareProfile": "Distribuie",
+    "settings": "Setări",
+    "posts": "postări",
+    "followers": "urmăritori",
+    "following": "urmărește",
+    "onSale": "De vânzare",
+    "videos": "Videoclipuri",
+    "saved": "Salvate",
+    "noPosts": "Încă nu ai postări",
+    "startSelling": "Începe să vinzi pentru a vedea produsele aici",
+    "createFirstPost": "Creează prima ta postare"
+  },
+  "settings": {
+    "title": "Setări",
+    "language": "Limbă",
+    "preferences": "Preferințe",
+    "theme": "Temă",
+    "save": "Salvează Setările",
+    "saving": "Se salvează...",
+    "saveSuccess": "Setările au fost salvate cu succes!",
+    "saveError": "Nu s-au putut salva setările",
+    "logout": "Deconectare",
+    "loggingOut": "Se deconectează...",
+    "gender": {
+      "title": "Sunt...",
+      "man": "Bărbat",
+      "woman": "Femeie"
+    },
+    "style": {
+      "title": "Stilul meu",
+      "casual": "Casual",
+      "formal": "Formal",
+      "streetwear": "Streetwear",
+      "athletic": "Sportiv",
+      "elegant": "Elegant",
+      "boho": "Boho",
+      "sporty": "Sportiv"
+    },
+    "location": {
+      "title": "De unde ești?",
+      "select": "Selectează locația"
+    },
+    "themeOptions": {
+      "light": "Luminos",
+      "dark": "Întunecat"
+    }
+  },
+  "search": {
+    "placeholder": "Caută...",
+    "placeholderExpanded": "Caută produse...",
+    "noResults": "Nu s-au găsit rezultate"
+  },
+  "auth": {
+    "login": "Conectare",
+    "signup": "Înregistrare",
+    "logout": "Deconectare",
+    "signingIn": "Se conectează...",
+    "email": "Adresa de email",
+    "password": "Parolă",
+    "signInTitle": "Conectează-te la contul tău",
+    "createAccount": "creează un cont nou"
+  },
+  "product": {
+    "shopNow": "Cumpără acum",
+    "price": "Preț",
+    "size": "Mărime",
+    "condition": "Stare",
+    "addToCart": "Adaugă în coș",
+    "buyNow": "Cumpără acum"
+  },
+  "common": {
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "cancel": "Anulează",
+    "confirm": "Confirmă",
+    "back": "Înapoi",
+    "saving": "Se salvează...",
+    "saveChanges": "Salvează Modificările",
+    "uploading": "Se încarcă..."
+  },
+  "editProfile": {
+    "title": "Editează Profilul",
+    "username": "Nume utilizator",
+    "fullName": "Nume complet",
+    "bio": "Bio",
+    "saveChanges": "Salvează Modificările",
+    "cancel": "Anulează"
+  },
+  "sell": {
+    "title": "Adaugă un produs",
+    "uploadPhotos": "Încarcă poze",
+    "uploadLimit": "Până la 6 poze",
+    "title_label": "Titlu",
+    "description": "Descriere",
+    "price": "Preț",
+    "category": "Categorie",
+    "size": "Mărime",
+    "brand": "Brand",
+    "condition": "Stare",
+    "listing": "Se adaugă...",
+    "listItem": "Adaugă Produs",
+    "optional": "(opțional)"
+  },
+  "messages": {
+    "title": "Mesaje",
+    "noMessages": "Încă nu ai mesaje",
+    "startConversation": "Începe o conversație"
+  },
+  "likes": {
+    "title": "Produse apreciate",
+    "noLikes": "Încă nu ai aprecieri",
+    "startLiking": "Începe să apreciezi produse"
+  },
+  "profileActions": {
+    "follow": "Urmărește",
+    "message": "Mesaj",
+    "following": "Urmărești"
+  },
+  "searchResults": {
+    "products": "Produse",
+    "trySearching": "Încearcă să cauți altceva"
+  }
+}

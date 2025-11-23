@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import IntlProvider from "@/components/IntlProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,24 +56,32 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch user's theme preference
+  // Fetch user's theme and language preference
   const supabase = await createClient()
   const { data: { session } } = await supabase.auth.getSession()
   
   let userTheme: 'light' | 'dark' = 'light'
+  let locale: 'en' | 'ro' | 'ru' = 'en'
   
   if (session?.user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('theme')
+      .select('theme, language')
       .eq('id', session.user.id)
       .single()
     
     userTheme = (profile?.theme as 'light' | 'dark') || 'light'
+    if (profile?.language && (profile.language === 'en' || profile.language === 'ro' || profile.language === 'ru')) {
+      locale = profile.language
+    }
   }
 
+  // Load messages for the user's language
+  const messagesModule = await import(`../messages/${locale}.json`)
+  const messages = messagesModule.default
+
   return (
-    <html lang="en" suppressHydrationWarning className={userTheme}>
+    <html lang={locale} suppressHydrationWarning className={userTheme}>
       <head>
         <link rel="manifest" href="/manifest.json" />
       </head>
@@ -80,9 +89,11 @@ export default async function RootLayout({
         className={`${inter.variable} font-sans antialiased bg-white dark:bg-gray-900 text-black dark:text-white transition-colors`}
         suppressHydrationWarning
       >
-        <ThemeProvider initialTheme={userTheme}>
-          {children}
-        </ThemeProvider>
+        <IntlProvider locale={locale} messages={messages}>
+          <ThemeProvider initialTheme={userTheme}>
+            {children}
+          </ThemeProvider>
+        </IntlProvider>
         <Script
           id="sw-register"
           strategy="afterInteractive"

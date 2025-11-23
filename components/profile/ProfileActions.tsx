@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Share2, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 interface ProfileActionsProps {
   userId: string
@@ -14,6 +15,8 @@ interface ProfileActionsProps {
 export default function ProfileActions({ userId, isOwnProfile = true, isDark = false }: ProfileActionsProps) {
   const [copied, setCopied] = useState(false)
   const router = useRouter()
+  const t = useTranslations('profile')
+  const tActions = useTranslations('profileActions')
 
   const handleShare = async () => {
     const url = `${window.location.origin}/profile/${userId}`
@@ -42,7 +45,7 @@ export default function ProfileActions({ userId, isOwnProfile = true, isDark = f
                 : 'bg-white text-black border-gray-300 hover:bg-gray-50'
             }`}
           >
-            Edit profile
+            {t('editProfile')}
           </Link>
           <button
             onClick={handleShare}
@@ -53,7 +56,7 @@ export default function ProfileActions({ userId, isOwnProfile = true, isDark = f
             }`}
           >
             <Share2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
+            <span className="hidden sm:inline">{copied ? 'Copied!' : t('shareProfile')}</span>
           </button>
           <Link
             href="/settings"
@@ -64,16 +67,16 @@ export default function ProfileActions({ userId, isOwnProfile = true, isDark = f
             }`}
           >
             <Settings className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Settings</span>
+            <span className="hidden sm:inline">{t('settings')}</span>
           </Link>
         </div>
       ) : (
         <div className="flex gap-2">
           <button className="flex-1 bg-blue-500 dark:bg-blue-600 text-white text-xs font-semibold py-1.5 px-3 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
-            Follow
+            {tActions('follow')}
           </button>
           <button className="flex-1 bg-white dark:bg-gray-800 text-black dark:text-white text-xs font-semibold py-1.5 px-3 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-            Message
+            {tActions('message')}
           </button>
         </div>
       )}

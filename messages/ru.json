@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "home": "Главная",
+    "reels": "Reels",
+    "messages": "Сообщения",
+    "profile": "Профиль",
+    "sell": "Продать",
+    "settings": "Настройки"
+  },
+  "profile": {
+    "editProfile": "Редактировать профиль",
+    "shareProfile": "Поделиться",
+    "settings": "Настройки",
+    "posts": "публикаций",
+    "followers": "подписчиков",
+    "following": "подписок",
+    "onSale": "В продаже",
+    "videos": "Видео",
+    "saved": "Сохранённые",
+    "noPosts": "Пока нет публикаций",
+    "startSelling": "Начните продавать, чтобы увидеть товары здесь",
+    "createFirstPost": "Создайте первую публикацию"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "preferences": "Предпочтения",
+    "theme": "Тема",
+    "save": "Сохранить настройки",
+    "saving": "Сохранение...",
+    "saveSuccess": "Настройки успешно сохранены!",
+    "saveError": "Не удалось сохранить настройки",
+    "logout": "Выйти",
+    "loggingOut": "Выход...",
+    "gender": {
+      "title": "Я...",
+      "man": "Мужчина",
+      "woman": "Женщина"
+    },
+    "style": {
+      "title": "Мой стиль",
+      "casual": "Повседневный",
+      "formal": "Формальный",
+      "streetwear": "Уличный",
+      "athletic": "Спортивный",
+      "elegant": "Элегантный",
+      "boho": "Бохо",
+      "sporty": "Спортивный"
+    },
+    "location": {
+      "title": "Откуда вы?",
+      "select": "Выберите местоположение"
+    },
+    "themeOptions": {
+      "light": "Светлая",
+      "dark": "Тёмная"
+    }
+  },
+  "search": {
+    "placeholder": "Поиск...",
+    "placeholderExpanded": "Поиск товаров...",
+    "noResults": "Результаты не найдены"
+  },
+  "auth": {
+    "login": "Войти",
+    "signup": "Регистрация",
+    "logout": "Выйти",
+    "signingIn": "Вход...",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "signInTitle": "Войдите в свой аккаунт",
+    "createAccount": "создать новый аккаунт"
+  },
+  "product": {
+    "shopNow": "Купить сейчас",
+    "price": "Цена",
+    "size": "Размер",
+    "condition": "Состояние",
+    "addToCart": "В корзину",
+    "buyNow": "Купить сейчас"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "back": "Назад",
+    "saving": "Сохранение...",
+    "saveChanges": "Сохранить изменения",
+    "uploading": "Загрузка..."
+  },
+  "editProfile": {
+    "title": "Редактировать профиль",
+    "username": "Имя пользователя",
+    "fullName": "Полное имя",
+    "bio": "О себе",
+    "saveChanges": "Сохранить изменения",
+    "cancel": "Отмена"
+  },
+  "sell": {
+    "title": "Добавить товар",
+    "uploadPhotos": "Загрузить фото",
+    "uploadLimit": "До 6 фотографий",
+    "title_label": "Название",
+    "description": "Описание",
+    "price": "Цена",
+    "category": "Категория",
+    "size": "Размер",
+    "brand": "Бренд",
+    "condition": "Состояние",
+    "listing": "Добавление...",
+    "listItem": "Добавить товар",
+    "optional": "(необязательно)"
+  },
+  "messages": {
+    "title": "Сообщения",
+    "noMessages": "Сообщений пока нет",
+    "startConversation": "Начните разговор"
+  },
+  "likes": {
+    "title": "Понравившиеся товары",
+    "noLikes": "Понравившихся товаров пока нет",
+    "startLiking": "Начните отмечать понравившиеся товары"
+  },
+  "profileActions": {
+    "follow": "Подписаться",
+    "message": "Сообщение",
+    "following": "Подписка"
+  },
+  "searchResults": {
+    "products": "Товары",
+    "trySearching": "Попробуйте найти что-то другое"
+  }
+}

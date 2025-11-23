@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { User as UserIcon, Camera } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 interface ProfileEditFormProps {
   profile: {
@@ -21,6 +22,8 @@ interface ProfileEditFormProps {
 export default function ProfileEditForm({ profile, isDark = false }: ProfileEditFormProps) {
   const router = useRouter()
   const supabase = createClient()
+  const t = useTranslations('editProfile')
+  const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   
@@ -144,13 +147,13 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
             />
           </label>
         </div>
-        {uploading && <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Uploading...</p>}
+        {uploading && <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{tCommon('uploading')}</p>}
       </div>
 
       {/* Username */}
       <div>
         <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-          Username
+          {t('username')}
         </label>
         <input
           type="text"
@@ -168,7 +171,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
       {/* Full Name */}
       <div>
         <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-          Full Name
+          {t('fullName')}
         </label>
         <input
           type="text"
@@ -185,7 +188,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
       {/* Bio */}
       <div>
         <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-          Bio
+          {t('bio')}
         </label>
         <textarea
           value={formData.bio}
@@ -212,7 +215,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
               : 'bg-black text-white hover:bg-gray-800'
           }`}
         >
-          {loading ? 'Saving...' : 'Save Changes'}
+          {loading ? tCommon('saving') : t('saveChanges')}
         </button>
         <button
           type="button"
@@ -223,7 +226,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
               : 'bg-white text-black border-gray-300 hover:bg-gray-50'
           }`}
         >
-          Cancel
+          {t('cancel')}
         </button>
       </div>
     </form>
