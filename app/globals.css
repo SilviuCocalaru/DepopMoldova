@@ -99,15 +99,12 @@ body {
 .floating-island-top {
   position: relative;
   padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.8) inset,
-    0 -1px 0 rgba(0, 0, 0, 0.02) inset;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
   transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   transform-origin: center;
 }
@@ -116,31 +113,27 @@ body {
   padding: 14px 28px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.85);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.12),
-    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
 }
 
 .floating-island-top:active {
   transform: scale(0.96);
 }
 
-/* Bottom Floating Island Navigation */
+/* Bottom Floating Island Navigation - Compact + Glassmorphism */
 .floating-island-bottom {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.1),
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 -1px 0 rgba(0, 0, 0, 0.03) inset;
+  height: 60px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 30px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 -4px 24px 0 rgba(0, 0, 0, 0.06);
 }
 
 .floating-island-bottom.animate-slide-up {
@@ -158,15 +151,22 @@ body {
   }
 }
 
-/* Navigation Icons */
+/* Navigation Icons - Compact 24px */
 .nav-icon {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
   color: #6B7280;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+}
+
+.nav-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .nav-icon:active {
@@ -178,7 +178,20 @@ body {
 }
 
 .nav-icon.active svg {
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.3));
+}
+
+/* Subtle active indicator dot */
+.nav-icon.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 2px;
+  background: #3B82F6;
+  border-radius: 2px;
 }
 
 /* Center Plus Button - Elevated */
@@ -196,31 +209,35 @@ body {
 
 .floating-plus-button {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
   border-radius: 50%;
+  transform: translateY(-8px);
   box-shadow: 
-    0 8px 24px rgba(59, 130, 246, 0.4),
-    0 4px 12px rgba(59, 130, 246, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    0 6px 20px rgba(59, 130, 246, 0.35),
+    0 3px 10px rgba(59, 130, 246, 0.25);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
 }
 
 .floating-plus-button:hover {
-  transform: scale(1.05);
+  transform: translateY(-8px) scale(1.05);
   box-shadow: 
-    0 16px 48px rgba(59, 130, 246, 0.5),
-    0 6px 16px rgba(59, 130, 246, 0.4),
-    0 1px 0 rgba(255, 255, 255, 0.4) inset;
+    0 10px 32px rgba(59, 130, 246, 0.45),
+    0 5px 14px rgba(59, 130, 246, 0.35);
 }
 
 .floating-plus-button:active {
-  transform: scale(0.95);
+  transform: translateY(-8px) scale(0.95);
+}
+
+.floating-plus-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 .plus-glow {
@@ -325,20 +342,14 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 12px 16px;
   border-radius: 24px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(209, 213, 219, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .floating-island-top-large:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.12),
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.12);
 }
 
 /* Smooth transition for bottom nav */
@@ -362,6 +373,23 @@ body.hide-mobile-nav .floating-island-bottom {
   body.hide-mobile-nav .max-w-7xl {
     height: 100vh;
     overflow: hidden;
+  }
+}
+
+/* Glassmorphism Browser Compatibility */
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .floating-island-top,
+  .floating-island-bottom,
+  .floating-island-top-large {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Safe area insets for iPhone notch/home indicator */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .floating-island-bottom {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
   }
 }
 

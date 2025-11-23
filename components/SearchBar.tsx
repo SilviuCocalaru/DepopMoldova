@@ -35,7 +35,7 @@ export default function SearchBar({ onSearch, onCategoryChange }: SearchBarProps
   }
 
   return (
-    <div className="bg-white border-b sticky top-16 z-40">
+    <div className="bg-white/80 backdrop-blur-[20px] backdrop-saturate-[180%] border-b border-gray-200/30 shadow-[0_2px_16px_0_rgba(0,0,0,0.04)] sticky top-16 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <form onSubmit={handleSearch} className="mb-4">
           <div className="relative">

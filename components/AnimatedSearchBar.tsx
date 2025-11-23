@@ -42,7 +42,7 @@ export default function AnimatedSearchBar() {
     <>
       {/* Backdrop */}
       {isExpanded && (
-        <div className="md:hidden fixed inset-0 bg-black/20 z-40" />
+        <div className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40" />
       )}
 
       {/* Search Bar */}
@@ -54,8 +54,10 @@ export default function AnimatedSearchBar() {
           className={`
             transition-all duration-300 ease-out
             ${isExpanded ? 'w-[calc(100vw-40px)]' : 'w-[180px]'}
-            h-[44px] rounded-full bg-white/95 backdrop-blur-xl border
-            ${isExpanded ? 'border-black shadow-lg' : 'border-gray-200 shadow-sm'}
+            h-[44px] rounded-full
+            bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%]
+            border border-gray-200/30
+            ${isExpanded ? 'shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]' : 'shadow-[0_2px_12px_0_rgba(0,0,0,0.04)]'}
             flex items-center px-4 gap-2
           `}
           onClick={handleExpand}

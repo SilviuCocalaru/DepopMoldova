@@ -54,14 +54,14 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
               href="/" 
               className={`nav-icon ${pathname === '/' ? 'active' : ''}`}
             >
-              <Home className="w-6 h-6" strokeWidth={2} />
+              <Home strokeWidth={2} />
             </Link>
             
             <Link
               href="/reels"
               className={`nav-icon ${pathname === '/reels' ? 'active' : ''}`}
             >
-              <Video className="w-6 h-6" strokeWidth={2} fill={pathname === '/reels' ? 'currentColor' : 'none'} />
+              <Video strokeWidth={2} fill={pathname === '/reels' ? 'currentColor' : 'none'} />
             </Link>
             
             {/* Center Plus Button */}
@@ -70,7 +70,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
               className="nav-icon-center group"
             >
               <div className="floating-plus-button">
-                <Plus className="w-7 h-7 text-white" strokeWidth={3} />
+                <Plus className="text-white" strokeWidth={3} />
                 <div className="plus-glow"></div>
               </div>
             </Link>
@@ -79,7 +79,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
               href="/messages" 
               className={`nav-icon relative ${pathname === '/messages' ? 'active' : ''}`}
             >
-              <MessageCircle className="w-6 h-6" strokeWidth={2} />
+              <MessageCircle strokeWidth={2} />
               {unreadMessages > 0 && (
                 <span className="message-badge">
                   {unreadMessages > 9 ? '9+' : unreadMessages}
@@ -95,11 +95,11 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
                 <img
                   src={profile.avatar_url}
                   alt={profile.username}
-                  className="w-7 h-7 rounded-full object-cover ring-2 ring-transparent transition-all duration-300 group-hover:ring-blue-400"
+                  className="w-6 h-6 rounded-full object-cover ring-2 ring-transparent transition-all duration-300 group-hover:ring-blue-400"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <UserIcon className="w-4 h-4 text-gray-600" strokeWidth={2.5} />
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                  <UserIcon className="w-3.5 h-3.5 text-gray-600" strokeWidth={2.5} />
                 </div>
               )}
             </Link>

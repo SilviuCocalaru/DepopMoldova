@@ -55,7 +55,7 @@ export default function LiveSearchResults({ query }: LiveSearchResultsProps) {
   }
 
   return (
-    <div className="w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden max-h-[60vh] overflow-y-auto">
+    <div className="w-full bg-white/85 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] border border-gray-200/30 overflow-hidden max-h-[60vh] overflow-y-auto">
       {loading ? (
         <div className="p-6 text-center">
           <div className="animate-spin w-6 h-6 border-2 border-black border-t-transparent rounded-full mx-auto"></div>
