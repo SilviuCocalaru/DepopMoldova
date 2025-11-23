@@ -38,14 +38,14 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   return (
     <>
       {/* Animated Search Bar - iPhone Dynamic Island Style - Homepage Only */}
-      {pathname === '/' && <AnimatedSearchBar />}
+      {pathname === '/' && <AnimatedSearchBar isLoggedIn={!!user} />}
 
       {/* Sign Up Button - Only show if not logged in */}
       {!user && !isLoading && pathname !== '/messages' && (
         <div className="md:hidden fixed top-4 right-4 z-50">
           <Link 
             href="/signup"
-            className="floating-island-top px-5 flex items-center justify-center text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors whitespace-nowrap h-[44px]"
+            className="px-5 flex items-center justify-center text-sm font-semibold whitespace-nowrap h-[44px] rounded-full bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%] border border-gray-200/30 shadow-[0_4px_24px_0_rgba(0,0,0,0.08)] text-gray-900 hover:bg-white/90 transition-all"
           >
             {t('signup')}
           </Link>

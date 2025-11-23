@@ -6,7 +6,11 @@ import LiveSearchResults from './LiveSearchResults'
 import { useTheme } from './ThemeProvider'
 import { useTranslations } from 'next-intl'
 
-export default function AnimatedSearchBar() {
+interface AnimatedSearchBarProps {
+  isLoggedIn?: boolean
+}
+
+export default function AnimatedSearchBar({ isLoggedIn = false }: AnimatedSearchBarProps) {
   const { isDark } = useTheme()
   const t = useTranslations('search')
   const [isExpanded, setIsExpanded] = useState(false)
@@ -62,12 +66,12 @@ export default function AnimatedSearchBar() {
       {/* Search Bar */}
       <div 
         ref={searchRef}
-        className="md:hidden fixed top-4 left-4 z-50"
+        className={`md:hidden fixed top-4 z-50 ${isLoggedIn ? 'left-1/2 -translate-x-1/2' : 'left-4'}`}
       >
         <div 
           className={`
             transition-all duration-300 ease-out
-            ${isExpanded ? 'w-[calc(100vw-100px)]' : 'w-[150px]'}
+            ${isExpanded ? (isLoggedIn ? 'w-[calc(100vw-32px)]' : 'w-[calc(100vw-116px)]') : (isLoggedIn ? 'w-[200px]' : 'w-[150px]')}
             h-[44px] rounded-full
             ${isDark ? 'bg-gray-800/75 border-gray-700/30' : 'bg-white/75 border-gray-200/30'}
             backdrop-blur-[16px] backdrop-saturate-[180%]
