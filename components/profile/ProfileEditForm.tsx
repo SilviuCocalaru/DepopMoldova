@@ -48,13 +48,16 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
 
     setUploading(true)
     try {
+      // Compress image to circular thumbnail
+      const compressedFile = await compressImage(file, 200, 200)
+      
       const fileExt = file.name.split('.').pop()
       const fileName = `${profile.id}-${Date.now()}.${fileExt}`
       const filePath = `avatars/${fileName}`
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, {
+        .upload(filePath, compressedFile, {
           upsert: true
         })
 
@@ -74,6 +77,49 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
     } finally {
       setUploading(false)
     }
+  }
+
+  const compressImage = (file: File, maxWidth: number, maxHeight: number): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (event) => {
+        const img = new window.Image()
+        img.src = event.target?.result as string
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          const size = Math.min(img.width, img.height)
+          const startX = (img.width - size) / 2
+          const startY = (img.height - size) / 2
+          
+          canvas.width = maxWidth
+          canvas.height = maxHeight
+          
+          const ctx = canvas.getContext('2d')
+          if (!ctx) return reject(new Error('Failed to get canvas context'))
+          
+          // Draw circular crop
+          ctx.beginPath()
+          ctx.arc(maxWidth / 2, maxHeight / 2, maxWidth / 2, 0, Math.PI * 2)
+          ctx.closePath()
+          ctx.clip()
+          
+          // Draw cropped and resized image
+          ctx.drawImage(img, startX, startY, size, size, 0, 0, maxWidth, maxHeight)
+          
+          canvas.toBlob((blob) => {
+            if (!blob) return reject(new Error('Failed to compress image'))
+            const compressedFile = new File([blob], file.name, {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            })
+            resolve(compressedFile)
+          }, 'image/jpeg', 0.85)
+        }
+        img.onerror = reject
+      }
+      reader.onerror = reject
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,7 +157,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-3">
       {/* Avatar Upload */}
       <div className="flex flex-col items-center">
         <div className="relative group">
@@ -119,25 +165,25 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
             <Image
               src={formData.avatar_url}
               alt="Profile"
-              width={120}
-              height={120}
+              width={80}
+              height={80}
               className="rounded-full object-cover"
             />
           ) : (
-            <div className={`w-[120px] h-[120px] rounded-full flex items-center justify-center ${
+            <div className={`w-[80px] h-[80px] rounded-full flex items-center justify-center ${
               isDark 
                 ? 'bg-gradient-to-br from-gray-700 to-gray-800' 
                 : 'bg-gradient-to-br from-gray-100 to-gray-200'
             }`}>
-              <UserIcon className="w-12 h-12 text-gray-400" />
+              <UserIcon className="w-8 h-8 text-gray-400" />
             </div>
           )}
-          <label className={`absolute bottom-0 right-0 p-2 rounded-full cursor-pointer transition-colors ${
+          <label className={`absolute bottom-0 right-0 p-1.5 rounded-full cursor-pointer transition-colors ${
             isDark 
               ? 'bg-blue-500 text-white hover:bg-blue-600' 
               : 'bg-black text-white hover:bg-gray-800'
           }`}>
-            <Camera className="w-5 h-5" />
+            <Camera className="w-4 h-4" />
             <input
               type="file"
               accept="image/*"
@@ -147,19 +193,19 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
             />
           </label>
         </div>
-        {uploading && <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{tCommon('uploading')}</p>}
+        {uploading && <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{tCommon('uploading')}</p>}
       </div>
 
       {/* Username */}
       <div>
-        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+        <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           {t('username')}
         </label>
         <input
           type="text"
           value={formData.username}
           onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+          className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
             isDark 
               ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
               : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
@@ -170,14 +216,14 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
 
       {/* Full Name */}
       <div>
-        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+        <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           {t('fullName')}
         </label>
         <input
           type="text"
           value={formData.full_name}
           onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+          className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
             isDark 
               ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
               : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
@@ -187,14 +233,14 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
 
       {/* Bio */}
       <div>
-        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+        <label className={`block text-xs font-semibold mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           {t('bio')}
         </label>
         <textarea
           value={formData.bio}
           onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-          rows={4}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none ${
+          rows={3}
+          className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-none ${
             isDark 
               ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
               : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
@@ -205,11 +251,11 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 pt-4">
+      <div className="flex gap-2 pt-2">
         <button
           type="submit"
           disabled={loading}
-          className={`flex-1 font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 ${
+          className={`flex-1 text-sm font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50 ${
             isDark 
               ? 'bg-blue-500 text-white hover:bg-blue-600' 
               : 'bg-black text-white hover:bg-gray-800'
@@ -220,7 +266,7 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
         <button
           type="button"
           onClick={() => router.back()}
-          className={`flex-1 font-semibold py-3 rounded-lg border transition-colors ${
+          className={`flex-1 text-sm font-semibold py-2.5 rounded-lg border transition-colors ${
             isDark 
               ? 'bg-gray-800 text-white border-gray-700 hover:bg-gray-700' 
               : 'bg-white text-black border-gray-300 hover:bg-gray-50'

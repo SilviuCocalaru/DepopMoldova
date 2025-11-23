@@ -118,43 +118,43 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const styles = gender === 'man' ? STYLES_MEN : STYLES_WOMEN
 
   return (
-    <div className={`min-h-screen pb-20 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen pb-16 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       {/* Header */}
-      <div className={`sticky top-0 z-10 border-b px-4 py-2 ${
+      <div className={`sticky top-0 z-10 border-b px-4 py-1.5 ${
         isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'
       }`}>
         <div className="max-w-2xl mx-auto flex items-center gap-2">
-          <Link href="/profile" className={`p-1.5 rounded-full ${
+          <Link href="/profile" className={`p-1 rounded-full ${
             isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
           }`}>
             <ChevronLeft className={`w-5 h-5 ${isDark ? 'text-white' : 'text-black'}`} />
           </Link>
-          <h1 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-black'}`}>
+          <h1 className={`text-base font-bold ${isDark ? 'text-white' : 'text-black'}`}>
             {t('title')}
           </h1>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-3 space-y-3">
+      <div className="max-w-2xl mx-auto px-4 py-2 space-y-2">
         
         {/* Language Selector */}
-        <div className={`border rounded-xl p-3 ${
+        <div className={`border rounded-xl p-2 ${
           isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         }`}>
-          <div className="flex items-center gap-2 mb-2">
-            <Globe className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-            <h2 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-black'}`}>
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Globe className={`w-3.5 h-3.5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-black'}`}>
               {t('language')}
             </h2>
           </div>
           
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             {LANGUAGES.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => setLanguage(lang.code)}
                 className={`
-                  p-4 border-2 rounded-lg transition-all text-center
+                  p-2.5 border-2 rounded-lg transition-all text-center
                   ${language === lang.code 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                     : isDark
@@ -162,10 +162,10 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                       : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
-                <div className="text-3xl mb-1">{lang.flag}</div>
-                <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{lang.name}</div>
+                <div className="text-xl mb-0.5">{lang.flag}</div>
+                <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{lang.name}</div>
                 {language === lang.code && (
-                  <Check className="w-4 h-4 text-blue-500 mx-auto mt-1" />
+                  <Check className="w-3 h-3 text-blue-500 mx-auto mt-0.5" />
                 )}
               </button>
             ))}
@@ -173,29 +173,29 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Preferences */}
-        <div className={`border rounded-xl p-3 ${
+        <div className={`border rounded-xl p-2 ${
           isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         }`}>
-          <div className="flex items-center gap-2 mb-2">
-            <Heart className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-            <h2 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('preferences')}</h2>
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Heart className={`w-3.5 h-3.5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('preferences')}</h2>
           </div>
 
           {/* Step 1: Gender */}
-          <div className="mb-3">
-            <label className={`block text-xs font-medium mb-2 ${
+          <div className="mb-2">
+            <label className={`block text-[10px] font-medium mb-1.5 ${
               isDark ? 'text-gray-300' : 'text-gray-700'
             }`}>
               {t('gender.title')}
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-1.5">
               <button
                 onClick={() => {
                   setGender('man')
                   setStyle('') // Reset style when gender changes
                 }}
                 className={`
-                  p-3 border-2 rounded-lg transition-all
+                  p-2 border-2 rounded-lg transition-all
                   ${gender === 'man' 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                     : isDark
@@ -203,8 +203,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                       : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
-                <div className="text-2xl mb-1">👨</div>
-                <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.man')}</div>
+                <div className="text-xl mb-0.5">👨</div>
+                <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.man')}</div>
               </button>
               <button
                 onClick={() => {
@@ -212,7 +212,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                   setStyle('') // Reset style when gender changes
                 }}
                 className={`
-                  p-3 border-2 rounded-lg transition-all
+                  p-2 border-2 rounded-lg transition-all
                   ${gender === 'woman' 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                     : isDark
@@ -220,27 +220,27 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                       : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
-                <div className="text-2xl mb-1">👩</div>
-                <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.woman')}</div>
+                <div className="text-xl mb-0.5">👩</div>
+                <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('gender.woman')}</div>
               </button>
             </div>
           </div>
 
           {/* Step 2: Style (only show if gender selected) */}
           {gender && (
-            <div className="mb-3">
-              <label className={`block text-xs font-medium mb-2 ${
+            <div className="mb-2">
+              <label className={`block text-[10px] font-medium mb-1.5 ${
                 isDark ? 'text-gray-300' : 'text-gray-700'
               }`}>
                 {t('style.title')}
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 {styles.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setStyle(s.id)}
                     className={`
-                      p-3 border-2 rounded-lg transition-all
+                      p-2 border-2 rounded-lg transition-all
                       ${style === s.id 
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                         : isDark
@@ -248,8 +248,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                           : 'border-gray-200 hover:border-gray-300 bg-white'}
                     `}
                   >
-                    <div className="text-2xl mb-1">{s.emoji}</div>
-                    <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t(`style.${s.id}` as any)}</div>
+                    <div className="text-xl mb-0.5">{s.emoji}</div>
+                    <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t(`style.${s.id}` as any)}</div>
                   </button>
                 ))}
               </div>
@@ -258,7 +258,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
 
           {/* Step 3: Location */}
           <div>
-            <label className={`block text-xs font-medium mb-2 flex items-center gap-1 ${
+            <label className={`block text-[10px] font-medium mb-1.5 flex items-center gap-1 ${
               isDark ? 'text-gray-300' : 'text-gray-700'
             }`}>
               <MapPin className="w-3 h-3" />
@@ -267,7 +267,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className={`w-full p-2 text-sm border-2 rounded-lg focus:border-blue-500 focus:outline-none transition-colors ${
+              className={`w-full p-1.5 text-xs border-2 rounded-lg focus:border-blue-500 focus:outline-none transition-colors ${
                 isDark 
                   ? 'bg-gray-700 border-gray-600 text-white' 
                   : 'bg-white border-gray-200 text-black'
@@ -282,19 +282,19 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Theme */}
-        <div className={`border rounded-xl p-3 ${
+        <div className={`border rounded-xl p-2 ${
           isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         }`}>
-          <div className="flex items-center gap-2 mb-2">
-            <Palette className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
-            <h2 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('theme')}</h2>
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Palette className={`w-3.5 h-3.5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-black'}`}>{t('theme')}</h2>
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             <button
               onClick={() => setTheme('light')}
               className={`
-                p-3 border-2 rounded-lg transition-all
+                p-2 border-2 rounded-lg transition-all
                 ${theme === 'light' 
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                   : isDark
@@ -302,13 +302,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                     : 'border-gray-200 hover:border-gray-300 bg-white'}
               `}
             >
-              <div className="text-2xl mb-1">☀️</div>
-              <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.light')}</div>
+              <div className="text-xl mb-0.5">☀️</div>
+              <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.light')}</div>
             </button>
             <button
               onClick={() => setTheme('dark')}
               className={`
-                p-3 border-2 rounded-lg transition-all
+                p-2 border-2 rounded-lg transition-all
                 ${theme === 'dark' 
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
                   : isDark
@@ -316,8 +316,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                     : 'border-gray-200 hover:border-gray-300 bg-white'}
               `}
             >
-              <div className="text-2xl mb-1">🌙</div>
-              <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.dark')}</div>
+              <div className="text-xl mb-0.5">🌙</div>
+              <div className={`text-xs font-medium ${isDark ? 'text-white' : 'text-black'}`}>{t('themeOptions.dark')}</div>
             </button>
           </div>
         </div>
@@ -326,7 +326,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="w-full py-2.5 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-2 text-sm bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           {saving ? t('saving') : t('save')}
         </button>
@@ -335,9 +335,9 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="w-full py-2.5 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 mb-6"
+          className="w-full py-2 text-sm bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5 mb-4"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-3.5 h-3.5" />
           {loggingOut ? t('loggingOut') : t('logout')}
         </button>
       </div>

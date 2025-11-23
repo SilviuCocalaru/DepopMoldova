@@ -3,11 +3,12 @@
 import { Database } from '@/types/database.types'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Heart, MessageCircle, ChevronLeft, ChevronRight, ArrowLeft, Trash2 } from 'lucide-react'
+import { Heart, MessageCircle, ChevronLeft, ChevronRight, ArrowLeft, Trash2, Edit } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import ProductBackIsland from './ProductBackIsland'
 
 type Product = Database['public']['Tables']['products']['Row'] & {
   profiles: Database['public']['Tables']['profiles']['Row'] | null
@@ -121,7 +122,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
   }
 
   return (
-    <div className={`min-h-screen pb-24 md:pb-8 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button - Desktop Only */}
         <button
@@ -254,18 +255,31 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
                   </button>
                 </>
               ) : (
-                <button
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                    isDark
-                      ? 'bg-red-900 text-red-100 hover:bg-red-800 disabled:bg-red-900/50'
-                      : 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400'
-                  } disabled:cursor-not-allowed`}
-                >
-                  <Trash2 className="w-5 h-5 inline mr-2" />
-                  {isDeleting ? t('deleting') : t('deleteListing')}
-                </button>
+                <div className="flex gap-3 w-full">
+                  <Link
+                    href={`/sell?edit=${product.id}`}
+                    className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors text-center ${
+                      isDark
+                        ? 'bg-gray-700 text-gray-200 border-2 border-gray-600 hover:border-gray-500'
+                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    <Edit className="w-5 h-5 inline mr-2" />
+                    {t('editListing')}
+                  </Link>
+                  <button
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                    className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
+                      isDark
+                        ? 'bg-red-900 text-red-100 hover:bg-red-800 disabled:bg-red-900/50'
+                        : 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400'
+                    } disabled:cursor-not-allowed`}
+                  >
+                    <Trash2 className="w-5 h-5 inline mr-2" />
+                    {isDeleting ? t('deleting') : t('deleteListing')}
+                  </button>
+                </div>
               )}
             </div>
 
@@ -313,6 +327,9 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
           </div>
         </div>
       </div>
+      
+      {/* Back Button Island - Mobile Only */}
+      <ProductBackIsland isDark={isDark} />
     </div>
   )
 }

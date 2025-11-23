@@ -19,6 +19,10 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const t = useTranslations('auth')
 
+  // Hide on product detail pages
+  const isProductPage = pathname?.startsWith('/product/')
+  if (isProductPage) return null
+
   useEffect(() => {
     // Check if island was previously shown
     const wasIslandShown = sessionStorage.getItem('bottomIslandShown')
