@@ -147,7 +147,7 @@ export default function SellPage() {
             {images.length < 6 && (
               <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
                 <div className="flex flex-col items-center">
-                  <Upload className="w-8 h-8 text-gray-400 dark:text-gray-500" />k:text-gray-500" />
+                  <Upload className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                   <span className="mt-2 text-sm text-gray-500 dark:text-gray-400">Upload photos</span>
                 </div>
                 <input
