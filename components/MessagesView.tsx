@@ -556,7 +556,7 @@ export default function MessagesView({ currentUserId, initialMessages, theme }: 
                             className="rounded-full"
                           />
                         ) : (
-                          <span className="text-lg md:text-xl font-semibold text-gray-600">
+                          <span className={`text-lg md:text-xl font-semibold ${isDark ? 'text-gray-200' : 'text-gray-600'}`}>
                             {conv.username.charAt(0).toUpperCase()}
                           </span>
                         )}
