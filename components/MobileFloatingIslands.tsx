@@ -139,12 +139,10 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
                 <img
                   src={profile.avatar_url}
                   alt={profile.username}
-                  className="w-6 h-6 rounded-full object-cover ring-2 ring-transparent transition-all duration-300 group-hover:ring-blue-400"
+                  className="w-6 h-6 rounded object-cover"
                 />
               ) : (
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <UserIcon className="w-3.5 h-3.5 text-gray-600" strokeWidth={2.5} />
-                </div>
+                <UserIcon className="w-6 h-6" strokeWidth={2} />
               )}
             </Link>
           </div>
