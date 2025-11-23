@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import Header from '@/components/Header'
+import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
@@ -38,13 +39,13 @@ export default async function Home() {
 
   return (
     <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      {/* Header - Desktop Only */}
-      <div className="hidden md:block">
-        <Header />
+      {/* Mobile Islands Only */}
+      <div className="md:hidden">
+        <MobileOnlyHeader />
       </div>
       
-      {/* Mobile Islands - Handled by MobileFloatingIslands inside Header */}
-      <div className="md:hidden">
+      {/* Desktop Header Only */}
+      <div className="hidden md:block">
         <Header />
       </div>
       

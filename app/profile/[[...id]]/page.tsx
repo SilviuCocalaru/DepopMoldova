@@ -5,6 +5,7 @@ import ProfileActions from '@/components/profile/ProfileActions'
 import ProfileTabs from '@/components/profile/ProfileTabs'
 import ProductGrid from '@/components/profile/ProductGrid'
 import Header from '@/components/Header'
+import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,7 +57,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      <Header />
+      <div className="md:hidden">
+        <MobileOnlyHeader />
+      </div>
+      <div className="hidden md:block">
+        <Header />
+      </div>
       <div className="max-w-[935px] mx-auto px-4 py-3">
         <ProfileHeader 
           profile={profile}

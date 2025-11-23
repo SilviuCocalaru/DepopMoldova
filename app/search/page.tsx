@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import Header from '@/components/Header'
+import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string; category?: string; price?: string }>
@@ -80,7 +81,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      <Header />
+      <div className="md:hidden">
+        <MobileOnlyHeader />
+      </div>
+      <div className="hidden md:block">
+        <Header />
+      </div>
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">

@@ -203,57 +203,30 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
             <p className={`text-4xl font-bold mb-6 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>${product.price}</p>
 
             {/* Seller Info */}
-            {currentUserId ? (
-              <Link
-                href={`/profile/${product.seller_id}`}
-                className={`flex items-center space-x-3 mb-6 p-3 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}
-              >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`}>
-                  {product.profiles?.avatar_url ? (
-                    <Image
-                      src={product.profiles.avatar_url}
-                      alt={product.profiles.username}
-                      width={48}
-                      height={48}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <span className={`text-xl font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {product.profiles?.username.charAt(0).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <p className={`font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.profiles?.username}</p>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('viewProfile')}</p>
-                </div>
-              </Link>
-            ) : (
-              <button
-                onClick={() => router.push('/signup')}
-                className={`flex items-center space-x-3 mb-6 p-3 rounded-lg transition-colors w-full text-left ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}
-              >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`}>
-                  {product.profiles?.avatar_url ? (
-                    <Image
-                      src={product.profiles.avatar_url}
-                      alt={product.profiles.username}
-                      width={48}
-                      height={48}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <span className={`text-xl font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {product.profiles?.username.charAt(0).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <p className={`font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.profiles?.username}</p>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('viewProfile')}</p>
-                </div>
-              </button>
-            )}
+            <Link
+              href={`/profile/${product.seller_id}`}
+              className={`flex items-center space-x-3 mb-6 p-3 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}
+            >
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`}>
+                {product.profiles?.avatar_url ? (
+                  <Image
+                    src={product.profiles.avatar_url}
+                    alt={product.profiles.username}
+                    width={48}
+                    height={48}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <span className={`text-xl font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {product.profiles?.username.charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <div>
+                <p className={`font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.profiles?.username}</p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('viewProfile')}</p>
+              </div>
+            </Link>
 
             {/* Action Buttons */}
             <div className="flex gap-3 mb-6">
