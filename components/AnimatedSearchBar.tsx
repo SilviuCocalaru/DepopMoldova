@@ -72,10 +72,9 @@ export default function AnimatedSearchBar() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`
-              flex-1 outline-none bg-transparent text-sm
+              flex-1 outline-none bg-transparent text-sm text-left
               ${isDark ? 'text-white placeholder:text-gray-500' : 'text-gray-900 placeholder:text-gray-400'}
-              ${!isExpanded && 'text-center pointer-events-none'}
-              ${isExpanded && 'text-left'}
+              ${!isExpanded && 'pointer-events-none'}
             `}
             autoFocus={isExpanded}
           />
