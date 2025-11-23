@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import MobileIslandsWrapper from "@/components/MobileIslandsWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -63,7 +62,6 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        <MobileIslandsWrapper />
         {children}
         <Script
           id="sw-register"

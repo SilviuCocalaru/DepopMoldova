@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
+import Header from '@/components/Header'
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string; category?: string; price?: string }>
@@ -65,6 +66,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">

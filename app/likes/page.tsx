@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import ProductCard from '@/components/ProductCard'
+import ProductGrid from '@/components/ProductGrid'
+import Header from '@/components/Header'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,6 +31,7 @@ export default async function LikesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Liked Items</h1>
         
