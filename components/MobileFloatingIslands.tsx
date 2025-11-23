@@ -60,6 +60,13 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
               shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]
               ${shouldAnimate ? 'animate-slide-up' : ''}
             `}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              height: '60px',
+              padding: 0
+            }}
           >
             <Link 
               href="/" 
