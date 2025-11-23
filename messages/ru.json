@@ -130,5 +130,30 @@
   "searchResults": {
     "products": "Товары",
     "trySearching": "Попробуйте найти что-то другое"
+  },
+  "home": {
+    "categories": {
+      "women": "Женщинам",
+      "men": "Мужчинам",
+      "accessories": "Аксессуары",
+      "shoes": "Обувь",
+      "vintage": "Винтаж",
+      "sportswear": "Спортивное",
+      "designer": "Дизайнерское",
+      "all": "Все"
+    }
+  },
+  "productPage": {
+    "size": "Размер",
+    "condition": "Состояние",
+    "brand": "Бренд",
+    "category": "Категория",
+    "description": "Описание",
+    "seller": "Продавец",
+    "like": "Нравится",
+    "buyNow": "Купить сейчас",
+    "makeOffer": "Сделать предложение",
+    "soldOut": "Продано",
+    "relatedItems": "Похожие товары"
   }
 }

@@ -7,6 +7,7 @@ import { Heart, MessageCircle, ChevronLeft, ChevronRight, ArrowLeft, Trash2 } fr
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 type Product = Database['public']['Tables']['products']['Row'] & {
   profiles: Database['public']['Tables']['profiles']['Row'] | null
@@ -29,6 +30,8 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
   const [isDeleting, setIsDeleting] = useState(false)
   const supabase = createClient()
   const router = useRouter()
+  const t = useTranslations('productPage')
+  const tCommon = useTranslations('common')
 
   const isOwnProduct = currentUserId === product.seller_id
 

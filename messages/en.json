@@ -130,5 +130,30 @@
   "searchResults": {
     "products": "Products",
     "trySearching": "Try searching for something else"
+  },
+  "home": {
+    "categories": {
+      "women": "Women",
+      "men": "Men",
+      "accessories": "Accessories",
+      "shoes": "Shoes",
+      "vintage": "Vintage",
+      "sportswear": "Sportswear",
+      "designer": "Designer",
+      "all": "All"
+    }
+  },
+  "productPage": {
+    "size": "Size",
+    "condition": "Condition",
+    "brand": "Brand",
+    "category": "Category",
+    "description": "Description",
+    "seller": "Seller",
+    "like": "Like",
+    "buyNow": "Buy Now",
+    "makeOffer": "Make Offer",
+    "soldOut": "Sold Out",
+    "relatedItems": "Related Items"
   }
 }

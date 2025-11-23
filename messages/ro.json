@@ -130,5 +130,30 @@
   "searchResults": {
     "products": "Produse",
     "trySearching": "Încearcă să cauți altceva"
+  },
+  "home": {
+    "categories": {
+      "women": "Femei",
+      "men": "Bărbați",
+      "accessories": "Accesorii",
+      "shoes": "Încălțăminte",
+      "vintage": "Vintage",
+      "sportswear": "Sportiv",
+      "designer": "Designer",
+      "all": "Toate"
+    }
+  },
+  "productPage": {
+    "size": "Mărime",
+    "condition": "Stare",
+    "brand": "Brand",
+    "category": "Categorie",
+    "description": "Descriere",
+    "seller": "Vânzător",
+    "like": "Apreciază",
+    "buyNow": "Cumpără acum",
+    "makeOffer": "Fă o ofertă",
+    "soldOut": "Vândut",
+    "relatedItems": "Produse similare"
   }
 }

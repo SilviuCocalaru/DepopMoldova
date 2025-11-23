@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import Header from '@/components/Header'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,6 +24,7 @@ export default async function Home() {
   }
   
   const isDark = theme === 'dark'
+  const t = await getTranslations('home.categories')
   
   const { data: products } = await supabase
     .from('products')
@@ -47,42 +49,42 @@ export default async function Home() {
             <Link href="/search?category=women" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Women
+              {t('women')}
             </Link>
             <Link href="/search?category=men" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Men
+              {t('men')}
             </Link>
-            <Link href="/search?category=kids" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+            <Link href="/search?category=accessories" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Kids
+              {t('accessories')}
             </Link>
-            <Link href="/search?category=brands" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+            <Link href="/search?category=shoes" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Brands
+              {t('shoes')}
             </Link>
-            <Link href="/search?category=sports" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+            <Link href="/search?category=vintage" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Sports
+              {t('vintage')}
             </Link>
-            <Link href="/search?category=trending" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+            <Link href="/search?category=sportswear" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Trending
+              {t('sportswear')}
             </Link>
-            <Link href="/search?category=gifts" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+            <Link href="/search?category=designer" className={`text-sm font-medium whitespace-nowrap transition-colors ${
               isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Gifts
+              {t('designer')}
             </Link>
-            <Link href="/search?category=sale" className={`text-sm font-medium whitespace-nowrap ${
-              isDark ? 'text-red-400' : 'text-red-500'
+            <Link href="/search" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
             }`}>
-              Sale
+              {t('all')}
             </Link>
           </div>
         </div>
