@@ -176,7 +176,7 @@ export default function Header() {
         isLoading={isLoading}
       />
 
-      {/* Desktop Header */}
+      {/* Desktop Header - Hidden on Mobile */}
       <header className="bg-white/80 backdrop-blur-[20px] backdrop-saturate-[180%] border-b border-gray-200/30 shadow-[0_2px_16px_0_rgba(0,0,0,0.04)] sticky top-0 z-50 hidden md:block">
         <nav className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">

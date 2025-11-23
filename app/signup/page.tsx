@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useTheme } from '@/components/ThemeProvider'
 
 export default function SignupPage() {
-  const { isDark } = useTheme()
+  const isDark = false // Force light theme on signup page
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
