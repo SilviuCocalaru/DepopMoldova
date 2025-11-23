@@ -13,11 +13,11 @@ export default function ProductBackIsland({ isDark }: ProductBackIslandProps) {
   const tCommon = useTranslations('common')
 
   return (
-    <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+    <div className="md:hidden fixed top-4 left-4 z-50">
       <button
         onClick={() => router.back()}
         className={`
-          px-6 py-3 rounded-full
+          px-4 py-2.5 rounded-full
           ${isDark ? 'bg-gray-800/75 border-gray-700/30' : 'bg-white/75 border-gray-200/30'}
           backdrop-blur-[16px] backdrop-saturate-[180%]
           border

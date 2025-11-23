@@ -38,7 +38,15 @@ export default async function Home() {
 
   return (
     <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      <Header />
+      {/* Header - Desktop Only */}
+      <div className="hidden md:block">
+        <Header />
+      </div>
+      
+      {/* Mobile Islands - Handled by MobileFloatingIslands inside Header */}
+      <div className="md:hidden">
+        <Header />
+      </div>
       
       {/* Category Navigation - Desktop Only */}
       <nav className={`border-b sticky top-16 z-40 hidden md:block transition-colors ${

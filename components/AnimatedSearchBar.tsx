@@ -67,7 +67,7 @@ export default function AnimatedSearchBar() {
         <div 
           className={`
             transition-all duration-300 ease-out
-            ${isExpanded ? 'w-[calc(100vw-40px)]' : 'w-[150px]'}
+            ${isExpanded ? 'w-[calc(100vw-100px)]' : 'w-[150px]'}
             h-[44px] rounded-full
             ${isDark ? 'bg-gray-800/75 border-gray-700/30' : 'bg-white/75 border-gray-200/30'}
             backdrop-blur-[16px] backdrop-saturate-[180%]
