@@ -1,9 +1,13 @@
 'use client'
 
+import { useTheme } from '@/components/ThemeProvider'
+
 export default function OfflinePage() {
+  const { isDark } = useTheme()
+  
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center border border-gray-200 dark:border-gray-700 transition-colors">
+    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div className={`max-w-md w-full rounded-2xl shadow-xl p-8 text-center border transition-colors ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
         <div className="mb-6">
           <div className="w-24 h-24 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
             <svg

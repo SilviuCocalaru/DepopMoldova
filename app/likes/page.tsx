@@ -13,6 +13,16 @@ export default async function LikesPage() {
     redirect('/login')
   }
 
+  // Get user's theme preference
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('theme')
+    .eq('id', session.user.id)
+    .single()
+  
+  const theme = (profile?.theme as 'light' | 'dark') || 'light'
+  const isDark = theme === 'dark'
+
   const { data: likes } = await supabase
     .from('likes')
     .select(`
@@ -30,14 +40,14 @@ export default async function LikesPage() {
   const userId = session.user.id
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Liked Items</h1>
+        <h1 className={`text-3xl font-bold mb-8 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Liked Items</h1>
         
         {likedProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">You haven't liked any items yet</p>
+            <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>You haven't liked any items yet</p>
           </div>
         ) : (
           <ProductGrid products={likedProducts} currentUserId={userId} />

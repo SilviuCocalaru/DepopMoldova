@@ -3,10 +3,26 @@ import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import Header from '@/components/Header'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   const supabase = await createClient()
   
   const { data: { user } } = await supabase.auth.getUser()
+  
+  // Get user's theme preference
+  let theme: 'light' | 'dark' = 'light'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('theme')
+      .eq('id', user.id)
+      .single()
+    
+    theme = (profile?.theme as 'light' | 'dark') || 'light'
+  }
+  
+  const isDark = theme === 'dark'
   
   const { data: products } = await supabase
     .from('products')
@@ -19,35 +35,53 @@ export default async function Home() {
     .limit(12)
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       
       {/* Category Navigation - Desktop Only */}
-      <nav className="border-b border-gray-200 dark:border-gray-700 sticky top-16 bg-white dark:bg-gray-800 z-40 hidden md:block transition-colors">
+      <nav className={`border-b sticky top-16 z-40 hidden md:block transition-colors ${
+        isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'
+      }`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center space-x-8 overflow-x-auto py-4">
-            <Link href="/search?category=women" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=women" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Women
             </Link>
-            <Link href="/search?category=men" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=men" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Men
             </Link>
-            <Link href="/search?category=kids" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=kids" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Kids
             </Link>
-            <Link href="/search?category=brands" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=brands" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Brands
             </Link>
-            <Link href="/search?category=sports" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=sports" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Sports
             </Link>
-            <Link href="/search?category=trending" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=trending" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Trending
             </Link>
-            <Link href="/search?category=gifts" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
+            <Link href="/search?category=gifts" className={`text-sm font-medium whitespace-nowrap transition-colors ${
+              isDark ? 'text-gray-100 hover:text-red-400' : 'text-gray-900 hover:text-red-500'
+            }`}>
               Gifts
             </Link>
-            <Link href="/search?category=sale" className="text-sm font-medium text-red-500 dark:text-red-400 whitespace-nowrap">
+            <Link href="/search?category=sale" className={`text-sm font-medium whitespace-nowrap ${
+              isDark ? 'text-red-400' : 'text-red-500'
+            }`}>
               Sale
             </Link>
           </div>
@@ -98,13 +132,19 @@ export default async function Home() {
       </section>
 
       {/* Tagline Section */}
-      <section className="py-16 px-4 text-center bg-white dark:bg-gray-900 transition-colors">
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+      <section className={`py-16 px-4 text-center transition-colors ${
+        isDark ? 'bg-gray-900' : 'bg-white'
+      }`}>
+        <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
+          isDark ? 'text-gray-100' : 'text-gray-900'
+        }`}>
           Buy for less. Pay no selling fee*. Keep fashion circular.
         </h2>
         <Link 
           href="/sell"
-          className="bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors inline-block text-lg"
+          className={`px-8 py-4 rounded-md font-medium transition-colors inline-block text-lg ${
+            isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'
+          }`}
         >
           Sell now
         </Link>
@@ -114,8 +154,12 @@ export default async function Home() {
       <section className="py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Trending near you</h2>
-            <Link href="/explore" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+            <h2 className={`text-2xl md:text-3xl font-bold ${
+              isDark ? 'text-gray-100' : 'text-gray-900'
+            }`}>Trending near you</h2>
+            <Link href="/explore" className={`font-medium hover:underline ${
+              isDark ? 'text-blue-400' : 'text-blue-600'
+            }`}>
               See more
             </Link>
           </div>
@@ -124,10 +168,14 @@ export default async function Home() {
             <ProductGrid products={products} currentUserId={user?.id} />
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">No products yet</p>
+              <p className={`text-lg mb-4 ${
+                isDark ? 'text-gray-400' : 'text-gray-500'
+              }`}>No products yet</p>
               <Link
                 href="/sell"
-                className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors inline-block"
+                className={`px-6 py-3 rounded-md font-medium transition-colors inline-block ${
+                  isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'
+                }`}
               >
                 List your first item
               </Link>
@@ -137,33 +185,53 @@ export default async function Home() {
       </section>
 
       {/* Shop by Price */}
-      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800 transition-colors">
+      <section className={`py-16 px-4 transition-colors ${
+        isDark ? 'bg-gray-800' : 'bg-gray-50'
+      }`}>
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">Shop by price</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${
+            isDark ? 'text-gray-100' : 'text-gray-900'
+          }`}>Shop by price</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link 
               href="/search?price=under10"
-              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className={`rounded-lg p-12 text-center transition-colors ${
+                isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
             >
-              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $10</h3>
+              <h3 className={`text-2xl font-medium ${
+                isDark ? 'text-gray-100' : 'text-gray-900'
+              }`}>Under $10</h3>
             </Link>
             <Link 
               href="/search?price=under20"
-              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className={`rounded-lg p-12 text-center transition-colors ${
+                isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
             >
-              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $20</h3>
+              <h3 className={`text-2xl font-medium ${
+                isDark ? 'text-gray-100' : 'text-gray-900'
+              }`}>Under $20</h3>
             </Link>
             <Link 
               href="/search?price=under50"
-              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className={`rounded-lg p-12 text-center transition-colors ${
+                isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
             >
-              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $50</h3>
+              <h3 className={`text-2xl font-medium ${
+                isDark ? 'text-gray-100' : 'text-gray-900'
+              }`}>Under $50</h3>
             </Link>
             <Link 
               href="/search?price=under100"
-              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className={`rounded-lg p-12 text-center transition-colors ${
+                isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+              }`}
             >
-              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $100</h3>
+              <h3 className={`text-2xl font-medium ${
+                isDark ? 'text-gray-100' : 'text-gray-900'
+              }`}>Under $100</h3>
             </Link>
           </div>
         </div>

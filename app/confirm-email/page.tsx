@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react'
+import { useTheme } from '@/components/ThemeProvider'
 
 export default function ConfirmEmailPage() {
+  const { isDark } = useTheme()
   const [email, setEmail] = useState<string | null>(null)
   const [confirmed, setConfirmed] = useState(false)
   const [error, setError] = useState<string | null>(null)

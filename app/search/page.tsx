@@ -16,6 +16,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  // Get user's theme preference
+  let theme: 'light' | 'dark' = 'light'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('theme')
+      .eq('id', user.id)
+      .single()
+    
+    theme = (profile?.theme as 'light' | 'dark') || 'light'
+  }
+  
+  const isDark = theme === 'dark'
+
   // Build the query
   let productsQuery = supabase
     .from('products')
@@ -65,13 +79,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     : 'Browse all'
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{resultText}</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h1 className={`text-3xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{resultText}</h1>
+          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
             {products?.length || 0} {products?.length === 1 ? 'item' : 'items'} found
           </p>
         </div>
@@ -81,15 +95,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ) : (
           <div className="text-center py-16">
             <div className="mb-4">
-              <svg className="w-16 h-16 text-gray-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-16 h-16 mx-auto ${isDark ? 'text-gray-600' : 'text-gray-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">No items found</h2>
-            <p className="text-gray-600 mb-6">Try adjusting your search or browse all items</p>
+            <h2 className={`text-xl font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>No items found</h2>
+            <p className={`mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Try adjusting your search or browse all items</p>
             <Link
               href="/"
-              className="inline-block bg-black text-white px-6 py-3 rounded-md font-medium hover:bg-gray-800 transition-colors"
+              className={`inline-block px-6 py-3 rounded-md font-medium transition-colors ${
+                isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'
+              }`}
             >
               Browse all items
             </Link>

@@ -6,6 +6,7 @@ type Theme = 'light' | 'dark'
 
 interface ThemeContextType {
   theme: Theme
+  isDark: boolean
   setTheme: (theme: Theme) => void
 }
 
@@ -39,7 +40,7 @@ export function ThemeProvider({
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, isDark: theme === 'dark', setTheme }}>
       {children}
     </ThemeContext.Provider>
   )

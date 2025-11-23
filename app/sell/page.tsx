@@ -5,12 +5,14 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Upload, X } from 'lucide-react'
 import Image from 'next/image'
+import { useTheme } from '@/components/ThemeProvider'
 
 const categories = ['Tops', 'Bottoms', 'Dresses', 'Outerwear', 'Shoes', 'Accessories', 'Bags', 'Other']
 const conditions = ['New with tags', 'New without tags', 'Excellent', 'Good', 'Fair']
 const sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size']
 
 export default function SellPage() {
+  const { isDark } = useTheme()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
