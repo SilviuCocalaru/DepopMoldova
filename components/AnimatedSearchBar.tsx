@@ -12,6 +12,7 @@ export default function AnimatedSearchBar() {
   const [isExpanded, setIsExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const searchRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   // Click outside to collapse
   useEffect(() => {
@@ -28,6 +29,15 @@ export default function AnimatedSearchBar() {
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isExpanded])
+
+  // Auto-focus input when expanded
+  useEffect(() => {
+    if (isExpanded && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 100)
     }
   }, [isExpanded])
 
@@ -69,6 +79,7 @@ export default function AnimatedSearchBar() {
         >
           <Search className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <input
+            ref={inputRef}
             type="text"
             placeholder={isExpanded ? t('placeholderExpanded') : t('placeholder')}
             value={searchQuery}
@@ -78,7 +89,6 @@ export default function AnimatedSearchBar() {
               ${isDark ? 'text-white placeholder:text-gray-500' : 'text-gray-900 placeholder:text-gray-400'}
               ${!isExpanded && 'pointer-events-none'}
             `}
-            autoFocus={isExpanded}
           />
           {isExpanded && searchQuery && (
             <button 

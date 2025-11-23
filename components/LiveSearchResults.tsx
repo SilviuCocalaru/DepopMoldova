@@ -59,8 +59,8 @@ export default function LiveSearchResults({ query, isDark }: LiveSearchResultsPr
   }
 
   return (
-    <div className={`w-full backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] border overflow-hidden max-h-[60vh] overflow-y-auto ${
-      isDark ? 'bg-gray-800/85 border-gray-700/30' : 'bg-white/85 border-gray-200/30'
+    <div className={`w-full backdrop-blur-[16px] backdrop-saturate-[180%] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] border overflow-hidden max-h-[60vh] overflow-y-auto ${
+      isDark ? 'bg-gray-800/75 border-gray-700/30' : 'bg-white/75 border-gray-200/30'
     }`}>
       {loading ? (
         <div className="p-6 text-center">
