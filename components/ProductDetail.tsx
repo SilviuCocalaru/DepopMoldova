@@ -16,9 +16,11 @@ type Product = Database['public']['Tables']['products']['Row'] & {
 interface ProductDetailProps {
   product: Product
   currentUserId?: string
+  theme: 'light' | 'dark'
 }
 
-export default function ProductDetail({ product, currentUserId }: ProductDetailProps) {
+export default function ProductDetail({ product, currentUserId, theme }: ProductDetailProps) {
+  const isDark = theme === 'dark'
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isLiked, setIsLiked] = useState(
     currentUserId ? product.likes.some(like => like.user_id === currentUserId) : false
@@ -73,12 +75,12 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button - Desktop Only */}
         <button
           onClick={() => router.back()}
-          className="hidden md:flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+          className={`hidden md:flex items-center gap-2 mb-6 transition-colors ${isDark ? 'text-gray-400 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900'}`}
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="font-medium">Back</span>
@@ -87,7 +89,7 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Image Gallery */}
           <div>
-            <div className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden">
+            <div className={`relative aspect-square rounded-lg overflow-hidden ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
               {product.images.length > 0 ? (
                 <>
                   <Image
@@ -119,7 +121,7 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
                   )}
                 </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <div className={`w-full h-full flex items-center justify-center ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                   No image
                 </div>
               )}
@@ -150,15 +152,15 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
 
           {/* Product Info */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.title}</h1>
-            <p className="text-4xl font-bold text-gray-900 mb-6">${product.price}</p>
+            <h1 className={`text-3xl font-bold mb-4 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.title}</h1>
+            <p className={`text-4xl font-bold mb-6 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>${product.price}</p>
 
             {/* Seller Info */}
             <Link
               href={`/profile/${product.seller_id}`}
-              className="flex items-center space-x-3 mb-6 hover:bg-gray-50 p-3 rounded-lg transition-colors"
+              className={`flex items-center space-x-3 mb-6 p-3 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}
             >
-              <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`}>
                 {product.profiles?.avatar_url ? (
                   <Image
                     src={product.profiles.avatar_url}
@@ -168,14 +170,14 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="text-xl font-semibold text-gray-600">
+                  <span className={`text-xl font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                     {product.profiles?.username.charAt(0).toUpperCase()}
                   </span>
                 )}
               </div>
               <div>
-                <p className="font-medium text-gray-900">{product.profiles?.username}</p>
-                <p className="text-sm text-gray-500">View profile</p>
+                <p className={`font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.profiles?.username}</p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>View profile</p>
               </div>
             </Link>
 
@@ -186,6 +188,8 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
                 className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
                   isLiked
                     ? 'bg-red-50 text-red-600 border-2 border-red-600'
+                    : isDark
+                    ? 'bg-gray-700 text-gray-200 border-2 border-gray-600 hover:border-gray-500'
                     : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400'
                 }`}
               >
@@ -203,42 +207,42 @@ export default function ProductDetail({ product, currentUserId }: ProductDetailP
             </div>
 
             {/* Product Details */}
-            <div className="bg-white rounded-lg p-6 space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">Product Details</h2>
+            <div className={`rounded-lg p-6 space-y-4 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+              <h2 className={`text-lg font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Product Details</h2>
               
               {product.description && (
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Description</p>
-                  <p className="text-gray-600 mt-1">{product.description}</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description</p>
+                  <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.description}</p>
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Category</p>
-                  <p className="text-gray-600 mt-1">{product.category}</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Category</p>
+                  <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.category}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Condition</p>
-                  <p className="text-gray-600 mt-1">{product.condition}</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Condition</p>
+                  <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.condition}</p>
                 </div>
                 {product.size && (
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Size</p>
-                    <p className="text-gray-600 mt-1">{product.size}</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Size</p>
+                    <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.size}</p>
                   </div>
                 )}
                 {product.brand && (
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Brand</p>
-                    <p className="text-gray-600 mt-1">{product.brand}</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Brand</p>
+                    <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.brand}</p>
                   </div>
                 )}
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-700">Listed</p>
-                <p className="text-gray-600 mt-1" suppressHydrationWarning>
+                <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Listed</p>
+                <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} suppressHydrationWarning>
                   {new Date(product.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </p>
               </div>

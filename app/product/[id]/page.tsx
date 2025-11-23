@@ -23,10 +23,22 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   const { data: { user } } = await supabase.auth.getUser()
 
+  // Get user's theme preference
+  let theme: 'light' | 'dark' = 'light'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('theme')
+      .eq('id', user.id)
+      .single()
+    
+    theme = (profile?.theme as 'light' | 'dark') || 'light'
+  }
+
   return (
     <>
       <Header />
-      <ProductDetail product={product} currentUserId={user?.id} />
+      <ProductDetail product={product} currentUserId={user?.id} theme={theme} />
     </>
   )
 }
