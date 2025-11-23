@@ -52,8 +52,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
   const followersCount = 0
   const followingCount = 0
 
+  const isDark = profile.theme === 'dark'
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       <div className="max-w-[935px] mx-auto px-4 py-8">
         <ProfileHeader 
@@ -61,13 +63,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
           postsCount={products?.length || 0}
           followersCount={followersCount}
           followingCount={followingCount}
+          isDark={isDark}
         />
         <ProfileActions 
           userId={profileId!}
           isOwnProfile={isOwnProfile}
+          isDark={isDark}
         />
-        <ProfileTabs />
-        <ProductGrid products={products || []} />
+        <ProfileTabs isDark={isDark} />
+        <ProductGrid products={products || []} isDark={isDark} />
       </div>
     </div>
   )

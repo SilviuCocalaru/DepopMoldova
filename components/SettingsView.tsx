@@ -57,6 +57,9 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const [location, setLocation] = useState(profile.location || '')
   const [theme, setTheme] = useState(profile.theme || 'light')
 
+  // Get current theme for dynamic styling
+  const isDark = theme === 'dark'
+
   const saveSettings = async () => {
     setSaving(true)
     
@@ -96,24 +99,34 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const styles = gender === 'man' ? STYLES_MEN : STYLES_WOMEN
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pb-24 transition-colors">
+    <div className={`min-h-screen pb-20 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 transition-colors">
+      <div className={`sticky top-0 z-10 border-b px-4 py-3 ${
+        isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'
+      }`}>
         <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <Link href="/profile" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
-            <ChevronLeft className="w-6 h-6" />
+          <Link href="/profile" className={`p-2 rounded-full ${
+            isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+          }`}>
+            <ChevronLeft className={`w-6 h-6 ${isDark ? 'text-white' : 'text-black'}`} />
           </Link>
-          <h1 className="text-xl font-bold">Settings</h1>
+          <h1 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-black'}`}>
+            Settings
+          </h1>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         
         {/* Language Selector */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
+        <div className={`border rounded-xl p-4 ${
+          isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        }`}>
           <div className="flex items-center gap-2 mb-4">
-            <Globe className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-lg font-semibold">Language</h2>
+            <Globe className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>
+              Language
+            </h2>
           </div>
           
           <div className="grid grid-cols-3 gap-3">
@@ -125,11 +138,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                   p-4 border-2 rounded-lg transition-all text-center
                   ${language === lang.code 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                    : isDark
+                      ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
                 <div className="text-3xl mb-1">{lang.flag}</div>
-                <div className="text-sm font-medium">{lang.name}</div>
+                <div className={`text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}>{lang.name}</div>
                 {language === lang.code && (
                   <Check className="w-4 h-4 text-blue-500 mx-auto mt-1" />
                 )}
@@ -139,15 +154,19 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Preferences */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
+        <div className={`border rounded-xl p-4 ${
+          isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        }`}>
           <div className="flex items-center gap-2 mb-4">
-            <Heart className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-lg font-semibold">Preferences</h2>
+            <Heart className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>Preferences</h2>
           </div>
 
           {/* Step 1: Gender */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <label className={`block text-sm font-medium mb-3 ${
+              isDark ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               I am a...
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -160,11 +179,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                   p-4 border-2 rounded-lg transition-all
                   ${gender === 'man' 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                    : isDark
+                      ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
                 <div className="text-3xl mb-1">👨</div>
-                <div className="font-medium">Man</div>
+                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Man</div>
               </button>
               <button
                 onClick={() => {
@@ -175,11 +196,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                   p-4 border-2 rounded-lg transition-all
                   ${gender === 'woman' 
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                    : isDark
+                      ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'}
                 `}
               >
                 <div className="text-3xl mb-1">👩</div>
-                <div className="font-medium">Woman</div>
+                <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Woman</div>
               </button>
             </div>
           </div>
@@ -187,7 +210,9 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
           {/* Step 2: Style (only show if gender selected) */}
           {gender && (
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className={`block text-sm font-medium mb-3 ${
+                isDark ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 My style
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -199,11 +224,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                       p-4 border-2 rounded-lg transition-all
                       ${style === s.id 
                         ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                        : isDark
+                          ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                          : 'border-gray-200 hover:border-gray-300 bg-white'}
                     `}
                   >
                     <div className="text-3xl mb-1">{s.emoji}</div>
-                    <div className="font-medium">{s.name}</div>
+                    <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>{s.name}</div>
                   </button>
                 ))}
               </div>
@@ -212,14 +239,20 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
 
           {/* Step 3: Location */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+            <label className={`block text-sm font-medium mb-3 flex items-center gap-2 ${
+              isDark ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               <MapPin className="w-4 h-4" />
               Where are you from?
             </label>
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full p-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none bg-white dark:bg-gray-700 text-black dark:text-white transition-colors"
+              className={`w-full p-3 border-2 rounded-lg focus:border-blue-500 focus:outline-none transition-colors ${
+                isDark 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'bg-white border-gray-200 text-black'
+              }`}
             >
               <option value="">Select location</option>
               {MOLDOVA_LOCATIONS.map((loc) => (
@@ -230,10 +263,12 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Theme */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
+        <div className={`border rounded-xl p-4 ${
+          isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        }`}>
           <div className="flex items-center gap-2 mb-4">
-            <Palette className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-lg font-semibold">Theme</h2>
+            <Palette className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-black'}`}>Theme</h2>
           </div>
           
           <div className="grid grid-cols-2 gap-3">
@@ -243,11 +278,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 p-4 border-2 rounded-lg transition-all
                 ${theme === 'light' 
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                  : isDark
+                    ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                    : 'border-gray-200 hover:border-gray-300 bg-white'}
               `}
             >
               <div className="text-3xl mb-1">☀️</div>
-              <div className="font-medium">Light</div>
+              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Light</div>
             </button>
             <button
               onClick={() => setTheme('dark')}
@@ -255,11 +292,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 p-4 border-2 rounded-lg transition-all
                 ${theme === 'dark' 
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                  : isDark
+                    ? 'border-gray-600 hover:border-gray-500 bg-gray-700'
+                    : 'border-gray-200 hover:border-gray-300 bg-white'}
               `}
             >
               <div className="text-3xl mb-1">🌙</div>
-              <div className="font-medium">Dark</div>
+              <div className={`font-medium ${isDark ? 'text-white' : 'text-black'}`}>Dark</div>
             </button>
           </div>
         </div>
@@ -268,7 +307,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors mb-8"
         >
           {saving ? 'Saving...' : 'Save Settings'}
         </button>

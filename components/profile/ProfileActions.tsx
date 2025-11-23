@@ -8,9 +8,10 @@ import Link from 'next/link'
 interface ProfileActionsProps {
   userId: string
   isOwnProfile?: boolean
+  isDark?: boolean
 }
 
-export default function ProfileActions({ userId, isOwnProfile = true }: ProfileActionsProps) {
+export default function ProfileActions({ userId, isOwnProfile = true, isDark = false }: ProfileActionsProps) {
   const [copied, setCopied] = useState(false)
   const router = useRouter()
 

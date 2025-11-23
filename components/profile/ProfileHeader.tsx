@@ -15,13 +15,15 @@ interface ProfileHeaderProps {
   postsCount: number
   followersCount: number
   followingCount: number
+  isDark?: boolean
 }
 
 export default function ProfileHeader({ 
   profile, 
   postsCount, 
   followersCount, 
-  followingCount 
+  followingCount,
+  isDark = false
 }: ProfileHeaderProps) {
   return (
     <div className="flex flex-col items-center text-center mb-8">
@@ -33,28 +35,38 @@ export default function ProfileHeader({
             alt={profile.username}
             width={150}
             height={150}
-            className="rounded-full object-cover ring-2 ring-gray-200"
+            className={`rounded-full object-cover ring-2 ${
+              isDark ? 'ring-gray-700' : 'ring-gray-200'
+            }`}
           />
         ) : (
-          <div className="w-[150px] h-[150px] rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center ring-2 ring-gray-200">
-            <UserIcon className="w-16 h-16 text-gray-400" strokeWidth={1.5} />
+          <div className={`w-[150px] h-[150px] rounded-full flex items-center justify-center ring-2 ${
+            isDark 
+              ? 'bg-gradient-to-br from-gray-700 to-gray-800 ring-gray-700' 
+              : 'bg-gradient-to-br from-gray-100 to-gray-200 ring-gray-200'
+          }`}>
+            <UserIcon className={`w-16 h-16 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} strokeWidth={1.5} />
           </div>
         )}
       </div>
 
       {/* Username */}
-      <h1 className="text-xl font-bold text-gray-900 mb-1">
+      <h1 className={`text-xl font-bold mb-1 ${
+        isDark ? 'text-gray-100' : 'text-gray-900'
+      }`}>
         {profile.full_name || profile.username}
       </h1>
       
       {/* Username handle if full_name exists */}
       {profile.full_name && (
-        <p className="text-sm text-gray-500 mb-3">@{profile.username}</p>
+        <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>@{profile.username}</p>
       )}
 
       {/* Bio */}
       {profile.bio && (
-        <p className="text-sm text-gray-900 mb-3 max-w-md px-4">
+        <p className={`text-sm mb-3 max-w-md px-4 ${
+          isDark ? 'text-gray-300' : 'text-gray-900'
+        }`}>
           {profile.bio}
         </p>
       )}
