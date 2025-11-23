@@ -57,7 +57,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
   return (
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
-      <div className="max-w-[935px] mx-auto px-4 py-8">
+      <div className="max-w-[935px] mx-auto px-4 py-3">
         <ProfileHeader 
           profile={profile}
           postsCount={products?.length || 0}

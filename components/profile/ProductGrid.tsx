@@ -16,19 +16,19 @@ interface ProductGridProps {
 export default function ProductGrid({ products, isDark = false }: ProductGridProps) {
   if (!products || products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className={`w-20 h-20 rounded-full border-4 mb-4 flex items-center justify-center ${
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <div className={`w-16 h-16 rounded-full border-4 mb-2 flex items-center justify-center ${
           isDark ? 'border-white' : 'border-black'
         }`}>
-          <span className="text-3xl">📦</span>
+          <span className="text-2xl">📦</span>
         </div>
-        <h3 className={`text-xl font-bold mb-2 ${
+        <h3 className={`text-base font-bold mb-1 ${
           isDark ? 'text-gray-100' : 'text-gray-900'
         }`}>No Posts Yet</h3>
-        <p className={`text-sm mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Start selling to see your products here</p>
+        <p className={`text-xs mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Start selling to see your products here</p>
         <a
           href="/sell"
-          className={`font-semibold px-6 py-2 rounded-lg transition-colors ${
+          className={`text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors ${
             isDark 
               ? 'bg-white text-black hover:bg-gray-200' 
               : 'bg-black text-white hover:bg-gray-800'
@@ -41,7 +41,7 @@ export default function ProductGrid({ products, isDark = false }: ProductGridPro
   }
 
   return (
-    <div className="grid grid-cols-3 gap-1 md:gap-2 mt-4">
+    <div className="grid grid-cols-3 gap-1 md:gap-2 mt-1">
       {products.map((product) => (
         <ProductGridItem key={product.id} product={product} />
       ))}

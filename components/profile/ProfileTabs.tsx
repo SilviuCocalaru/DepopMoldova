@@ -25,7 +25,7 @@ export default function ProfileTabs({ isDark = false }: ProfileTabsProps) {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center justify-center gap-2 px-8 py-3 border-t-2 transition-colors ${
+            className={`flex items-center justify-center gap-1.5 px-6 py-2 border-t-2 transition-colors ${
               activeTab === tab.id
                 ? isDark
                   ? 'border-white text-white'
@@ -35,7 +35,7 @@ export default function ProfileTabs({ isDark = false }: ProfileTabsProps) {
                   : 'border-transparent text-gray-400 hover:text-gray-600'
             }`}
           >
-            <tab.icon className="w-5 h-5" strokeWidth={activeTab === tab.id ? 2.5 : 2} />
+            <tab.icon className="w-4 h-4" strokeWidth={activeTab === tab.id ? 2.5 : 2} />
             <span className="text-xs font-semibold uppercase hidden sm:inline">
               {tab.label}
             </span>

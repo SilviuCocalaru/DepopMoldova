@@ -31,12 +31,12 @@ export default function ProfileActions({ userId, isOwnProfile = true, isDark = f
   }
 
   return (
-    <div className="px-4 mb-6">
+    <div className="px-4 mb-3">
       {isOwnProfile ? (
         <div className="grid grid-cols-3 gap-2">
           <Link
             href="/profile/edit"
-            className={`font-semibold py-2 px-4 rounded-lg border transition-colors text-center flex items-center justify-center ${
+            className={`text-xs font-semibold py-1.5 px-2 rounded-lg border transition-colors text-center flex items-center justify-center ${
               isDark 
                 ? 'bg-gray-800 text-white border-gray-600 hover:bg-gray-700' 
                 : 'bg-white text-black border-gray-300 hover:bg-gray-50'
@@ -46,33 +46,33 @@ export default function ProfileActions({ userId, isOwnProfile = true, isDark = f
           </Link>
           <button
             onClick={handleShare}
-            className={`font-semibold py-2 px-4 rounded-lg border transition-colors flex items-center justify-center gap-1 ${
+            className={`text-xs font-semibold py-1.5 px-2 rounded-lg border transition-colors flex items-center justify-center gap-1 ${
               isDark 
                 ? 'bg-gray-800 text-white border-gray-600 hover:bg-gray-700' 
                 : 'bg-white text-black border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
           </button>
           <Link
             href="/settings"
-            className={`font-semibold py-2 px-4 rounded-lg border transition-colors flex items-center justify-center gap-1 ${
+            className={`text-xs font-semibold py-1.5 px-2 rounded-lg border transition-colors flex items-center justify-center gap-1 ${
               isDark 
                 ? 'bg-gray-800 text-white border-gray-600 hover:bg-gray-700' 
                 : 'bg-white text-black border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Settings</span>
           </Link>
         </div>
       ) : (
         <div className="flex gap-2">
-          <button className="flex-1 bg-blue-500 dark:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
+          <button className="flex-1 bg-blue-500 dark:bg-blue-600 text-white text-xs font-semibold py-1.5 px-3 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
             Follow
           </button>
-          <button className="flex-1 bg-white dark:bg-gray-800 text-black dark:text-white font-semibold py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <button className="flex-1 bg-white dark:bg-gray-800 text-black dark:text-white text-xs font-semibold py-1.5 px-3 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             Message
           </button>
         </div>
