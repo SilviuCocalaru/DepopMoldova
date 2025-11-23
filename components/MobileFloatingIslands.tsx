@@ -50,14 +50,15 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
       {user && (
         <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
           <div 
-            className={`floating-island-bottom ${shouldAnimate ? 'animate-slide-up' : ''}`}
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-around',
-              height: '60px',
-              padding: 0
-            }}
+            className={`
+              flex items-center justify-around h-[60px] rounded-[30px] border
+              ${profile?.theme === 'dark' 
+                ? 'bg-gray-800/75 border-gray-700/30' 
+                : 'bg-white/75 border-gray-200/30'}
+              backdrop-blur-[16px] backdrop-saturate-[180%]
+              shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]
+              ${shouldAnimate ? 'animate-slide-up' : ''}
+            `}
           >
             <Link 
               href="/" 
