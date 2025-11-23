@@ -348,7 +348,7 @@ body {
 /* Larger iOS Island for Chat Header */
 .floating-island-top-large {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 12px 16px;
   border-radius: 24px;
