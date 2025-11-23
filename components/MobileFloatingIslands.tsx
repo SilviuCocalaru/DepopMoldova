@@ -31,8 +31,8 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
 
   return (
     <>
-      {/* Animated Search Bar - iPhone Dynamic Island Style */}
-      <AnimatedSearchBar />
+      {/* Animated Search Bar - iPhone Dynamic Island Style - Homepage Only */}
+      {pathname === '/' && <AnimatedSearchBar />}
 
       {/* Sign Up Button - Only show if not logged in */}
       {!user && !isLoading && pathname !== '/messages' && (
