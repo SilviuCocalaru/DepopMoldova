@@ -5,13 +5,9 @@
   --foreground: #171717;
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
@@ -21,7 +17,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -81,11 +76,11 @@ body {
   body {
     padding-top: 0;
     padding-bottom: 0;
-    overflow-x: hidden;
+    background: white;
   }
 
-  /* Ensure page content extends behind floating navigation */
-  main {
+  /* Fix for pages to extend full height */
+  body > * {
     min-height: 100vh;
   }
 
@@ -130,21 +125,37 @@ body {
   transform: scale(0.96);
 }
 
-/* Bottom Floating Island Navigation - Compact + Glassmorphism */
-/* Bottom Floating Island Navigation - Compact + Glassmorphism */
+/* Bottom Floating Island Navigation - Enhanced Glassmorphism (Option 2) */
 .floating-island-bottom {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-around;
   height: 60px;
-  padding: 0;  /* ← REMOVE HORIZONTAL PADDING */
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  padding: 0;
+  /* Enhanced glassmorphism - more blur, less opacity */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
   border-radius: 30px;
-  border: 1px solid rgba(209, 213, 219, 0.2);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    0 -4px 24px 0 rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Dark theme variant */
+html.dark .floating-island-bottom,
+[data-theme="dark"] .floating-island-bottom {
+  background: rgba(17, 24, 39, 0.15);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    0 -4px 24px 0 rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .floating-island-bottom.animate-slide-up {
@@ -348,8 +359,8 @@ body {
 /* Larger iOS Island for Chat Header */
 .floating-island-top-large {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 12px 16px;
   border-radius: 24px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
@@ -396,64 +407,12 @@ body.hide-mobile-nav .floating-island-bottom {
   }
 }
 
+/* Safe area insets for iPhone notch/home indicator */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .floating-island-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
-
-/* Dark Mode Styles */
-.dark .floating-island-top {
-  background: rgba(30, 30, 30, 0.8);
-  border: 1px solid rgba(75, 85, 99, 0.3);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
-}
-
-.dark .floating-island-top.expanded {
-  background: rgba(30, 30, 30, 0.9);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-}
-
-.dark .floating-island-bottom {
-  background: rgba(30, 30, 30, 0.6);
-  border: 1px solid rgba(75, 85, 99, 0.2);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
-}
-
-.dark .floating-island-top-large {
-  background: rgba(30, 30, 30, 0.85);
-  border: 1px solid rgba(75, 85, 99, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-}
-
-.dark .nav-icon {
-  color: #D1D5DB;
-}
-
-.dark .nav-icon.active {
-  color: #60A5FA;
-}
-
-.dark .nav-icon.active svg {
-  filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.4));
-}
-
-.dark .nav-icon.active::after {
-  background: #60A5FA;
-}
-
-/* Dark mode fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(10px)) {
-  .dark .floating-island-top,
-  .dark .floating-island-bottom,
-  .dark .floating-island-top-large {
-    background: rgba(30, 30, 30, 0.95);
-  }
-}
-
-/* ========================================
-   FULL HEIGHT FIX FOR ALL PAGES
-   ======================================== */
 
 /* Ensure all pages extend to full viewport height */
 #__next,
@@ -462,17 +421,23 @@ main,
   min-height: 100vh;
 }
 
-/* Mobile specific full height fixes */
+/* Mobile specific fixes */
 @media (max-width: 768px) {
-  /* Make sure background extends full height on mobile */
-  html, body {
-    height: 100%;
+  /* Ensure page content extends behind floating navigation */
+  main {
     min-height: 100vh;
+    padding-bottom: 100px;
   }
   
-  /* Pages should have enough bottom padding for floating nav */
-  main > div:first-child {
-    padding-bottom: 100px;
+  /* Hide overflow on body to prevent white space showing */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Make sure background extends full height */
+  html, body {
+    height: 100%;
+    background: var(--background);
   }
 }
 
@@ -480,11 +445,5 @@ main,
 html.dark,
 html.dark body {
   background-color: #111827;
-  min-height: 100vh;
-}
-
-html.light,
-html.light body {
-  background-color: #ffffff;
   min-height: 100vh;
 }
