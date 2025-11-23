@@ -405,18 +405,6 @@ body.hide-mobile-nav .floating-island-bottom {
   pointer-events: none;
 }
 
-/* Prevent scrolling outside chat area on mobile */
-@media (max-width: 768px) {
-  body.hide-mobile-nav {
-    overflow: hidden;
-  }
-  
-  body.hide-mobile-nav .max-w-7xl {
-    height: 100vh;
-    overflow: hidden;
-  }
-}
-
 /* Glassmorphism Browser Compatibility */
 /* Fallback for browsers that don't support backdrop-filter */
 @supports not (backdrop-filter: blur(10px)) {

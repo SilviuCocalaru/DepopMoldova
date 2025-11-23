@@ -22,7 +22,7 @@ export default async function ProfileEditPage() {
   const isDark = profile?.theme === 'dark'
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors`}>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors pb-32`}>
       <Header />
       <div className="max-w-2xl mx-auto px-4 py-8">
         <h1 className={`text-2xl font-bold mb-8 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Edit Profile</h1>
