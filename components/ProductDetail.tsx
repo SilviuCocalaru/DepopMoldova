@@ -3,7 +3,7 @@
 import { Database } from '@/types/database.types'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Heart, MessageCircle, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Heart, MessageCircle, ChevronLeft, ChevronRight, ArrowLeft, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -26,8 +26,11 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
     currentUserId ? product.likes.some(like => like.user_id === currentUserId) : false
   )
   const [likesCount, setLikesCount] = useState(product.likes.length)
+  const [isDeleting, setIsDeleting] = useState(false)
   const supabase = createClient()
   const router = useRouter()
+
+  const isOwnProduct = currentUserId === product.seller_id
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
@@ -72,6 +75,46 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
       return
     }
     router.push(`/messages?user=${product.seller_id}&product=${product.id}`)
+  }
+
+  const handleDelete = async () => {
+    if (!currentUserId || !isOwnProduct) {
+      return
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete this listing? This action cannot be undone.')
+    if (!confirmed) return
+
+    setIsDeleting(true)
+
+    try {
+      // Delete product images from storage if they exist
+      if (product.images && product.images.length > 0) {
+        const imagePaths = product.images.map(url => {
+          const path = url.split('/').pop()
+          return `products/${path}`
+        })
+        
+        await supabase.storage
+          .from('product-images')
+          .remove(imagePaths)
+      }
+
+      // Delete the product
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id)
+
+      if (error) throw error
+
+      router.push('/profile')
+      router.refresh()
+    } catch (error) {
+      console.error('Error deleting product:', error)
+      alert('Failed to delete listing. Please try again.')
+      setIsDeleting(false)
+    }
   }
 
   return (
@@ -183,27 +226,44 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
 
             {/* Action Buttons */}
             <div className="flex gap-3 mb-6">
-              <button
-                onClick={handleLike}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
-                  isLiked
-                    ? 'bg-red-50 text-red-600 border-2 border-red-600'
-                    : isDark
-                    ? 'bg-gray-700 text-gray-200 border-2 border-gray-600 hover:border-gray-500'
-                    : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400'
-                }`}
-              >
-                <Heart className={`w-5 h-5 inline mr-2 ${isLiked ? 'fill-current' : ''}`} />
-                {isLiked ? 'Liked' : 'Like'} ({likesCount})
-              </button>
-              <button
-                onClick={handleMessage}
-                disabled={product.is_sold || currentUserId === product.seller_id}
-                className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <MessageCircle className="w-5 h-5 inline mr-2" />
-                Message
-              </button>
+              {!isOwnProduct ? (
+                <>
+                  <button
+                    onClick={handleLike}
+                    className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
+                      isLiked
+                        ? 'bg-red-50 text-red-600 border-2 border-red-600'
+                        : isDark
+                        ? 'bg-gray-700 text-gray-200 border-2 border-gray-600 hover:border-gray-500'
+                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400'
+                    }`}
+                  >
+                    <Heart className={`w-5 h-5 inline mr-2 ${isLiked ? 'fill-current' : ''}`} />
+                    {isLiked ? 'Liked' : 'Like'} ({likesCount})
+                  </button>
+                  <button
+                    onClick={handleMessage}
+                    disabled={product.is_sold}
+                    className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <MessageCircle className="w-5 h-5 inline mr-2" />
+                    Message
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                    isDark
+                      ? 'bg-red-900 text-red-100 hover:bg-red-800 disabled:bg-red-900/50'
+                      : 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400'
+                  } disabled:cursor-not-allowed`}
+                >
+                  <Trash2 className="w-5 h-5 inline mr-2" />
+                  {isDeleting ? 'Deleting...' : 'Delete Listing'}
+                </button>
+              )}
             </div>
 
             {/* Product Details */}
