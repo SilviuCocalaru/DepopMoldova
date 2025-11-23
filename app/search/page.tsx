@@ -65,13 +65,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     : 'Browse all'
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{resultText}</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{resultText}</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             {products?.length || 0} {products?.length === 1 ? 'item' : 'items'} found
           </p>
         </div>

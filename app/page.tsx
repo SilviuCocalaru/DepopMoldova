@@ -19,35 +19,35 @@ export default async function Home() {
     .limit(12)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <Header />
       
       {/* Category Navigation - Desktop Only */}
-      <nav className="border-b border-gray-200 sticky top-16 bg-white z-40 hidden md:block">
+      <nav className="border-b border-gray-200 dark:border-gray-700 sticky top-16 bg-white dark:bg-gray-800 z-40 hidden md:block transition-colors">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center space-x-8 overflow-x-auto py-4">
-            <Link href="/search?category=women" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=women" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Women
             </Link>
-            <Link href="/search?category=men" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=men" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Men
             </Link>
-            <Link href="/search?category=kids" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=kids" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Kids
             </Link>
-            <Link href="/search?category=brands" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=brands" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Brands
             </Link>
-            <Link href="/search?category=sports" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=sports" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Sports
             </Link>
-            <Link href="/search?category=trending" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=trending" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Trending
             </Link>
-            <Link href="/search?category=gifts" className="text-sm font-medium hover:text-red-500 whitespace-nowrap">
+            <Link href="/search?category=gifts" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-red-500 dark:hover:text-red-400 whitespace-nowrap transition-colors">
               Gifts
             </Link>
-            <Link href="/search?category=sale" className="text-sm font-medium text-red-500 whitespace-nowrap">
+            <Link href="/search?category=sale" className="text-sm font-medium text-red-500 dark:text-red-400 whitespace-nowrap">
               Sale
             </Link>
           </div>
@@ -98,13 +98,13 @@ export default async function Home() {
       </section>
 
       {/* Tagline Section */}
-      <section className="py-16 px-4 text-center bg-white">
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+      <section className="py-16 px-4 text-center bg-white dark:bg-gray-900 transition-colors">
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Buy for less. Pay no selling fee*. Keep fashion circular.
         </h2>
         <Link 
           href="/sell"
-          className="bg-black text-white px-8 py-4 rounded-md font-medium hover:bg-gray-800 transition-colors inline-block text-lg"
+          className="bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors inline-block text-lg"
         >
           Sell now
         </Link>
@@ -114,8 +114,8 @@ export default async function Home() {
       <section className="py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Trending near you</h2>
-            <Link href="/explore" className="text-blue-600 hover:underline font-medium">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Trending near you</h2>
+            <Link href="/explore" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
               See more
             </Link>
           </div>
@@ -124,10 +124,10 @@ export default async function Home() {
             <ProductGrid products={products} currentUserId={user?.id} />
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg mb-4">No products yet</p>
+              <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">No products yet</p>
               <Link
                 href="/sell"
-                className="bg-black text-white px-6 py-3 rounded-md font-medium hover:bg-gray-800 transition-colors inline-block"
+                className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors inline-block"
               >
                 List your first item
               </Link>
@@ -137,33 +137,33 @@ export default async function Home() {
       </section>
 
       {/* Shop by Price */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800 transition-colors">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">Shop by price</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">Shop by price</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link 
               href="/search?price=under10"
-              className="bg-gray-200 rounded-lg p-12 text-center hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              <h3 className="text-2xl font-medium text-gray-900">Under $10</h3>
+              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $10</h3>
             </Link>
             <Link 
               href="/search?price=under20"
-              className="bg-gray-200 rounded-lg p-12 text-center hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              <h3 className="text-2xl font-medium text-gray-900">Under $20</h3>
+              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $20</h3>
             </Link>
             <Link 
               href="/search?price=under50"
-              className="bg-gray-200 rounded-lg p-12 text-center hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              <h3 className="text-2xl font-medium text-gray-900">Under $50</h3>
+              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $50</h3>
             </Link>
             <Link 
               href="/search?price=under100"
-              className="bg-gray-200 rounded-lg p-12 text-center hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 dark:bg-gray-700 rounded-lg p-12 text-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              <h3 className="text-2xl font-medium text-gray-900">Under $100</h3>
+              <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">Under $100</h3>
             </Link>
           </div>
         </div>

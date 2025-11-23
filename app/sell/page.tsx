@@ -109,20 +109,20 @@ export default function SellPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 transition-colors">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">List an Item</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">List an Item</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6 border border-gray-200 dark:border-gray-700 transition-colors">
           {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-800">{error}</div>
+            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+              <div className="text-sm text-red-800 dark:text-red-200">{error}</div>
             </div>
           )}
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Photos (up to 6)
             </label>
             <div className="grid grid-cols-3 gap-4 mb-4">
@@ -137,18 +137,18 @@ export default function SellPage() {
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
-                    className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg hover:bg-gray-100"
+                    className="absolute top-2 right-2 p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-4 h-4 text-gray-900 dark:text-gray-100" />
                   </button>
                 </div>
               ))}
             </div>
             {images.length < 6 && (
-              <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-indigo-500">
+              <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
                 <div className="flex flex-col items-center">
-                  <Upload className="w-8 h-8 text-gray-400" />
-                  <span className="mt-2 text-sm text-gray-500">Upload photos</span>
+                  <Upload className="w-8 h-8 text-gray-400 dark:text-gray-500" />k:text-gray-500" />
+                  <span className="mt-2 text-sm text-gray-500 dark:text-gray-400">Upload photos</span>
                 </div>
                 <input
                   type="file"
@@ -163,7 +163,7 @@ export default function SellPage() {
 
           {/* Title */}
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Title *
             </label>
             <input
@@ -172,14 +172,14 @@ export default function SellPage() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="e.g. Vintage Levi's Jeans"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Description
             </label>
             <textarea
@@ -187,14 +187,14 @@ export default function SellPage() {
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="Describe your item..."
             />
           </div>
 
           {/* Price */}
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Price ($) *
             </label>
             <input
@@ -205,14 +205,14 @@ export default function SellPage() {
               min="0"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="0.00"
             />
           </div>
 
           {/* Category */}
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Category *
             </label>
             <select
@@ -220,7 +220,7 @@ export default function SellPage() {
               required
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
@@ -230,14 +230,14 @@ export default function SellPage() {
 
           {/* Size */}
           <div>
-            <label htmlFor="size" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="size" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Size
             </label>
             <select
               id="size"
               value={size}
               onChange={(e) => setSize(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
             >
               <option value="">Select size</option>
               {sizes.map(s => (
@@ -248,7 +248,7 @@ export default function SellPage() {
 
           {/* Brand */}
           <div>
-            <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Brand
             </label>
             <input
@@ -256,14 +256,14 @@ export default function SellPage() {
               id="brand"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="e.g. Nike, Zara, Vintage"
             />
           </div>
 
           {/* Condition */}
           <div>
-            <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="condition" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Condition *
             </label>
             <select
@@ -271,7 +271,7 @@ export default function SellPage() {
               required
               value={condition}
               onChange={(e) => setCondition(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
             >
               {conditions.map(cond => (
                 <option key={cond} value={cond}>{cond}</option>

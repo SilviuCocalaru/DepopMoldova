@@ -2,12 +2,12 @@
 
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 transition-colors">
+      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center border border-gray-200 dark:border-gray-700 transition-colors">
         <div className="mb-6">
-          <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+          <div className="w-24 h-24 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
             <svg
-              className="w-12 h-12 text-red-500"
+              className="w-12 h-12 text-red-500 dark:text-red-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -22,32 +22,32 @@ export default function OfflinePage() {
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           You're Offline
         </h1>
         
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
           It looks like you've lost your internet connection. Don't worry, we've saved your place!
         </p>
 
         <div className="space-y-4">
           <button
             onClick={() => window.location.reload()}
-            className="w-full bg-red-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-600 transition-colors"
+            className="w-full bg-red-500 dark:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-600 dark:hover:bg-red-700 transition-colors"
           >
             Try Again
           </button>
 
           <button
             onClick={() => window.history.back()}
-            className="w-full bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors"
+            className="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             Go Back
           </button>
         </div>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             <strong>Tip:</strong> You can still browse cached pages while offline. Your connection will resume automatically when you're back online.
           </p>
         </div>
