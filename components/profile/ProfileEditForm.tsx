@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { User as UserIcon, Camera } from 'lucide-react'
@@ -31,6 +31,14 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
     website: profile.website || '',
     avatar_url: profile.avatar_url || ''
   })
+
+  // Hide mobile nav when editing profile
+  useEffect(() => {
+    document.body.classList.add('hide-mobile-nav')
+    return () => {
+      document.body.classList.remove('hide-mobile-nav')
+    }
+  }, [])
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -73,12 +81,14 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
           full_name: formData.full_name || null,
           bio: formData.bio || null,
           website: formData.website || null,
-          avatar_url: formData.avatar_url || null,
-          updated_at: new Date().toISOString()
+          avatar_url: formData.avatar_url || null
         })
         .eq('id', profile.id)
 
-      if (error) throw error
+      if (error) {
+        console.error('Update error:', error)
+        throw error
+      }
 
       router.push('/profile')
       router.refresh()
