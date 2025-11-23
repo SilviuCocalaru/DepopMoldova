@@ -98,9 +98,10 @@ body {
 
 /* ========================================
    FLOATING ISLAND SYSTEM - iOS DYNAMIC ISLAND STYLE
+   MATCHING DESIGN FOR BOTH TOP AND BOTTOM
    ======================================== */
 
-/* Top Floating Island */
+/* Top Floating Island - Search Bar */
 .floating-island-top {
   position: relative;
   padding: 12px 24px;
@@ -125,7 +126,7 @@ body {
   transform: scale(0.96);
 }
 
-/* Bottom Floating Island Navigation - Enhanced Glassmorphism (Option 2) */
+/* Bottom Floating Island Navigation - EXACT SAME STYLE AS TOP */
 .floating-island-bottom {
   position: relative;
   display: flex;
@@ -133,29 +134,33 @@ body {
   justify-content: space-around;
   height: 60px;
   padding: 0;
-  /* Enhanced glassmorphism - more blur, less opacity */
+  /* EXACT SAME glassmorphism as top search bar */
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 8px 32px 0 rgba(31, 38, 135, 0.15),
-    0 -4px 24px 0 rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
 }
 
-/* Dark theme variant */
-html.dark .floating-island-bottom,
-[data-theme="dark"] .floating-island-bottom {
- background: rgba(255, 255, 255, 0.8);
+/* Dark theme variant for TOP island */
+html.dark .floating-island-top,
+[data-theme="dark"] .floating-island-top {
+  background: rgba(17, 24, 39, 0.8);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.3),
-    0 -4px 24px 0 rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Dark theme variant for BOTTOM island - SAME AS TOP */
+html.dark .floating-island-bottom,
+[data-theme="dark"] .floating-island-bottom {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
 }
 
 .floating-island-bottom.animate-slide-up {
@@ -184,6 +189,12 @@ html.dark .floating-island-bottom,
   color: #6B7280;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+}
+
+/* Dark theme - lighter icon color for visibility */
+html.dark .nav-icon,
+[data-theme="dark"] .nav-icon {
+  color: #D1D5DB;
 }
 
 .nav-icon svg {
@@ -368,6 +379,15 @@ html.dark .floating-island-bottom,
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html.dark .floating-island-top-large,
+[data-theme="dark"] .floating-island-top-large {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
 .floating-island-top-large:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.12);
@@ -404,6 +424,15 @@ body.hide-mobile-nav .floating-island-bottom {
   .floating-island-bottom,
   .floating-island-top-large {
     background: rgba(255, 255, 255, 0.95);
+  }
+  
+  html.dark .floating-island-top,
+  html.dark .floating-island-bottom,
+  html.dark .floating-island-top-large,
+  [data-theme="dark"] .floating-island-top,
+  [data-theme="dark"] .floating-island-bottom,
+  [data-theme="dark"] .floating-island-top-large {
+    background: rgba(17, 24, 39, 0.95);
   }
 }
 
