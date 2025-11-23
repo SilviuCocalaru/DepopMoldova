@@ -74,27 +74,30 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
     setLoading(true)
 
     try {
-      const { error } = await supabase
+      // Only update fields that are allowed to change
+      const { data, error } = await supabase
         .from('profiles')
         .update({
-          username: formData.username,
           full_name: formData.full_name || null,
           bio: formData.bio || null,
           website: formData.website || null,
           avatar_url: formData.avatar_url || null
         })
         .eq('id', profile.id)
+        .select()
 
       if (error) {
         console.error('Update error:', error)
+        alert(`Failed to update profile: ${error.message}`)
         throw error
       }
 
+      console.log('Profile updated successfully:', data)
       router.push('/profile')
       router.refresh()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating profile:', error)
-      alert('Failed to update profile')
+      alert(`Failed to update profile: ${error?.message || 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
@@ -148,14 +151,15 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
         <input
           type="text"
           value={formData.username}
-          onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+          className={`w-full px-4 py-2 border rounded-lg ${
             isDark 
-              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
-              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
-          }`}
-          required
+              ? 'bg-gray-700 border-gray-600 text-gray-400' 
+              : 'bg-gray-100 border-gray-300 text-gray-500'
+          } cursor-not-allowed`}
+          disabled
+          readOnly
         />
+        <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Username cannot be changed</p>
       </div>
 
       {/* Full Name */}
