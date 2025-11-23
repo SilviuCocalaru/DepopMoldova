@@ -135,9 +135,9 @@ body {
   height: 60px;
   padding: 0;
   /* EXACT SAME glassmorphism as search bar */
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 30px;
   border: 1px solid rgba(229, 231, 235, 0.3);
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
@@ -156,11 +156,11 @@ html.dark .floating-island-top,
 /* Dark theme variant for BOTTOM island - SAME AS SEARCH BAR */
 html.dark .floating-island-bottom,
 [data-theme="dark"] .floating-island-bottom {
-  background: rgba(31, 41, 55, 0.75);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(55, 65, 81, 0.3);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
 }
 
 .floating-island-bottom.animate-slide-up {
