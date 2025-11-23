@@ -146,14 +146,24 @@
   "productPage": {
     "size": "Mărime",
     "condition": "Stare",
-    "brand": "Brand",
+    "brand": "Marcă",
     "category": "Categorie",
     "description": "Descriere",
     "seller": "Vânzător",
-    "like": "Apreciază",
+    "like": "Îmi place",
+    "liked": "Apreciat",
+    "message": "Mesaj",
+    "deleteListing": "Șterge anunțul",
+    "deleting": "Se șterge...",
+    "deleteConfirm": "Sigur vrei să ștergi acest anunț? Această acțiune nu poate fi anulată.",
+    "deleteError": "Nu s-a putut șterge anunțul. Te rog încearcă din nou.",
+    "productDetails": "Detalii produs",
+    "viewProfile": "Vezi profilul",
+    "listed": "Publicat",
+    "sold": "VÂNDUT",
     "buyNow": "Cumpără acum",
     "makeOffer": "Fă o ofertă",
-    "soldOut": "Vândut",
+    "soldOut": "Epuizat",
     "relatedItems": "Produse similare"
   }
 }

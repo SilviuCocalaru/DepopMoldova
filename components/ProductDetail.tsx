@@ -85,7 +85,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
       return
     }
 
-    const confirmed = window.confirm('Are you sure you want to delete this listing? This action cannot be undone.')
+    const confirmed = window.confirm(t('deleteConfirm'))
     if (!confirmed) return
 
     setIsDeleting(true)
@@ -115,13 +115,13 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
       router.refresh()
     } catch (error) {
       console.error('Error deleting product:', error)
-      alert('Failed to delete listing. Please try again.')
+      alert(t('deleteError'))
       setIsDeleting(false)
     }
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pb-24 md:pb-8 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button - Desktop Only */}
         <button
@@ -129,7 +129,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
           className={`hidden md:flex items-center gap-2 mb-6 transition-colors ${isDark ? 'text-gray-400 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900'}`}
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Back</span>
+          <span className="font-medium">{tCommon('back')}</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -162,7 +162,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
                   )}
                   {product.is_sold && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <span className="text-white font-bold text-3xl">SOLD</span>
+                      <span className="text-white font-bold text-3xl">{t('sold')}</span>
                     </div>
                   )}
                 </>
@@ -223,7 +223,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
               </div>
               <div>
                 <p className={`font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.profiles?.username}</p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>View profile</p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t('viewProfile')}</p>
               </div>
             </Link>
 
@@ -242,7 +242,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
                     }`}
                   >
                     <Heart className={`w-5 h-5 inline mr-2 ${isLiked ? 'fill-current' : ''}`} />
-                    {isLiked ? 'Liked' : 'Like'} ({likesCount})
+                    {isLiked ? t('liked') : t('like')} ({likesCount})
                   </button>
                   <button
                     onClick={handleMessage}
@@ -250,7 +250,7 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
                     className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <MessageCircle className="w-5 h-5 inline mr-2" />
-                    Message
+                    {t('message')}
                   </button>
                 </>
               ) : (
@@ -264,47 +264,47 @@ export default function ProductDetail({ product, currentUserId, theme }: Product
                   } disabled:cursor-not-allowed`}
                 >
                   <Trash2 className="w-5 h-5 inline mr-2" />
-                  {isDeleting ? 'Deleting...' : 'Delete Listing'}
+                  {isDeleting ? t('deleting') : t('deleteListing')}
                 </button>
               )}
             </div>
 
             {/* Product Details */}
             <div className={`rounded-lg p-6 space-y-4 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-              <h2 className={`text-lg font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Product Details</h2>
+              <h2 className={`text-lg font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{t('productDetails')}</h2>
               
               {product.description && (
                 <div>
-                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('description')}</p>
                   <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.description}</p>
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Category</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('category')}</p>
                   <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.category}</p>
                 </div>
                 <div>
-                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Condition</p>
+                  <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('condition')}</p>
                   <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.condition}</p>
                 </div>
                 {product.size && (
                   <div>
-                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Size</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('size')}</p>
                     <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.size}</p>
                   </div>
                 )}
                 {product.brand && (
                   <div>
-                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Brand</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('brand')}</p>
                     <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{product.brand}</p>
                   </div>
                 )}
               </div>
 
               <div>
-                <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Listed</p>
+                <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{t('listed')}</p>
                 <p className={`mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} suppressHydrationWarning>
                   {new Date(product.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </p>
