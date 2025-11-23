@@ -15,9 +15,10 @@ interface Product {
 
 interface LiveSearchResultsProps {
   query: string
+  isDark: boolean
 }
 
-export default function LiveSearchResults({ query }: LiveSearchResultsProps) {
+export default function LiveSearchResults({ query, isDark }: LiveSearchResultsProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
@@ -55,21 +56,25 @@ export default function LiveSearchResults({ query }: LiveSearchResultsProps) {
   }
 
   return (
-    <div className="w-full bg-white/85 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] border border-gray-200/30 overflow-hidden max-h-[60vh] overflow-y-auto">
+    <div className={`w-full backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] border overflow-hidden max-h-[60vh] overflow-y-auto ${
+      isDark ? 'bg-gray-800/85 border-gray-700/30' : 'bg-white/85 border-gray-200/30'
+    }`}>
       {loading ? (
         <div className="p-6 text-center">
-          <div className="animate-spin w-6 h-6 border-2 border-black border-t-transparent rounded-full mx-auto"></div>
+          <div className={`animate-spin w-6 h-6 border-2 rounded-full mx-auto ${
+            isDark ? 'border-white border-t-transparent' : 'border-black border-t-transparent'
+          }`}></div>
         </div>
       ) : products.length > 0 ? (
         <div className="py-2">
-          <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">
+          <div className={`px-4 py-2 text-xs font-semibold uppercase ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
             Products
           </div>
           {products.map((product) => (
             <Link
               key={product.id}
               href={`/product/${product.id}`}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+              className={`flex items-center gap-3 px-4 py-3 transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
             >
               {product.images?.[0] ? (
                 <Image
@@ -80,15 +85,17 @@ export default function LiveSearchResults({ query }: LiveSearchResultsProps) {
                   className="rounded-lg object-cover"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <Package className="w-6 h-6 text-gray-400" />
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                  isDark ? 'bg-gray-700' : 'bg-gray-100'
+                }`}>
+                  <Package className={`w-6 h-6 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className={`text-sm font-medium truncate ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                   {product.title}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   ${product.price}
                 </p>
               </div>
@@ -98,8 +105,8 @@ export default function LiveSearchResults({ query }: LiveSearchResultsProps) {
       ) : (
         <div className="p-8 text-center">
           <div className="text-4xl mb-3">🔍</div>
-          <p className="text-sm font-medium text-gray-900 mb-1">No results found</p>
-          <p className="text-xs text-gray-500">Try searching for something else</p>
+          <p className={`text-sm font-medium mb-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>No results found</p>
+          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Try searching for something else</p>
         </div>
       )}
     </div>
