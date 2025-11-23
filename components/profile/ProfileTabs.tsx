@@ -1,22 +1,21 @@
 'use client'
 
-import { Grid3x3, Video, Bookmark, Tag } from 'lucide-react'
+import { Video, Bookmark, Tag } from 'lucide-react'
 import { useState } from 'react'
 
-type TabType = 'posts' | 'reels' | 'saved' | 'tagged'
+type TabType = 'tagged' | 'reels' | 'saved'
 
 interface ProfileTabsProps {
   isDark?: boolean
 }
 
 export default function ProfileTabs({ isDark = false }: ProfileTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('posts')
+  const [activeTab, setActiveTab] = useState<TabType>('tagged')
 
   const tabs = [
-    { id: 'posts' as TabType, icon: Grid3x3, label: 'Posts' },
-    { id: 'reels' as TabType, icon: Video, label: 'Reels' },
+    { id: 'tagged' as TabType, icon: Tag, label: 'On Sale' },
+    { id: 'reels' as TabType, icon: Video, label: 'Videos' },
     { id: 'saved' as TabType, icon: Bookmark, label: 'Saved' },
-    { id: 'tagged' as TabType, icon: Tag, label: 'Tagged' },
   ]
 
   return (
