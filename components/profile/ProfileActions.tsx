@@ -53,7 +53,6 @@ export default function ProfileActions({ userId, isOwnProfile = true }: ProfileA
             <Settings className="w-4 h-4" />
             <span className="hidden sm:inline">Settings</span>
           </Link>
-          </Link>
         </div>
       ) : (
         <div className="flex gap-2">
