@@ -28,7 +28,6 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
     username: profile.username || '',
     full_name: profile.full_name || '',
     bio: profile.bio || '',
-    website: profile.website || '',
     avatar_url: profile.avatar_url || ''
   })
 
@@ -51,19 +50,24 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
       const filePath = `avatars/${fileName}`
 
       const { error: uploadError } = await supabase.storage
-        .from('profiles')
-        .upload(filePath, file)
+        .from('avatars')
+        .upload(filePath, file, {
+          upsert: true
+        })
 
-      if (uploadError) throw uploadError
+      if (uploadError) {
+        console.error('Upload error:', uploadError)
+        throw uploadError
+      }
 
       const { data: { publicUrl } } = supabase.storage
-        .from('profiles')
+        .from('avatars')
         .getPublicUrl(filePath)
 
       setFormData(prev => ({ ...prev, avatar_url: publicUrl }))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading avatar:', error)
-      alert('Failed to upload avatar')
+      alert(`Failed to upload avatar: ${error?.message || 'Unknown error'}`)
     } finally {
       setUploading(false)
     }
@@ -74,13 +78,13 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
     setLoading(true)
 
     try {
-      // Only update fields that are allowed to change
+      // Only update fields that exist in the database
       const { data, error } = await supabase
         .from('profiles')
         .update({
+          username: formData.username,
           full_name: formData.full_name || null,
           bio: formData.bio || null,
-          website: formData.website || null,
           avatar_url: formData.avatar_url || null
         })
         .eq('id', profile.id)
@@ -151,15 +155,14 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
         <input
           type="text"
           value={formData.username}
-          className={`w-full px-4 py-2 border rounded-lg ${
+          onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
             isDark 
-              ? 'bg-gray-700 border-gray-600 text-gray-400' 
-              : 'bg-gray-100 border-gray-300 text-gray-500'
-          } cursor-not-allowed`}
-          disabled
-          readOnly
+              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500' 
+              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
+          }`}
+          required
         />
-        <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Username cannot be changed</p>
       </div>
 
       {/* Full Name */}
@@ -196,24 +199,6 @@ export default function ProfileEditForm({ profile, isDark = false }: ProfileEdit
           maxLength={150}
         />
         <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{formData.bio.length}/150</p>
-      </div>
-
-      {/* Website */}
-      <div>
-        <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-          Website
-        </label>
-        <input
-          type="url"
-          value={formData.website}
-          onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-          placeholder="https://example.com"
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-            isDark 
-              ? 'bg-gray-800 border-gray-700 text-white focus:ring-blue-500 placeholder:text-gray-500' 
-              : 'bg-white border-gray-300 text-gray-900 focus:ring-black'
-          }`}
-        />
       </div>
 
       {/* Actions */}
