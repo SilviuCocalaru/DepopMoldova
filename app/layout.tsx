@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { createClient } from "@/lib/supabase/server";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,21 +50,39 @@ export const viewport: Viewport = {
   themeColor: "#ef4444",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch user's theme preference
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  let userTheme: 'light' | 'dark' = 'light'
+  
+  if (session?.user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('theme')
+      .eq('id', session.user.id)
+      .single()
+    
+    userTheme = (profile?.theme as 'light' | 'dark') || 'light'
+  }
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={userTheme}>
       <head>
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased`}
+        className={`${inter.variable} font-sans antialiased bg-white dark:bg-gray-900 text-black dark:text-white transition-colors`}
         suppressHydrationWarning
       >
-        {children}
+        <ThemeProvider initialTheme={userTheme}>
+          {children}
+        </ThemeProvider>
         <Script
           id="sw-register"
           strategy="afterInteractive"

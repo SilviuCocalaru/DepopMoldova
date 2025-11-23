@@ -5,9 +5,13 @@
   --foreground: #171717;
 }
 
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
@@ -17,6 +21,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -389,5 +394,54 @@ body.hide-mobile-nav .floating-island-bottom {
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .floating-island-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Dark Mode Styles */
+.dark .floating-island-top {
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dark .floating-island-top.expanded {
+  background: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.dark .floating-island-bottom {
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  box-shadow: 0 -4px 24px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dark .floating-island-top-large {
+  background: rgba(30, 30, 30, 0.85);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dark .nav-icon {
+  color: #D1D5DB;
+}
+
+.dark .nav-icon.active {
+  color: #60A5FA;
+}
+
+.dark .nav-icon.active svg {
+  filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.4));
+}
+
+.dark .nav-icon.active::after {
+  background: #60A5FA;
+}
+
+/* Dark mode fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .dark .floating-island-top,
+  .dark .floating-island-bottom,
+  .dark .floating-island-top-large {
+    background: rgba(30, 30, 30, 0.95);
   }
 }

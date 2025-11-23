@@ -75,8 +75,13 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
       })
 
       if (response.ok) {
-        router.refresh()
-        alert('Settings saved successfully!')
+        // Apply theme immediately
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(theme)
+        document.documentElement.setAttribute('data-theme', theme)
+        
+        // Reload page to apply all changes
+        window.location.reload()
       } else {
         alert('Failed to save settings')
       }
@@ -91,11 +96,11 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const styles = gender === 'man' ? STYLES_MEN : STYLES_WOMEN
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pb-24 transition-colors">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3">
+      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 transition-colors">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <Link href="/profile" className="p-2 hover:bg-gray-100 rounded-full">
+          <Link href="/profile" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
             <ChevronLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-xl font-bold">Settings</h1>
@@ -105,9 +110,9 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         
         {/* Language Selector */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
           <div className="flex items-center gap-2 mb-4">
-            <Globe className="w-5 h-5 text-gray-600" />
+            <Globe className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             <h2 className="text-lg font-semibold">Language</h2>
           </div>
           
@@ -119,8 +124,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 className={`
                   p-4 border-2 rounded-lg transition-all text-center
                   ${language === lang.code 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-gray-300'}
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
                 `}
               >
                 <div className="text-3xl mb-1">{lang.flag}</div>
@@ -134,15 +139,15 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Preferences */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
           <div className="flex items-center gap-2 mb-4">
-            <Heart className="w-5 h-5 text-gray-600" />
+            <Heart className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             <h2 className="text-lg font-semibold">Preferences</h2>
           </div>
 
           {/* Step 1: Gender */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               I am a...
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -154,8 +159,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 className={`
                   p-4 border-2 rounded-lg transition-all
                   ${gender === 'man' 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-gray-300'}
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
                 `}
               >
                 <div className="text-3xl mb-1">👨</div>
@@ -169,8 +174,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                 className={`
                   p-4 border-2 rounded-lg transition-all
                   ${gender === 'woman' 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-gray-300'}
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
                 `}
               >
                 <div className="text-3xl mb-1">👩</div>
@@ -182,7 +187,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
           {/* Step 2: Style (only show if gender selected) */}
           {gender && (
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 My style
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -193,8 +198,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
                     className={`
                       p-4 border-2 rounded-lg transition-all
                       ${style === s.id 
-                        ? 'border-blue-500 bg-blue-50' 
-                        : 'border-gray-200 hover:border-gray-300'}
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
                     `}
                   >
                     <div className="text-3xl mb-1">{s.emoji}</div>
@@ -207,14 +212,14 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
 
           {/* Step 3: Location */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
               <MapPin className="w-4 h-4" />
               Where are you from?
             </label>
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full p-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none bg-white dark:bg-gray-700 text-black dark:text-white transition-colors"
             >
               <option value="">Select location</option>
               {MOLDOVA_LOCATIONS.map((loc) => (
@@ -225,9 +230,9 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         </div>
 
         {/* Theme */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
           <div className="flex items-center gap-2 mb-4">
-            <Palette className="w-5 h-5 text-gray-600" />
+            <Palette className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             <h2 className="text-lg font-semibold">Theme</h2>
           </div>
           
@@ -237,8 +242,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               className={`
                 p-4 border-2 rounded-lg transition-all
                 ${theme === 'light' 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'}
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
               `}
             >
               <div className="text-3xl mb-1">☀️</div>
@@ -249,8 +254,8 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
               className={`
                 p-4 border-2 rounded-lg transition-all
                 ${theme === 'dark' 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'}
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
               `}
             >
               <div className="text-3xl mb-1">🌙</div>
