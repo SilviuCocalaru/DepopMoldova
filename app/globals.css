@@ -80,8 +80,13 @@ body {
 @media (max-width: 768px) {
   body {
     padding-top: 0;
-    padding-bottom: 7rem;
-    background: white;
+    padding-bottom: 0;
+    overflow-x: hidden;
+  }
+
+  /* Ensure page content extends behind floating navigation */
+  main {
+    min-height: 100vh;
   }
 
   /* Support dynamic viewport height */
@@ -444,4 +449,42 @@ body.hide-mobile-nav .floating-island-bottom {
   .dark .floating-island-top-large {
     background: rgba(30, 30, 30, 0.95);
   }
+}
+
+/* ========================================
+   FULL HEIGHT FIX FOR ALL PAGES
+   ======================================== */
+
+/* Ensure all pages extend to full viewport height */
+#__next,
+main,
+[data-nextjs-scroll-focus-boundary] {
+  min-height: 100vh;
+}
+
+/* Mobile specific full height fixes */
+@media (max-width: 768px) {
+  /* Make sure background extends full height on mobile */
+  html, body {
+    height: 100%;
+    min-height: 100vh;
+  }
+  
+  /* Pages should have enough bottom padding for floating nav */
+  main > div:first-child {
+    padding-bottom: 100px;
+  }
+}
+
+/* Dark theme background should extend everywhere */
+html.dark,
+html.dark body {
+  background-color: #111827;
+  min-height: 100vh;
+}
+
+html.light,
+html.light body {
+  background-color: #ffffff;
+  min-height: 100vh;
 }

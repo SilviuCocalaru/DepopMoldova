@@ -83,15 +83,15 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
         document.documentElement.classList.add(theme)
         document.documentElement.setAttribute('data-theme', theme)
         
-        // Reload page to apply all changes
-        window.location.reload()
+        // Redirect to profile page after successful save
+        window.location.href = '/profile'
       } else {
         alert('Failed to save settings')
+        setSaving(false)
       }
     } catch (error) {
       console.error('Error saving settings:', error)
       alert('Error saving settings')
-    } finally {
       setSaving(false)
     }
   }
