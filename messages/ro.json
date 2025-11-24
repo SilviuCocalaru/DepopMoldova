@@ -166,5 +166,52 @@
     "makeOffer": "Fă o ofertă",
     "soldOut": "Epuizat",
     "relatedItems": "Produse similare"
+  },
+  "landing": {
+    "madeInMoldova": "Făcut în Moldova",
+    "heroTitle": "Cumpără & Vinde Haine. Local. Gratuit.",
+    "heroSubtitle": "Piața Moldovei pentru haine second-hand. Zero taxe. Menține moda circulară.",
+    "getStarted": "Începe Acum",
+    "learnMore": "Află Mai Mult",
+    "whyChooseUs": "De Ce Să Ne Alegi?",
+    "features": {
+      "noFees": {
+        "title": "Zero Taxe de Vânzare",
+        "description": "Păstrează 100% din câștiguri. Fără taxe ascunse, fără comisioane."
+      },
+      "local": {
+        "title": "Întâlniri Locale",
+        "description": "Întâlnește cumpărători și vânzători în orașul tău. Sigur, convenabil, comunitar."
+      },
+      "sustainable": {
+        "title": "Modă Sustenabilă",
+        "description": "Dă hainelor o a doua viață. Reduce deșeurile și susține economia circulară."
+      }
+    },
+    "howItWorks": "Cum Funcționează",
+    "steps": {
+      "step1": {
+        "title": "Creează Contul",
+        "description": "Înregistrează-te gratuit în mai puțin de 30 de secunde. Nu este nevoie de card."
+      },
+      "step2": {
+        "title": "Listează Articolele",
+        "description": "Fă poze, stabilește prețul și descrie articolele. E atât de simplu."
+      },
+      "step3": {
+        "title": "Întâlnește & Schimbă",
+        "description": "Conversează cu cumpărătorii, aranjează întâlniri în Chișinău, Bălți sau oriunde în Moldova."
+      }
+    },
+    "stats": {
+      "fees": "Taxe de Vânzare",
+      "local": "100% Local",
+      "community": "Comunitate în Creștere"
+    },
+    "cta": {
+      "title": "Gata Să Începi?",
+      "subtitle": "Alătură-te comunității de modă din Moldova astăzi",
+      "button": "Înregistrare Gratuită"
+    }
   }
 }

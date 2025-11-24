@@ -166,5 +166,52 @@
     "makeOffer": "Make Offer",
     "soldOut": "Sold Out",
     "relatedItems": "Related Items"
+  },
+  "landing": {
+    "madeInMoldova": "Made in Moldova",
+    "heroTitle": "Buy & Sell Fashion. Locally. For Free.",
+    "heroSubtitle": "Moldova's marketplace for secondhand clothing. Zero fees. Keep fashion circular.",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "whyChooseUs": "Why Choose Us?",
+    "features": {
+      "noFees": {
+        "title": "Zero Selling Fees",
+        "description": "Keep 100% of your earnings. No hidden charges, no commissions."
+      },
+      "local": {
+        "title": "Local Meetups",
+        "description": "Meet buyers and sellers in your city. Safe, convenient, community-driven."
+      },
+      "sustainable": {
+        "title": "Sustainable Fashion",
+        "description": "Give clothes a second life. Reduce waste and support circular economy."
+      }
+    },
+    "howItWorks": "How It Works",
+    "steps": {
+      "step1": {
+        "title": "Create Your Account",
+        "description": "Sign up for free in under 30 seconds. No credit card required."
+      },
+      "step2": {
+        "title": "List Your Items",
+        "description": "Take photos, set your price, and describe your items. It's that simple."
+      },
+      "step3": {
+        "title": "Meet & Exchange",
+        "description": "Chat with buyers, arrange meetups in Chișinău, Bălți, or anywhere in Moldova."
+      }
+    },
+    "stats": {
+      "fees": "Selling Fees",
+      "local": "100% Local",
+      "community": "Growing Community"
+    },
+    "cta": {
+      "title": "Ready to Start?",
+      "subtitle": "Join Moldova's fashion community today",
+      "button": "Sign Up Free"
+    }
   }
 }
