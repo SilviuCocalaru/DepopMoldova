@@ -111,7 +111,8 @@ export default function MobileOnlyHeader() {
       mounted = false
       subscription.unsubscribe()
     }
-  }, [supabase])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!user) return
@@ -149,7 +150,8 @@ export default function MobileOnlyHeader() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id])
 
   return (
     <MobileFloatingIslands 
