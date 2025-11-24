@@ -24,14 +24,14 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
       <div className="mb-6">
         <Link 
           href="/tutorial"
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+          className={`flex items-center justify-center gap-2 w-full py-4 rounded-lg text-base font-semibold transition-colors ${
             isDark 
               ? 'bg-gray-800 text-gray-100 hover:bg-gray-700 border border-gray-700' 
-              : 'bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-200'
+              : 'bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300'
           }`}
         >
-          <BookOpen className="w-4 h-4" />
-          Tutorial
+          <BookOpen className="w-5 h-5" />
+          Tutorial - How to Use Depop Moldova
         </Link>
       </div>
 

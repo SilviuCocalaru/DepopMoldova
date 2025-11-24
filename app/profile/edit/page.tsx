@@ -24,7 +24,7 @@ export default async function ProfileEditPage() {
   const t = await getTranslations('editProfile')
 
   return (
-    <div className={`min-h-screen pt-16 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors pb-20`}>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors pb-20`}>
       <div className="hidden md:block">
         <Header />
       </div>

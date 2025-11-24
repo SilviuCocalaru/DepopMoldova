@@ -23,7 +23,7 @@ export default async function TutorialPage() {
   const t = await getTranslations('tutorial')
 
   return (
-    <div className={`min-h-screen pt-16 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="hidden md:block">
         <Header />
       </div>

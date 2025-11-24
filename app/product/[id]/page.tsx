@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   }
 
   return (
-    <div className="pt-16 md:pt-0">
+    <div>
       <div className="hidden md:block">
         <Header />
       </div>
