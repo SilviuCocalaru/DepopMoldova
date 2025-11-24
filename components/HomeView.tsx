@@ -3,7 +3,6 @@
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { BookOpen } from 'lucide-react'
 
 interface HomeViewProps {
   products: any[]
@@ -20,27 +19,12 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
 
   return (
     <div className="main-content max-w-7xl mx-auto px-4">
-      {/* Tutorial Button */}
-      <div className="mb-6">
-        <Link 
-          href="/tutorial"
-          className={`flex items-center justify-center gap-2 w-full py-4 rounded-lg text-base font-semibold transition-colors ${
-            isDark 
-              ? 'bg-gray-800 text-gray-100 hover:bg-gray-700 border border-gray-700' 
-              : 'bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300'
-          }`}
-        >
-          <BookOpen className="w-5 h-5" />
-          Tutorial - How to Use Depop Moldova
-        </Link>
-      </div>
-
       {/* Suggestions Section */}
       <section>
-        <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${
+        <h2 className={`text-xl md:text-2xl font-semibold mb-6 text-center ${
           isDark ? 'text-gray-100' : 'text-gray-900'
         }`}>
-          Suggestions
+          Suggested for you
         </h2>
         
         {displayedProducts && displayedProducts.length > 0 ? (

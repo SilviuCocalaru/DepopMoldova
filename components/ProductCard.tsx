@@ -77,50 +77,64 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
       onClick={handleCardClick}
       className="group block"
     >
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 transition-colors">
         {product.images && product.images.length > 0 ? (
           <Image
             src={product.images[0]}
             alt={product.title}
             fill
-            className="object-cover group-hover:opacity-90 transition-opacity"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
             No image
           </div>
         )}
+        
+        {/* Likes count badge - top left */}
+        {likesCount > 0 && (
+          <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full bg-white dark:bg-gray-900 shadow-sm flex items-center gap-1.5">
+            <Heart className="w-4 h-4 fill-pink-500 text-pink-500" />
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{likesCount}{likesCount >= 5 ? '+' : ''}</span>
+          </div>
+        )}
+        
+        {/* Like button - bottom right */}
         <button
           onClick={handleLike}
-          className="absolute top-3 right-3 p-2 rounded-full bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all"
+          className="absolute bottom-3 right-3 p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-transform"
         >
           <Heart
-            className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-700 dark:text-gray-300'}`}
+            className={`w-6 h-6 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-700 dark:text-gray-300'}`}
           />
         </button>
+        
         {product.is_sold && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <span className="text-white font-bold text-lg">SOLD</span>
           </div>
         )}
+        
+        {/* Size badge - bottom left */}
+        <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-md bg-black/70 backdrop-blur-sm">
+          <p className="text-sm font-semibold text-white">
+            {product.size || 'One size'}
+          </p>
+        </div>
       </div>
-      <div className="mt-3">
+      
+      <div className="mt-3 px-1">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-600 dark:text-gray-400 truncate transition-colors">
-              {product.size || 'One size'}
-            </p>
-            <h3 className="text-base font-normal text-gray-900 dark:text-gray-100 line-clamp-2 mt-0.5 transition-colors">
-              {product.title}
-            </h3>
-          </div>
-          <div className="flex-shrink-0 text-right">
-            <p className="text-sm line-through text-gray-400 dark:text-gray-500">
-              ${(Number(product.price) * 1.2).toFixed(2)}
-            </p>
-            <p className="text-lg font-bold text-gray-900 dark:text-gray-100 transition-colors">
-              ${product.price}
-            </p>
+            {/* Price with discount */}
+            <div className="flex items-center gap-2 mb-1">
+              <p className="text-base font-bold text-gray-900 dark:text-gray-100">
+                £{product.price}
+              </p>
+              <p className="text-sm line-through text-yellow-600 dark:text-yellow-500">
+                £{(Number(product.price) * 1.32).toFixed(2)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
