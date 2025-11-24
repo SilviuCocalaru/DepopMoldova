@@ -178,7 +178,7 @@ html.dark .floating-island-bottom,
   }
 }
 
-@keyframes slide-down {
+@keyframes slideDown {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -190,7 +190,24 @@ html.dark .floating-island-bottom,
 }
 
 .animate-slide-down {
-  animation: slide-down 0.3s ease-out;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 3D Transforms */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-x-12 {
+  transform: rotateX(12deg);
+}
+
+.rotate-x-0 {
+  transform: rotateX(0deg);
 }
 
 /* Navigation Icons - Compact 24px */

@@ -16,9 +16,20 @@ const LANGUAGES = [
 
 export default function LanguageSelector({ currentLanguage, onLanguageChange }: LanguageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [localLang, setLocalLang] = useState(currentLanguage)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const currentLang = LANGUAGES.find(l => l.code === currentLanguage) || LANGUAGES[0]
+  useEffect(() => {
+    setMounted(true)
+    const stored = localStorage.getItem('preferredLanguage')
+    if (stored) {
+      setLocalLang(stored)
+    }
+  }, [])
+
+  const activeLangCode = mounted ? localLang : currentLanguage
+  const currentLang = LANGUAGES.find(l => l.code === activeLangCode) || LANGUAGES[0]
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -63,7 +74,7 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full mt-2 right-0 min-w-[160px] py-2 animate-slide-down rounded-2xl bg-white/95 backdrop-blur-[16px] backdrop-saturate-[180%] border border-gray-200/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.12)]">
+        <div className="absolute top-full mt-2 left-0 min-w-[160px] py-2 animate-slide-down rounded-2xl bg-white/90 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] z-50">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
