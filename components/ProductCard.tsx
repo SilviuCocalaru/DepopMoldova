@@ -77,13 +77,13 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
       onClick={handleCardClick}
       className="group block"
     >
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 transition-colors">
+      <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-800">
         {product.images && product.images.length > 0 ? (
           <Image
             src={product.images[0]}
             alt={product.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
@@ -93,20 +93,31 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
         
         {/* Likes count badge - top right */}
         {likesCount > 0 && (
-          <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/95 dark:bg-white/95 shadow-md flex items-center gap-1.5">
-            <Heart className="w-4 h-4 fill-pink-500 text-pink-500" />
-            <span className="text-sm font-bold text-gray-900">{likesCount}{likesCount >= 5 ? '+' : ''}</span>
+          <div className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm flex items-center gap-1.5">
+            <Heart className="w-3.5 h-3.5 fill-pink-500 text-pink-500" />
+            <span className="text-xs font-bold text-gray-900">{likesCount}{likesCount >= 5 ? '+' : ''}</span>
           </div>
         )}
         
-        {/* Like button - bottom right */}
+        {/* Save button - bottom right */}
         <button
           onClick={handleLike}
-          className="absolute bottom-3 right-3 p-2.5 rounded-full bg-white/95 dark:bg-white/95 shadow-lg hover:scale-110 transition-transform"
+          className="absolute bottom-3 right-3 p-2 bg-white/90 backdrop-blur-sm hover:bg-white transition-colors"
         >
-          <Heart
-            className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-800'}`}
-          />
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="18" 
+            height="18" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            className={isLiked ? 'fill-gray-900 text-gray-900' : 'text-gray-900'}
+          >
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
         </button>
         
         {product.is_sold && (
@@ -116,26 +127,26 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
         )}
         
         {/* Size badge - bottom left */}
-        <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm">
-          <p className="text-sm font-bold text-white">
+        <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-black/80 backdrop-blur-sm">
+          <p className="text-xs font-bold text-white">
             {product.size || 'One size'}
           </p>
         </div>
-      </div>
-      
-      <div className="mt-3 px-0.5">
-        {/* Price with discount */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1">
-            <span className="text-lg font-bold text-yellow-500 dark:text-yellow-400">💎</span>
-            <span className="text-sm line-through text-gray-400 dark:text-gray-500">
-              £{(Number(product.price) * 1.32).toFixed(2)}
+        
+        {/* Price - top left with yellow diamond */}
+        <div className="absolute top-3 left-3 flex flex-col gap-0.5">
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-black/80 backdrop-blur-sm">
+            <span className="text-base">💎</span>
+            <span className="text-xs line-through text-gray-300">
+              {(Number(product.price) * 1.32).toFixed(0)} MDL
             </span>
-          </span>
+          </div>
+          <div className="px-2 py-1 bg-black/80 backdrop-blur-sm">
+            <p className="text-lg font-bold text-white">
+              {product.price} MDL
+            </p>
+          </div>
         </div>
-        <p className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">
-          £{product.price}
-        </p>
       </div>
     </Link>
   )
