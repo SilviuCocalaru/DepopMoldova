@@ -12,7 +12,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#F3F4F6] relative overflow-hidden selection:bg-blue-500 selection:text-white">
       {/* Top Gradient Fade for Island Contrast */}
-      <div className="fixed top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/40 to-transparent backdrop-blur-[10px] z-10 pointer-events-none" />
+      <div className="fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/40 via-black/20 to-transparent z-10 pointer-events-none" />
       
       {/* Mobile Header Islands */}
       <div className="fixed top-4 left-0 right-0 z-[100] px-4 flex justify-between items-center md:hidden pointer-events-none">

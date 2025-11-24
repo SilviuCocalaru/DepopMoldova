@@ -38,11 +38,11 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   return (
     <>
       {/* Top Gradient Fade for Island Contrast */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/40 to-transparent backdrop-blur-[10px] z-30 pointer-events-none" />
+      <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/40 via-black/20 to-transparent z-30 pointer-events-none" />
       
       {/* Bottom Gradient Fade for Bottom Menu Island */}
       {user && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent backdrop-blur-[10px] z-30 pointer-events-none" />
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/40 via-black/20 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Animated Search Bar - Only for logged-in users on homepage */}
