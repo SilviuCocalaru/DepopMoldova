@@ -46,28 +46,28 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     return null
   }
 
-  // Don't show islands if still loading and no user
-  if (isLoading && !user) {
-    return null
-  }
+  // Always show when user exists, even during loading
+  const showIslands = !!user
+  
+  console.log('[MobileFloatingIslands] Render:', { user: !!user, isLoading, pathname, showIslands })
 
   return (
     <>
       {/* Top Gradient Fade - Only when search bar is visible */}
-      {user && pathname === '/' && (
+      {showIslands && pathname === '/' && (
         <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Bottom Gradient Fade - Only when bottom menu is visible (NOT on product pages) */}
-      {user && !isProductPage && (
+      {showIslands && !isProductPage && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Animated Search Bar - Only for logged-in users on homepage */}
-      {user && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
+      {showIslands && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
 
-      {/* Floating Bottom Island - Only show if user is logged in AND not on product page */}
-      {user && !isProductPage && (
+      {/* Floating Bottom Island - Always show if user is logged in AND not on product page */}
+      {showIslands && !isProductPage && (
         <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
           <div 
             className={`

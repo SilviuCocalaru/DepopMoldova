@@ -31,6 +31,8 @@ export default function MobileOnlyHeader() {
         const currentUser = session?.user ?? null
         setUser(currentUser)
         
+        console.log('[MobileOnlyHeader] User loaded:', currentUser ? 'Logged in' : 'Not logged in')
+        
         if (currentUser) {
           const { data: profileData } = await supabase
             .from('profiles')
