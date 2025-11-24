@@ -144,6 +144,7 @@ export default function MobileOnlyHeader() {
 
   return (
     <MobileFloatingIslands 
+      key={user?.id || 'no-user'}
       user={user} 
       profile={profile} 
       unreadMessages={unreadMessages}

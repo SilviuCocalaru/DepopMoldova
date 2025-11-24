@@ -17,12 +17,19 @@ interface MobileFloatingIslandsProps {
 export default function MobileFloatingIslands({ user, profile, unreadMessages, isLoading = false }: MobileFloatingIslandsProps) {
   const pathname = usePathname()
   const [shouldAnimate, setShouldAnimate] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const t = useTranslations('auth')
 
   // Check if on product detail page
   const isProductPage = pathname?.startsWith('/product/')
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+    
     // Check if island was previously shown
     const wasIslandShown = sessionStorage.getItem('bottomIslandShown')
     
@@ -32,7 +39,17 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     } else {
       setShouldAnimate(false)
     }
-  }, [pathname])
+  }, [pathname, isMounted])
+
+  // Don't render anything until mounted (prevents hydration mismatch)
+  if (!isMounted) {
+    return null
+  }
+
+  // Don't show islands if still loading and no user
+  if (isLoading && !user) {
+    return null
+  }
 
   return (
     <>
