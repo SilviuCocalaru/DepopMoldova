@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import ProductGrid from '@/components/ProductGrid'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 import HomeView from '@/components/HomeView'
 import LandingPage from '@/components/LandingPage'
 import { getTranslations } from 'next-intl/server'
@@ -45,11 +44,6 @@ export default async function Home() {
 
   return (
     <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      {/* Mobile Islands Only */}
-      <div className="md:hidden">
-        <MobileOnlyHeader />
-      </div>
-      
       {/* Desktop Header Only */}
       <div className="hidden md:block">
         <Header />

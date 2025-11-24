@@ -6,6 +6,7 @@ import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import IntlProvider from "@/components/IntlProvider";
+import ClientLayout from "@/components/ClientLayout";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -99,7 +100,9 @@ export default async function RootLayout({
       >
         <IntlProvider locale={locale} messages={messages}>
           <ThemeProvider initialTheme={userTheme}>
-            {children}
+            <ClientLayout>
+              {children}
+            </ClientLayout>
           </ThemeProvider>
         </IntlProvider>
         <Script

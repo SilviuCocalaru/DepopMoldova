@@ -57,9 +57,6 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      <div className="md:hidden">
-        <MobileOnlyHeader />
-      </div>
       <div className="hidden md:block">
         <Header />
       </div>

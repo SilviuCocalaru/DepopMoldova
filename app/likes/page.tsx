@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import ProductGrid from '@/components/ProductGrid'
+import ProductCard from '@/components/ProductCard'
 import Header from '@/components/Header'
-import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,10 +40,7 @@ export default async function LikesPage() {
   const userId = session.user.id
 
   return (
-    <div className={`min-h-screen transition-colors ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="md:hidden">
-        <MobileOnlyHeader />
-      </div>
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="hidden md:block">
         <Header />
       </div>

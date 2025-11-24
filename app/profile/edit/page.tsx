@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import ProfileEditForm from '@/components/profile/ProfileEditForm'
 import Header from '@/components/Header'
-import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
@@ -26,9 +25,6 @@ export default async function ProfileEditPage() {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'} transition-colors pb-20`}>
-      <div className="md:hidden">
-        <MobileOnlyHeader />
-      </div>
       <div className="hidden md:block">
         <Header />
       </div>
