@@ -26,15 +26,15 @@ export default function LandingPage() {
 
       {/* Abstract Background Blobs - Optimized */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[80px] animate-pulse-slow" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-400/20 blur-[80px] animate-pulse-slow delay-1000" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-blue-400/15 to-blue-300/10 blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-tl from-purple-400/15 to-purple-300/10 blur-3xl" />
       </div>
 
       <div className="relative z-10">
         {/* Hero Section */}
         <div className="px-6 pt-20 pb-12 text-center max-w-7xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/50 shadow-sm mb-6 hover:scale-105 transition-transform cursor-default">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-white/50 shadow-sm mb-6 cursor-default">
             <span className="text-lg">🇲🇩</span>
             <span className="text-sm font-semibold text-gray-800 tracking-wide uppercase">{t('madeInMoldova')}</span>
           </div>
@@ -69,8 +69,8 @@ export default function LandingPage() {
           </div>
 
           {/* Glassmorphism App Preview */}
-          <div className="relative max-w-5xl mx-auto mt-8 perspective-1000">
-            <div className="relative bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-4 shadow-2xl transform rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out">
+          <div className="relative max-w-5xl mx-auto mt-8">
+            <div className="relative bg-white/50 border border-white/50 rounded-3xl p-4 shadow-2xl">
               {/* Mockup Header */}
               <div className="flex items-center justify-between mb-6 px-4">
                 <div className="flex gap-2">
@@ -125,8 +125,8 @@ export default function LandingPage() {
             
             <div className="grid md:grid-cols-3 gap-8">
               {/* Feature 1 */}
-              <div className="group p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/50 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 rotate-3 group-hover:rotate-6">
+              <div className="p-8 rounded-3xl bg-white/50 border border-white/50 shadow-xl hover:shadow-2xl transition-shadow">
+                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
                   <DollarSign className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">{t('features.noFees.title')}</h3>
@@ -134,8 +134,8 @@ export default function LandingPage() {
               </div>
 
               {/* Feature 2 */}
-              <div className="group p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/50 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 -rotate-3 group-hover:-rotate-6">
+              <div className="p-8 rounded-3xl bg-white/50 border border-white/50 shadow-xl hover:shadow-2xl transition-shadow">
+                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                   <MapPin className="w-8 h-8 text-blue-600" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">{t('features.local.title')}</h3>
@@ -143,8 +143,8 @@ export default function LandingPage() {
               </div>
 
               {/* Feature 3 */}
-              <div className="group p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/50 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 rotate-3 group-hover:rotate-6">
+              <div className="p-8 rounded-3xl bg-white/50 border border-white/50 shadow-xl hover:shadow-2xl transition-shadow">
+                <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
                   <Leaf className="w-8 h-8 text-emerald-600" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">{t('features.sustainable.title')}</h3>
@@ -159,8 +159,8 @@ export default function LandingPage() {
           <div className="max-w-5xl mx-auto">
             <div className="rounded-[2.5rem] bg-gray-900 text-white p-12 shadow-2xl relative overflow-hidden">
               {/* Background Glow */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 blur-[80px] rounded-full" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 blur-3xl rounded-full" />
               
               <div className="relative z-10 grid md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-gray-800">
                 <div className="pt-4 md:pt-0">
@@ -189,8 +189,8 @@ export default function LandingPage() {
             
             <div className="space-y-6">
               {[1, 2, 3].map((step, index) => (
-                <div key={step} className="group flex items-center gap-6 p-6 rounded-3xl bg-white/60 backdrop-blur-sm border border-white/50 hover:bg-white/80 transition-colors shadow-sm hover:shadow-md">
-                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                <div key={step} className="flex items-center gap-6 p-6 rounded-3xl bg-white/60 border border-white/50 hover:bg-white/80 transition-colors shadow-sm">
+                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg">
                     {step}
                   </div>
                   <div>
@@ -207,9 +207,11 @@ export default function LandingPage() {
         <div className="px-6 pb-24 pt-12">
           <div className="max-w-4xl mx-auto text-center">
             <div className="relative p-12 rounded-[3rem] bg-gradient-to-br from-blue-600 to-purple-700 text-white overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute inset-0" style={{backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.05) 10px, rgba(255,255,255,.05) 20px)'}} />
+              </div>
               <div className="relative z-10">
-                <Sparkles className="w-12 h-12 mx-auto mb-6 text-yellow-300 animate-pulse" />
+                <Sparkles className="w-12 h-12 mx-auto mb-6 text-yellow-300" />
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
                   {t('cta.title')}
                 </h2>
