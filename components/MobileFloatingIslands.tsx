@@ -148,15 +148,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
                 height: '48px'
               }}
             >
-              {profile?.avatar_url ? (
-                <img
-                  src={profile.avatar_url}
-                  alt={profile.username}
-                  className="w-6 h-6 rounded object-cover"
-                />
-              ) : (
-                <UserIcon className="w-6 h-6" strokeWidth={2} />
-              )}
+              <UserIcon strokeWidth={2} />
             </Link>
           </div>
         </div>
