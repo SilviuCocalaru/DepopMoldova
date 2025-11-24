@@ -43,7 +43,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
       )}
       
       {/* Bottom Gradient Fade - Only when bottom menu is visible */}
-      {user && (
+      {user && !isProductPage && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       )}
       
