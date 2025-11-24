@@ -48,8 +48,6 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
 
   // Always show when user exists, even during loading
   const showIslands = !!user
-  
-  console.log('[MobileFloatingIslands] Render:', { user: !!user, isLoading, pathname, showIslands })
 
   return (
     <>

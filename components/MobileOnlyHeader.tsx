@@ -24,7 +24,10 @@ export default function MobileOnlyHeader() {
     
     const loadUserAndProfile = async () => {
       try {
-        setIsLoading(true)
+        // Don't reset isLoading if we already have a user (prevents flash)
+        if (!user) {
+          setIsLoading(true)
+        }
         
         const { data: { session }, error } = await supabase.auth.getSession()
         
@@ -36,8 +39,6 @@ export default function MobileOnlyHeader() {
         
         const currentUser = session?.user ?? null
         setUser(currentUser)
-        
-        console.log('[MobileOnlyHeader] User loaded:', currentUser ? 'Logged in' : 'Not logged in', 'Session:', !!session)
         
         if (currentUser) {
           const { data: profileData } = await supabase
@@ -75,8 +76,6 @@ export default function MobileOnlyHeader() {
     loadUserAndProfile()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
-      console.log('[MobileOnlyHeader] Auth state changed:', _event, 'User:', !!session?.user)
-      
       const currentUser = session?.user ?? null
       if (mounted) {
         setUser(currentUser)
