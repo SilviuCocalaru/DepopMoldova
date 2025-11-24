@@ -91,21 +91,21 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
           </div>
         )}
         
-        {/* Likes count badge - top left */}
+        {/* Likes count badge - top right */}
         {likesCount > 0 && (
-          <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full bg-white dark:bg-gray-900 shadow-sm flex items-center gap-1.5">
+          <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/95 dark:bg-white/95 shadow-md flex items-center gap-1.5">
             <Heart className="w-4 h-4 fill-pink-500 text-pink-500" />
-            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{likesCount}{likesCount >= 5 ? '+' : ''}</span>
+            <span className="text-sm font-bold text-gray-900">{likesCount}{likesCount >= 5 ? '+' : ''}</span>
           </div>
         )}
         
         {/* Like button - bottom right */}
         <button
           onClick={handleLike}
-          className="absolute bottom-3 right-3 p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-transform"
+          className="absolute bottom-3 right-3 p-2.5 rounded-full bg-white/95 dark:bg-white/95 shadow-lg hover:scale-110 transition-transform"
         >
           <Heart
-            className={`w-6 h-6 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-700 dark:text-gray-300'}`}
+            className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-800'}`}
           />
         </button>
         
@@ -116,27 +116,26 @@ export default function ProductCard({ product, currentUserId }: ProductCardProps
         )}
         
         {/* Size badge - bottom left */}
-        <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-md bg-black/70 backdrop-blur-sm">
-          <p className="text-sm font-semibold text-white">
+        <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm">
+          <p className="text-sm font-bold text-white">
             {product.size || 'One size'}
           </p>
         </div>
       </div>
       
-      <div className="mt-3 px-1">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1 min-w-0">
-            {/* Price with discount */}
-            <div className="flex items-center gap-2 mb-1">
-              <p className="text-base font-bold text-gray-900 dark:text-gray-100">
-                £{product.price}
-              </p>
-              <p className="text-sm line-through text-yellow-600 dark:text-yellow-500">
-                £{(Number(product.price) * 1.32).toFixed(2)}
-              </p>
-            </div>
-          </div>
+      <div className="mt-3 px-0.5">
+        {/* Price with discount */}
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1">
+            <span className="text-lg font-bold text-yellow-500 dark:text-yellow-400">💎</span>
+            <span className="text-sm line-through text-gray-400 dark:text-gray-500">
+              £{(Number(product.price) * 1.32).toFixed(2)}
+            </span>
+          </span>
         </div>
+        <p className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">
+          £{product.price}
+        </p>
       </div>
     </Link>
   )
