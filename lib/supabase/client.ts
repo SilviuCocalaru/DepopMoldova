@@ -21,7 +21,14 @@ export function createClient() {
   }
 
   // createBrowserClient from @supabase/ssr handles cookies automatically
-  clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey)
+  clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true,
+      storageKey: 'depop-auth',
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  })
 
   return clientInstance
 }
