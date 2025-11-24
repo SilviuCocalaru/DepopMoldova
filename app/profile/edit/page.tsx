@@ -28,7 +28,7 @@ export default async function ProfileEditPage() {
       <div className="hidden md:block">
         <Header />
       </div>
-      <div className="max-w-2xl mx-auto px-4 py-3">
+      <div className="main-content max-w-2xl mx-auto px-4 py-3">
         <h1 className={`text-lg font-bold mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{t('title')}</h1>
         <ProfileEditForm profile={profile} isDark={isDark} />
       </div>

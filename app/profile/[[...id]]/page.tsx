@@ -60,7 +60,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
       <div className="hidden md:block">
         <Header />
       </div>
-      <div className="max-w-[935px] mx-auto px-4 py-3">
+      <div className="main-content max-w-[935px] mx-auto px-4 py-3">
         <ProfileHeader 
           profile={profile}
           postsCount={products?.length || 0}

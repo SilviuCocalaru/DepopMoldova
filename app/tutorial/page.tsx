@@ -28,7 +28,7 @@ export default async function TutorialPage() {
         <Header />
       </div>
       
-      <div className="max-w-4xl mx-auto px-4 py-8 pb-24">
+      <div className="main-content max-w-4xl mx-auto px-4 py-8">
         <h1 className={`text-4xl font-bold mb-8 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
           How to Use Depop Moldova
         </h1>

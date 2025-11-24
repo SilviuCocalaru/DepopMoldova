@@ -40,7 +40,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
       <div className="hidden md:block">
         <Header />
       </div>
-      <ProductDetail product={product} currentUserId={user?.id} theme={theme} />
+      <div className="main-content">
+        <ProductDetail product={product} currentUserId={user?.id} theme={theme} />
+      </div>
     </div>
   )
 }

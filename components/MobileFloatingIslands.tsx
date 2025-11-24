@@ -66,7 +66,12 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
 
       {/* Floating Bottom Island - Always show if user is logged in AND not on product page */}
       {showIslands && !isProductPage && (
-        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
+        <div 
+          className="md:hidden fixed left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm"
+          style={{
+            bottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.5rem)'
+          }}
+        >
           <div 
             className={`
               floating-island-bottom

@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --searchbar-height: 52px; /* Mobile: search bar height (h-[52px]) */
+  --navbar-height: 60px; /* Mobile: bottom nav height */
 }
 
 
@@ -10,6 +12,13 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+/* Adjust searchbar height for tablet/desktop */
+@media (min-width: 768px) {
+  :root {
+    --searchbar-height: 64px; /* Larger on desktop */
   }
 }
 
@@ -77,6 +86,12 @@ body {
     padding-top: 0;
     padding-bottom: 0;
     background: white;
+  }
+
+  /* Add safe area padding for content */
+  .main-content {
+    padding-top: calc(var(--searchbar-height) + env(safe-area-inset-top, 0px) + 16px);
+    padding-bottom: calc(var(--navbar-height) + env(safe-area-inset-bottom, 0px) + 16px);
   }
 
   /* Support dynamic viewport height */

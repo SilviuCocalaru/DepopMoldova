@@ -66,7 +66,11 @@ export default function AnimatedSearchBar({ isLoggedIn = false }: AnimatedSearch
       {/* Search Bar */}
       <div 
         ref={searchRef}
+        id="searchbar"
         className={`md:hidden fixed top-4 z-50 ${isLoggedIn ? 'left-1/2 -translate-x-1/2' : 'left-4'}`}
+        style={{
+          top: 'calc(env(safe-area-inset-top, 0px) + 1rem)'
+        }}
       >
         <div 
           className={`

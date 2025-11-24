@@ -19,7 +19,7 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
   const hasMoreProducts = products.length > 6
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="main-content max-w-7xl mx-auto px-4">
       {/* Tutorial Button */}
       <div className="mb-6">
         <Link 
