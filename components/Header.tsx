@@ -168,8 +168,8 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Gradient Fade for Better Contrast */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/40 via-black/20 to-transparent z-30 pointer-events-none" />
+      {/* Top Gradient Fade - Only on Desktop when header exists */}
+      <div className="hidden md:block fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       
       {/* Mobile Floating Islands */}
       <MobileFloatingIslands 
