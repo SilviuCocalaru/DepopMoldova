@@ -11,6 +11,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#F3F4F6] relative overflow-hidden selection:bg-blue-500 selection:text-white">
+      {/* Top Gradient Fade for Island Contrast */}
+      <div className="fixed top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/10 to-transparent z-10 pointer-events-none" />
+      
       {/* Mobile Header Islands */}
       <div className="fixed top-4 left-0 right-0 z-[100] px-4 flex justify-between items-center md:hidden pointer-events-none">
         <div className="pointer-events-auto">
@@ -33,12 +36,6 @@ export default function LandingPage() {
       <div className="relative z-10">
         {/* Hero Section */}
         <div className="px-6 pt-20 pb-12 text-center max-w-7xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-white/50 shadow-sm mb-6 cursor-default">
-            <span className="text-lg">🇲🇩</span>
-            <span className="text-sm font-semibold text-gray-800 tracking-wide uppercase">{t('madeInMoldova')}</span>
-          </div>
-          
           {/* Main Title */}
           <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight leading-[1.1]">
             <span className="block">{t('heroTitle').split('.')[0]}</span>

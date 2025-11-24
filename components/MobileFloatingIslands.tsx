@@ -37,6 +37,9 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
 
   return (
     <>
+      {/* Top Gradient Fade for Island Contrast */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/10 to-transparent z-30 pointer-events-none" />
+      
       {/* Animated Search Bar - Only for logged-in users on homepage */}
       {user && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
 
