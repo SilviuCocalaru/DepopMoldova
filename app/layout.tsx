@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -73,6 +74,13 @@ export default async function RootLayout({
     userTheme = (profile?.theme as 'light' | 'dark') || 'light'
     if (profile?.language && (profile.language === 'en' || profile.language === 'ro' || profile.language === 'ru')) {
       locale = profile.language
+    }
+  } else {
+    // Check for guest language cookie
+    const cookieStore = await cookies()
+    const localeCookie = cookieStore.get('NEXT_LOCALE')
+    if (localeCookie?.value && (localeCookie.value === 'en' || localeCookie.value === 'ro' || localeCookie.value === 'ru')) {
+      locale = localeCookie.value as 'en' | 'ro' | 'ru'
     }
   }
 

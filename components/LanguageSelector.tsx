@@ -50,6 +50,8 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
   const handleLanguageChange = async (langCode: string) => {
     // Save language preference to localStorage for non-logged users
     localStorage.setItem('preferredLanguage', langCode)
+    // Set cookie for server-side rendering
+    document.cookie = `NEXT_LOCALE=${langCode}; path=/; max-age=31536000`
     
     // If callback provided, use it (for logged-in users to update in DB)
     if (onLanguageChange) {

@@ -2,13 +2,28 @@
 
 import Link from 'next/link'
 import { DollarSign, Leaf, MapPin, Users, ArrowRight, Sparkles, ShoppingBag } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import LanguageSelector from './LanguageSelector'
 
 export default function LandingPage() {
   const t = useTranslations('landing')
+  const locale = useLocale()
 
   return (
     <div className="min-h-screen bg-[#F3F4F6] relative overflow-hidden selection:bg-blue-500 selection:text-white">
+      {/* Mobile Header Islands */}
+      <div className="fixed top-4 left-0 right-0 z-[100] px-4 flex justify-between items-center md:hidden pointer-events-none">
+        <div className="pointer-events-auto">
+          <LanguageSelector currentLanguage={locale} />
+        </div>
+        <Link 
+          href="/signup"
+          className="pointer-events-auto px-5 flex items-center justify-center text-sm font-semibold whitespace-nowrap h-[44px] rounded-full bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%] border border-gray-200/30 shadow-[0_2px_12px_0_rgba(0,0,0,0.04)] text-gray-900 hover:bg-white/90 transition-all"
+        >
+          Sign Up
+        </Link>
+      </div>
+
       {/* Abstract Background Blobs - Optimized */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[80px] animate-pulse-slow" />

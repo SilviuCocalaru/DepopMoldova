@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { Home, Plus, MessageCircle, User as UserIcon, Video } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import AnimatedSearchBar from './AnimatedSearchBar'
-import LanguageSelector from './LanguageSelector'
 import { useTranslations } from 'next-intl'
 
 interface MobileFloatingIslandsProps {
@@ -38,24 +37,6 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
 
   return (
     <>
-      {/* Language Selector & Sign Up - Only for non-logged users */}
-      {!user && !isLoading && pathname === '/' && (
-        <div className="md:hidden fixed top-4 left-0 right-0 z-50 px-4 flex justify-between items-center pointer-events-none">
-          {/* Language Selector - Left */}
-          <div className="pointer-events-auto">
-            <LanguageSelector currentLanguage={profile?.language || 'en'} />
-          </div>
-          
-          {/* Sign Up Button - Right */}
-          <Link 
-            href="/signup"
-            className="pointer-events-auto px-5 flex items-center justify-center text-sm font-semibold whitespace-nowrap h-[44px] rounded-full bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%] border border-gray-200/30 shadow-[0_4px_24px_0_rgba(0,0,0,0.08)] text-gray-900 hover:bg-white/90 transition-all"
-          >
-            {t('signUp')}
-          </Link>
-        </div>
-      )}
-
       {/* Animated Search Bar - Only for logged-in users on homepage */}
       {user && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
 
