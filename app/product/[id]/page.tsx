@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ProductDetail from '@/components/ProductDetail'
 import Header from '@/components/Header'
+import MobileOnlyHeader from '@/components/MobileOnlyHeader'
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
@@ -37,6 +38,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   return (
     <>
+      <div className="md:hidden">
+        <MobileOnlyHeader />
+      </div>
       <div className="hidden md:block">
         <Header />
       </div>

@@ -1,14 +1,6 @@
 import { createBrowserClient } from '@supabase/ssr'
 
-// Singleton instance - created once and reused across the entire app
-let clientInstance: any = null
-
 export function createClient() {
-  // Return existing instance if already created
-  if (clientInstance) {
-    return clientInstance
-  }
-
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
@@ -20,8 +12,8 @@ export function createClient() {
     )
   }
 
-  // createBrowserClient from @supabase/ssr handles cookies automatically
-  clientInstance = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+  // createBrowserClient from @supabase/ssr handles cookies and persistence automatically
+  return createBrowserClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       storageKey: 'depop-auth',
@@ -29,8 +21,6 @@ export function createClient() {
       detectSessionInUrl: true
     }
   })
-
-  return clientInstance
 }
 
 export const getSupabaseClient = () => createClient()
