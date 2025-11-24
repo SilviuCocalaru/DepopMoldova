@@ -85,7 +85,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <Header />
       </div>
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="md:pt-0 pt-16 max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className={`text-3xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{resultText}</h1>
           <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>

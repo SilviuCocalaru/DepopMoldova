@@ -14,7 +14,7 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
   const t = useTranslations('home.categories')
 
   return (
-    <>
+    <div className="md:pt-0 pt-16">
       {/* Category Navigation - Desktop Only */}
       <nav className={`border-b sticky top-16 z-40 hidden md:block transition-colors ${
         isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'
@@ -213,6 +213,6 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
