@@ -53,12 +53,12 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     <>
       {/* Top Gradient Fade - Only when search bar is visible */}
       {showIslands && pathname === '/' && (
-        <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
+        <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/30 via-black/15 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Bottom Gradient Fade - Only when bottom menu is visible (NOT on product pages) */}
       {showIslands && !isProductPage && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/30 via-black/15 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Animated Search Bar - Only for logged-in users on homepage */}
