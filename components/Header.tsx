@@ -169,7 +169,7 @@ export default function Header() {
   return (
     <>
       {/* Top Gradient Fade for Better Contrast */}
-      <div className="hidden md:block fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/20 to-transparent z-30 pointer-events-none" />
+      <div className="hidden md:block fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/40 to-transparent backdrop-blur-[10px] z-30 pointer-events-none" />
       
       {/* Mobile Floating Islands */}
       <MobileFloatingIslands 
