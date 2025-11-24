@@ -79,11 +79,6 @@ body {
     background: white;
   }
 
-  /* Fix for pages to extend full height */
-  body > * {
-    min-height: 100vh;
-  }
-
   /* Support dynamic viewport height */
   :root {
     --viewport-height: 100dvh;

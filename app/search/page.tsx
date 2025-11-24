@@ -80,7 +80,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     : 'Browse all'
 
   return (
-    <div className={`min-h-screen pt-20 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pt-16 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="hidden md:block">
         <Header />
       </div>

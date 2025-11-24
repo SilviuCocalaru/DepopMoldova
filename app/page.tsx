@@ -43,7 +43,7 @@ export default async function Home() {
     .limit(12)
 
   return (
-    <div className={`min-h-screen transition-colors pt-20 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors pt-16 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       {/* Desktop Header Only */}
       <div className="hidden md:block">
         <Header />
