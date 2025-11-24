@@ -19,9 +19,8 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const t = useTranslations('auth')
 
-  // Hide on product detail pages
+  // Check if on product detail page
   const isProductPage = pathname?.startsWith('/product/')
-  if (isProductPage) return null
 
   useEffect(() => {
     // Check if island was previously shown
@@ -42,7 +41,7 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
         <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       )}
       
-      {/* Bottom Gradient Fade - Only when bottom menu is visible */}
+      {/* Bottom Gradient Fade - Only when bottom menu is visible (NOT on product pages) */}
       {user && !isProductPage && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       )}
@@ -50,16 +49,13 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
       {/* Animated Search Bar - Only for logged-in users on homepage */}
       {user && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
 
-      {/* Floating Bottom Island - Only show if user is logged in */}
-      {user && (
+      {/* Floating Bottom Island - Only show if user is logged in AND not on product page */}
+      {user && !isProductPage && (
         <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm">
           <div 
             className={`
               floating-island-bottom
-              flex items-center justify-around h-[60px] rounded-[30px] border
-              ${profile?.theme === 'dark' 
-                ? 'bg-gray-800/75 border-gray-700/30' 
-                : 'bg-white/75 border-gray-200/30'}
+              flex items-center justify-around h-[60px] rounded-[30px]
               backdrop-blur-[16px] backdrop-saturate-[180%]
               shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]
               ${shouldAnimate ? 'animate-slide-up' : ''}
