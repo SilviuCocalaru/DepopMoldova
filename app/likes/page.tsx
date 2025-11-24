@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
+import ProductGrid from '@/components/ProductGrid'
 import Header from '@/components/Header'
 
 export const dynamic = 'force-dynamic'
