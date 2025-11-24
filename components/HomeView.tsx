@@ -20,7 +20,7 @@ export default function HomeView({ products, isDark, userId }: HomeViewProps) {
   return (
     <div className="main-content max-w-7xl mx-auto px-4">
       {/* Suggestions Section */}
-      <section>
+      <section className="mt-6">
         <h2 className={`text-xl md:text-2xl font-semibold mb-6 text-center ${
           isDark ? 'text-gray-100' : 'text-gray-900'
         }`}>
