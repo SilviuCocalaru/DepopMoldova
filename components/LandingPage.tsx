@@ -9,18 +9,17 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#F3F4F6] relative overflow-hidden selection:bg-blue-500 selection:text-white">
-      {/* Abstract Background Blobs */}
+      {/* Abstract Background Blobs - Optimized */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-400/20 blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-400/20 blur-[120px] animate-pulse-slow delay-1000" />
-        <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-yellow-400/10 blur-[100px] animate-pulse-slow delay-2000" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[80px] animate-pulse-slow" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-400/20 blur-[80px] animate-pulse-slow delay-1000" />
       </div>
 
       <div className="relative z-10">
         {/* Hero Section */}
-        <div className="px-6 pt-32 pb-20 text-center max-w-7xl mx-auto">
+        <div className="px-6 pt-20 pb-12 text-center max-w-7xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/50 shadow-sm mb-8 hover:scale-105 transition-transform cursor-default">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/50 shadow-sm mb-6 hover:scale-105 transition-transform cursor-default">
             <span className="text-lg">🇲🇩</span>
             <span className="text-sm font-semibold text-gray-800 tracking-wide uppercase">{t('madeInMoldova')}</span>
           </div>
@@ -33,12 +32,12 @@ export default function LandingPage() {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed font-medium">
             {t('heroSubtitle')}
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               href="/signup"
               className="group relative px-8 py-4 bg-gray-900 text-white rounded-full font-bold text-lg hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2"
@@ -55,7 +54,7 @@ export default function LandingPage() {
           </div>
 
           {/* Glassmorphism App Preview */}
-          <div className="relative max-w-5xl mx-auto mt-12 perspective-1000">
+          <div className="relative max-w-5xl mx-auto mt-8 perspective-1000">
             <div className="relative bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-4 shadow-2xl transform rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out">
               {/* Mockup Header */}
               <div className="flex items-center justify-between mb-6 px-4">

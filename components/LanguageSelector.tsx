@@ -66,7 +66,15 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
       {/* Language Button Island */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 h-[44px] flex items-center gap-2 hover:scale-105 transition-transform rounded-full bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%] border border-gray-200/30 shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]"
+        className={`
+          h-[44px] rounded-full
+          bg-white/75 backdrop-blur-[16px] backdrop-saturate-[180%]
+          border border-gray-200/30
+          shadow-[0_2px_12px_0_rgba(0,0,0,0.04)]
+          flex items-center px-4 gap-2
+          hover:bg-white/90 transition-all
+          ${isOpen ? 'shadow-[0_4px_24px_0_rgba(0,0,0,0.08)]' : ''}
+        `}
       >
         <Globe className="w-4 h-4 text-gray-600" />
         <span className="text-sm font-medium text-gray-900">{currentLang.flag}</span>
