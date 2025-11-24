@@ -16,7 +16,7 @@ export default getRequestConfig(async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let locale: 'en' | 'ro' | 'ru' = 'en'; // Default language
+  let locale: 'en' | 'ro' | 'ru' = 'ro'; // Default language
 
   if (user) {
     const { data: profile } = await supabase

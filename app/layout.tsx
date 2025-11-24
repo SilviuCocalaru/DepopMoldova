@@ -62,7 +62,7 @@ export default async function RootLayout({
   const { data: { session } } = await supabase.auth.getSession()
   
   let userTheme: 'light' | 'dark' = 'light'
-  let locale: 'en' | 'ro' | 'ru' = 'en'
+  let locale: 'en' | 'ro' | 'ru' = 'ro'
   
   if (session?.user) {
     const { data: profile } = await supabase

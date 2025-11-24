@@ -56,7 +56,7 @@ export default function SettingsView({ profile, userId }: SettingsViewProps) {
   const t = useTranslations('settings')
   
   // Settings state
-  const [language, setLanguage] = useState(profile.language || 'en')
+  const [language, setLanguage] = useState(profile.language || 'ro')
   const [gender, setGender] = useState(profile.gender || '')
   const [style, setStyle] = useState(profile.style || '')
   const [location, setLocation] = useState(profile.location || '')
