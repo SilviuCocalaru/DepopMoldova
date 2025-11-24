@@ -13,14 +13,7 @@ export function createClient() {
   }
 
   // createBrowserClient from @supabase/ssr handles cookies and persistence automatically
-  return createBrowserClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      storageKey: 'depop-auth',
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  })
+  return createBrowserClient(supabaseUrl, supabaseAnonKey)
 }
 
 export const getSupabaseClient = () => createClient()
