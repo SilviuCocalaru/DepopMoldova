@@ -36,13 +36,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
   }
 
   return (
-    <>
+    <div className="pt-20 md:pt-0">
       <div className="hidden md:block">
         <Header />
       </div>
-      <div className="md:pt-0 pt-16">
-        <ProductDetail product={product} currentUserId={user?.id} theme={theme} />
-      </div>
-    </>
+      <ProductDetail product={product} currentUserId={user?.id} theme={theme} />
+    </div>
   )
 }

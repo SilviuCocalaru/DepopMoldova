@@ -41,11 +41,11 @@ export default async function LikesPage() {
   const userId = session.user.id
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pt-20 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="hidden md:block">
         <Header />
       </div>
-      <div className="md:pt-0 pt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className={`text-3xl font-bold mb-8 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>Liked Items</h1>
         
         {likedProducts.length === 0 ? (

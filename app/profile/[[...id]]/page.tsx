@@ -56,11 +56,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ id?: s
   const isDark = profile.theme === 'dark'
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen pt-20 md:pt-0 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="hidden md:block">
         <Header />
       </div>
-      <div className="md:pt-0 pt-16 max-w-[935px] mx-auto px-4 py-3">
+      <div className="max-w-[935px] mx-auto px-4 py-3">
         <ProfileHeader 
           profile={profile}
           postsCount={products?.length || 0}
