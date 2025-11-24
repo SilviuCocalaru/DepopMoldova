@@ -17,21 +17,27 @@ export default function MobileOnlyHeader() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [unreadMessages, setUnreadMessages] = useState(0)
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
 
   useEffect(() => {
     let mounted = true
     
     const loadUserAndProfile = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession()
+        setIsLoading(true)
+        
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          console.error('[MobileOnlyHeader] Session error:', error)
+        }
         
         if (!mounted) return
         
         const currentUser = session?.user ?? null
         setUser(currentUser)
         
-        console.log('[MobileOnlyHeader] User loaded:', currentUser ? 'Logged in' : 'Not logged in')
+        console.log('[MobileOnlyHeader] User loaded:', currentUser ? 'Logged in' : 'Not logged in', 'Session:', !!session)
         
         if (currentUser) {
           const { data: profileData } = await supabase
@@ -68,7 +74,9 @@ export default function MobileOnlyHeader() {
 
     loadUserAndProfile()
 
-    const subscription = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
+      console.log('[MobileOnlyHeader] Auth state changed:', _event, 'User:', !!session?.user)
+      
       const currentUser = session?.user ?? null
       if (mounted) {
         setUser(currentUser)
@@ -102,9 +110,9 @@ export default function MobileOnlyHeader() {
 
     return () => {
       mounted = false
-      subscription.data.subscription.unsubscribe()
+      subscription.unsubscribe()
     }
-  }, [])
+  }, [supabase])
 
   useEffect(() => {
     if (!user) return
