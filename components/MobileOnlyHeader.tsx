@@ -88,7 +88,12 @@ export default function MobileOnlyHeader() {
 
     loadUserAndProfile()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
+      // Ignore INITIAL_SESSION - it's handled by loadUserAndProfile
+      if (event === 'INITIAL_SESSION') {
+        return
+      }
+      
       const currentUser = session?.user ?? null
       if (mounted) {
         setUser(currentUser)
