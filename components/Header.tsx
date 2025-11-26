@@ -171,14 +171,6 @@ export default function Header() {
       {/* Top Gradient Fade - Only on Desktop when header exists */}
       <div className="hidden md:block fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 via-black/25 to-transparent z-30 pointer-events-none" />
       
-      {/* Mobile Floating Islands */}
-      <MobileFloatingIslands 
-        user={user} 
-        profile={profile} 
-        unreadMessages={unreadMessages}
-        isLoading={isLoading}
-      />
-
       {/* Desktop Header - Hidden on Mobile */}
       <header className="bg-white/80 backdrop-blur-[20px] backdrop-saturate-[180%] border-b border-gray-200/30 shadow-[0_2px_16px_0_rgba(0,0,0,0.04)] sticky top-0 z-50 hidden md:block">
         <nav className="max-w-7xl mx-auto px-4">
