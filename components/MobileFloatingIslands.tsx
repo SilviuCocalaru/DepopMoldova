@@ -64,8 +64,22 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   // Always show when user exists, even during loading
   const showIslands = !!user
 
+  // Optional on-screen debug via ?debugIslands=1
+  const debug = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debugIslands')
+
   return (
     <>
+      {/* Debug badge */}
+      {debug && (
+        <div className="fixed top-2 left-2 z-[100] px-2 py-1 rounded bg-black/70 text-white text-[10px] leading-tight">
+          <div>mounted: {String(isMounted)}</div>
+          <div>userExists: {String(!!user)}</div>
+          <div>isLoading: {String(!!isLoading)}</div>
+          <div>showIslands: {String(showIslands)}</div>
+          <div>path: {pathname}</div>
+        </div>
+      )}
+
       {/* Top Gradient Fade - Only when search bar is visible */}
       {showIslands && pathname === '/' && (
         <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/30 via-black/15 to-transparent z-30 pointer-events-none" />
