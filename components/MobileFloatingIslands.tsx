@@ -52,15 +52,17 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   // Debug: log render conditions to help diagnose disappearing islands
   useEffect(() => {
     try {
-      console.log('[Islands Debug] mounted:', isMounted,
-        '\n pathname:', pathname,
-        '\n isProductPage:', isProductPage,
-        '\n user exists:', !!user,
-        '\n isLoading (prop):', !!isLoading,
-        '\n showIslands:', showIslands
-      )
+      console.log('[Islands Debug]', {
+        mounted: isMounted,
+        pathname,
+        isProductPage,
+        userExists: !!user,
+        isLoading: !!isLoading,
+        showIslands: !!user && !isProductPage,
+      })
     } catch (e) {}
-  }, [isMounted, pathname, isProductPage, user, isLoading, showIslands])
+    // Limit logs to core state changes
+  }, [isMounted, pathname, isProductPage, user, isLoading])
 
   return (
     <>
