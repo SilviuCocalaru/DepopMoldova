@@ -24,20 +24,23 @@ export default function MobileOnlyHeader() {
     if (typeof window === 'undefined') return
     
     try {
-      // Check for existing Supabase session in localStorage
-      const keys = Object.keys(localStorage).filter(key => key.includes('supabase.auth.token'))
-      if (keys.length > 0) {
-        const sessionData = localStorage.getItem(keys[0])
-        if (sessionData) {
-          const parsed = JSON.parse(sessionData)
-          if (parsed?.currentSession?.user) {
-            // Optimistically set user to prevent flash
-            setUser(parsed.currentSession.user)
-          }
+      // Supabase stores session with key pattern: sb-<project-ref>-auth-token
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+      const projectRef = supabaseUrl.split('//')[1]?.split('.')[0]
+      const storageKey = `sb-${projectRef}-auth-token`
+      
+      const sessionData = localStorage.getItem(storageKey)
+      if (sessionData) {
+        const parsed = JSON.parse(sessionData)
+        // Check both possible structures
+        const user = parsed?.user || parsed?.currentSession?.user
+        if (user) {
+          setUser(user)
+          console.log('[Optimistic] Loaded user from localStorage:', user.email)
         }
       }
     } catch (e) {
-      // Ignore localStorage errors
+      console.error('[Optimistic] Error loading from localStorage:', e)
     }
   }, [])
 
