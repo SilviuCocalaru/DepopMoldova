@@ -41,14 +41,6 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     }
   }, [pathname, isMounted])
 
-  // Don't render anything until mounted (prevents hydration mismatch)
-  if (!isMounted) {
-    return null
-  }
-
-  // Always show when user exists, even during loading
-  const showIslands = !!user
-
   // Debug: log render conditions to help diagnose disappearing islands
   useEffect(() => {
     try {
@@ -63,6 +55,14 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     } catch (e) {}
     // Limit logs to core state changes
   }, [isMounted, pathname, isProductPage, user, isLoading])
+
+  // Don't render anything until mounted (prevents hydration mismatch)
+  if (!isMounted) {
+    return null
+  }
+
+  // Always show when user exists, even during loading
+  const showIslands = !!user
 
   return (
     <>
