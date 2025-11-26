@@ -15,9 +15,31 @@ interface Profile {
 export default function MobileOnlyHeader() {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [isLoading, setIsLoading] = useState(false) // Changed to false - we'll only show loading when needed
+  const [isLoading, setIsLoading] = useState(false)
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [supabase] = useState(() => createClient())
+
+  // Optimistically load user from localStorage before async session check
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    try {
+      // Check for existing Supabase session in localStorage
+      const keys = Object.keys(localStorage).filter(key => key.includes('supabase.auth.token'))
+      if (keys.length > 0) {
+        const sessionData = localStorage.getItem(keys[0])
+        if (sessionData) {
+          const parsed = JSON.parse(sessionData)
+          if (parsed?.currentSession?.user) {
+            // Optimistically set user to prevent flash
+            setUser(parsed.currentSession.user)
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }, [])
 
   useEffect(() => {
     let mounted = true
