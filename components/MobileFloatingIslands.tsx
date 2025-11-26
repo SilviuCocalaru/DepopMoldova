@@ -49,6 +49,19 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   // Always show when user exists, even during loading
   const showIslands = !!user
 
+  // Debug: log render conditions to help diagnose disappearing islands
+  useEffect(() => {
+    try {
+      console.log('[Islands Debug] mounted:', isMounted,
+        '\n pathname:', pathname,
+        '\n isProductPage:', isProductPage,
+        '\n user exists:', !!user,
+        '\n isLoading (prop):', !!isLoading,
+        '\n showIslands:', showIslands
+      )
+    } catch (e) {}
+  }, [isMounted, pathname, isProductPage, user, isLoading, showIslands])
+
   return (
     <>
       {/* Top Gradient Fade - Only when search bar is visible */}
