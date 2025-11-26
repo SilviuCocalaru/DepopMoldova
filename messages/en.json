@@ -110,7 +110,40 @@
     "condition": "Condition",
     "listing": "Listing...",
     "listItem": "List Item",
-    "optional": "(optional)"
+    "optional": "(optional)",
+    "chooseOption": "What do you want to share?",
+    "chooseDescription": "Choose how you want to share your fashion",
+    "createReel": "Create Reel",
+    "reelDescription": "Share fashion videos",
+    "listDescription": "Sell clothing items"
+  },
+  "reels": {
+    "createReel": "Create Reel",
+    "video": "Video",
+    "description": "Description",
+    "clothingStyle": "Clothing Style",
+    "clickToUpload": "Click to upload video",
+    "videoFormats": "MP4, MOV, AVI",
+    "descriptionPlaceholder": "Describe your outfit...",
+    "pleaseSelectVideo": "Please select a video",
+    "pleaseSelectStyle": "Please select a clothing style",
+    "mustBeLoggedIn": "You must be logged in to upload reels",
+    "uploading": "Uploading",
+    "posting": "Posting...",
+    "postReel": "Post Reel",
+    "invalidFileType": "Please select a valid video file",
+    "fileTooLarge": "File size must be less than 100MB",
+    "uploadFailed": "Upload failed. Please try again.",
+    "styles": {
+      "casual": "Casual",
+      "formal": "Formal",
+      "streetwear": "Streetwear",
+      "athletic": "Athletic",
+      "vintage": "Vintage",
+      "boho": "Boho",
+      "minimalist": "Minimalist",
+      "y2k": "Y2K"
+    }
   },
   "messages": {
     "title": "Messages",

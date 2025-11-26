@@ -110,7 +110,40 @@
     "condition": "Stare",
     "listing": "Se adaugă...",
     "listItem": "Adaugă Produs",
-    "optional": "(opțional)"
+    "optional": "(opțional)",
+    "chooseOption": "Ce vrei să distribui?",
+    "chooseDescription": "Alege cum vrei să-ți distribui moda",
+    "createReel": "Creează Reel",
+    "reelDescription": "Distribuie videoclipuri de modă",
+    "listDescription": "Vinde articole vestimentare"
+  },
+  "reels": {
+    "createReel": "Creează Reel",
+    "video": "Video",
+    "description": "Descriere",
+    "clothingStyle": "Stilul Vestimentar",
+    "clickToUpload": "Click pentru a încărca video",
+    "videoFormats": "MP4, MOV, AVI",
+    "descriptionPlaceholder": "Descrie ținuta...",
+    "pleaseSelectVideo": "Te rog selectează un video",
+    "pleaseSelectStyle": "Te rog selectează un stil vestimentar",
+    "mustBeLoggedIn": "Trebuie să fii autentificat pentru a încărca reels",
+    "uploading": "Se încarcă",
+    "posting": "Se postează...",
+    "postReel": "Postează Reel",
+    "invalidFileType": "Te rog selectează un fișier video valid",
+    "fileTooLarge": "Fișierul trebuie să fie mai mic de 100MB",
+    "uploadFailed": "Încărcarea a eșuat. Te rog încearcă din nou.",
+    "styles": {
+      "casual": "Casual",
+      "formal": "Formal",
+      "streetwear": "Streetwear",
+      "athletic": "Sportiv",
+      "vintage": "Vintage",
+      "boho": "Boho",
+      "minimalist": "Minimalist",
+      "y2k": "Y2K"
+    }
   },
   "messages": {
     "title": "Mesaje",
