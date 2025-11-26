@@ -15,7 +15,7 @@ interface Profile {
 export default function MobileOnlyHeader() {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false) // Changed to false - we'll only show loading when needed
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [supabase] = useState(() => createClient())
 
@@ -24,11 +24,6 @@ export default function MobileOnlyHeader() {
     
     const loadUserAndProfile = async () => {
       try {
-        // Don't reset isLoading if we already have a user (prevents flash)
-        if (!user) {
-          setIsLoading(true)
-        }
-        
         const { data: { session }, error } = await supabase.auth.getSession()
         
         if (error) {
@@ -66,10 +61,6 @@ export default function MobileOnlyHeader() {
         }
       } catch (error) {
         console.error('Error loading user:', error)
-      } finally {
-        if (mounted) {
-          setIsLoading(false)
-        }
       }
     }
 
