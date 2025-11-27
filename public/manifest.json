@@ -1,17 +1,18 @@
 {
   "name": "Depop Moldova - Marketplace for Clothing",
   "short_name": "Depop MD",
-  "id": "/",
-  "description": "Discover unique fashion finds on Depop Moldova. Buy and sell pre-loved clothing, vintage pieces, and trendy fashion items. Join our community of fashion lovers and find your next favorite outfit while selling items from your closet.",
-  "start_url": "/",
+  "id": "/?source=pwa",
+  "description": "Discover unique fashion finds on Depop Moldova. Buy and sell pre-loved clothing, vintage pieces, and trendy fashion items.",
+  "start_url": "/?source=pwa",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "background_color": "#ffffff",
-  "theme_color": "#ef4444",
+  "theme_color": "#ec4899",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["shopping", "lifestyle"],
+  "categories": ["shopping", "lifestyle", "social"],
   "icons": [
     {
       "src": "/icon-72.png",
@@ -62,35 +63,63 @@
       "purpose": "any maskable"
     }
   ],
+  "screenshots": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Browse Items",
       "short_name": "Browse",
       "description": "Browse all clothing items",
-      "url": "/",
+      "url": "/?source=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Sell Item",
       "short_name": "Sell",
       "description": "List a new item for sale",
-      "url": "/sell",
+      "url": "/sell?source=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Messages",
       "short_name": "Messages",
       "description": "View your messages",
-      "url": "/messages",
+      "url": "/messages?source=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Profile",
-      "short_name": "Profile",
-      "description": "View your profile",
-      "url": "/profile",
+      "name": "Reels",
+      "short_name": "Reels",
+      "description": "Watch fashion reels",
+      "url": "/reels?source=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ],
-  "prefer_related_applications": false
+  "share_target": {
+    "action": "/sell",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

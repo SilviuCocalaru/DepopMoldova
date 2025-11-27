@@ -17,10 +17,36 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Depop Moldova - Marketplace for Clothing",
   description: "Discover unique fashion finds on Depop Moldova. Buy and sell pre-loved clothing, vintage pieces, and trendy fashion items. Join our community of fashion lovers and find your next favorite outfit while selling items from your closet.",
+  applicationName: "Depop Moldova",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Depop MD",
+    startupImage: [
+      {
+        url: "/icon-512.png",
+        media: "(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/icon-512.png",
+        media: "(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/icon-512.png",
+        media: "(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/icon-512.png",
+        media: "(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/icon-512.png",
+        media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)",
+      },
+    ],
+  },
+  formatDetection: {
+    telephone: false,
   },
   icons: {
     icon: [
@@ -34,23 +60,29 @@ export const metadata: Metadata = {
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
+      { url: "/icon-152.png", sizes: "152x152", type: "image/png" },
+      { url: "/icon-180.png", sizes: "180x180", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
     ],
   },
+  manifest: "/manifest.json",
   other: {
     'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
   },
-  // Note: manifest should work but Next.js may not render it properly
-  // We add it explicitly in the head tag below
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  minimumScale: 1,
   userScalable: true,
   viewportFit: "cover",
-  themeColor: "#ef4444",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+  ],
 };
 
 export default async function RootLayout({
