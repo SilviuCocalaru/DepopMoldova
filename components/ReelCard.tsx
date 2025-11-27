@@ -78,14 +78,24 @@ export default function ReelCard({
   }
 
   const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/reels?id=${reel.id}`
     if (navigator.share) {
       try {
         await navigator.share({
           title: reel.description || 'Check out this reel!',
-          url: window.location.href
+          text: `Check out this reel by @${reel.profiles?.username || 'user'}`,
+          url: shareUrl
         })
       } catch (err) {
         console.log('Share cancelled')
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareUrl)
+        alert('Link copied to clipboard!')
+      } catch (err) {
+        console.log('Could not copy to clipboard')
       }
     }
   }
@@ -130,7 +140,7 @@ export default function ReelCard({
       </div>
 
       {/* Right Side Actions */}
-      <div className="absolute right-3 bottom-24 z-40 flex flex-col items-center gap-6">
+      <div className="absolute right-3 bottom-32 z-40 flex flex-col items-center gap-5 pb-safe">
         {/* Profile Picture */}
         <Link href={`/profile/${reel.user_id}`}>
           <div className="relative">
@@ -167,8 +177,11 @@ export default function ReelCard({
           </span>
         </button>
 
-        {/* Comment Button */}
-        <button className="flex flex-col items-center gap-1">
+        {/* Comment Button - Coming Soon */}
+        <button 
+          className="flex flex-col items-center gap-1 opacity-50 cursor-not-allowed"
+          title="Coming soon"
+        >
           <MessageCircle className="w-8 h-8 text-white" />
           <span className="text-white text-xs font-semibold">0</span>
         </button>
@@ -195,8 +208,8 @@ export default function ReelCard({
       </div>
 
       {/* Bottom Info */}
-      <div className="absolute bottom-0 left-0 right-0 pb-safe z-40">
-        <div className="px-4 pb-6 pt-8 bg-gradient-to-t from-black/60 to-transparent">
+      <div className="absolute bottom-0 left-0 right-0 z-40" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
+        <div className="px-4 pb-4 pt-6 bg-gradient-to-t from-black/70 to-transparent">
           <Link href={`/profile/${reel.user_id}`}>
             <p className="text-white font-bold mb-2">
               @{reel.profiles?.username}
@@ -217,14 +230,7 @@ export default function ReelCard({
         </div>
       </div>
 
-      {/* Tap to unmute indicator */}
-      {isMuted && isPlaying && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
-          <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-sm text-white text-sm font-medium animate-pulse">
-            Tap to unmute
-          </div>
-        </div>
-      )}
+
     </div>
   )
 }

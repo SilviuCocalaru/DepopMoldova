@@ -20,8 +20,9 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
   const [isMounted, setIsMounted] = useState(false)
   const t = useTranslations('auth')
 
-  // Check if on product detail page
+  // Check if on product detail page or reels page
   const isProductPage = pathname?.startsWith('/product/')
+  const isReelsPage = pathname === '/reels'
 
   useEffect(() => {
     setIsMounted(true)
@@ -48,9 +49,10 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
         mounted: isMounted,
         pathname,
         isProductPage,
+        isReelsPage,
         userExists: !!user,
         isLoading: !!isLoading,
-        showIslands: !!user && !isProductPage,
+        showIslands: !!user && !isProductPage && !isReelsPage,
       })
     } catch (e) {}
     // Limit logs to core state changes
@@ -61,8 +63,8 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
     return null
   }
 
-  // Always show when user exists, even during loading
-  const showIslands = !!user
+  // Show islands when user exists, but hide on product and reels pages
+  const showIslands = !!user && !isProductPage && !isReelsPage
 
   // Optional on-screen debug via ?debugIslands=1
   const debug = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debugIslands')
@@ -85,16 +87,16 @@ export default function MobileFloatingIslands({ user, profile, unreadMessages, i
         <div className="md:hidden fixed top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/30 via-black/15 to-transparent z-30 pointer-events-none" />
       )}
       
-      {/* Bottom Gradient Fade - Only when bottom menu is visible (NOT on product pages) */}
-      {showIslands && !isProductPage && (
+      {/* Bottom Gradient Fade - Only when bottom menu is visible (NOT on product or reels pages) */}
+      {showIslands && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/30 via-black/15 to-transparent z-30 pointer-events-none" />
       )}
       
       {/* Animated Search Bar - Only for logged-in users on homepage */}
       {showIslands && pathname === '/' && <AnimatedSearchBar isLoggedIn={true} />}
 
-      {/* Floating Bottom Island - Always show if user is logged in AND not on product page */}
-      {showIslands && !isProductPage && (
+      {/* Floating Bottom Island - Always show if user is logged in AND not on product/reels page */}
+      {showIslands && (
         <div 
           className="md:hidden fixed left-1/2 -translate-x-1/2 z-50 w-[85%] max-w-sm"
           style={{
