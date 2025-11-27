@@ -103,57 +103,38 @@ export default function CreateReelPage() {
     setError(null)
     setUploadProgress(0)
 
-    // Helper to guard against long-running uploads
-    const withTimeout = async <T,>(promise: Promise<T>, ms: number) => {
-      return new Promise<T>((resolve, reject) => {
-        const timer = setTimeout(() => {
-          reject(new Error(t('uploadTimeout') || 'Upload timed out. Please try again.'))
-        }, ms)
-        promise
-          .then((val) => {
-            clearTimeout(timer)
-            resolve(val)
-          })
-          .catch((err) => {
-            clearTimeout(timer)
-            reject(err)
-          })
-      })
-    }
-
     try {
       // Get current user
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        setError(t('mustBeLoggedIn'))
-        setLoading(false)
-        return
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error(t('mustBeLoggedIn'))
       }
+
+      setUploadProgress(10)
 
       // Upload video to storage
       const fileExt = videoFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
       
-      const uploadResult = await withTimeout<{ data: { path: string } | null; error: Error | null }>(
-        supabase.storage
-          .from('reels')
-          .upload(fileName, videoFile, {
-            cacheControl: '3600',
-            upsert: false
-          }),
-        2 * 60 * 1000 // 2 minutes
-      )
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('reels')
+        .upload(fileName, videoFile, {
+          cacheControl: '3600',
+          upsert: false
+        })
 
-      if (uploadResult.error) throw uploadResult.error
+      if (uploadError) {
+        throw new Error(uploadError.message || 'Failed to upload video')
+      }
 
-      setUploadProgress(50)
+      setUploadProgress(60)
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('reels')
         .getPublicUrl(fileName)
 
-      setUploadProgress(75)
+      setUploadProgress(80)
 
       // Create reel record
       const { error: dbError } = await supabase
@@ -165,17 +146,22 @@ export default function CreateReelPage() {
           user_id: user.id
         })
 
-      if (dbError) throw dbError
+      if (dbError) {
+        throw new Error(dbError.message || 'Failed to save reel')
+      }
 
       setUploadProgress(100)
 
-      // Redirect to reels feed (replace to avoid back to posting)
+      // Small delay to show 100% progress
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      // Redirect to reels feed
       router.replace('/reels')
     } catch (err: any) {
       console.error('Error uploading reel:', err)
-      setError(err.message || t('uploadFailed'))
+      setError(err.message || t('uploadFailed') || 'Upload failed. Please try again.')
+      setUploadProgress(0)
     } finally {
-      // Ensure button resets even if navigation fails
       setLoading(false)
     }
   }
