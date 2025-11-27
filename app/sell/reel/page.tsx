@@ -134,7 +134,7 @@ export default function CreateReelPage() {
       const fileExt = videoFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
       
-      const { error: uploadError, data } = await withTimeout(
+      const uploadResult = await withTimeout(
         supabase.storage
           .from('reels')
           .upload(fileName, videoFile, {
@@ -144,7 +144,7 @@ export default function CreateReelPage() {
         2 * 60 * 1000 // 2 minutes
       )
 
-      if (uploadError) throw uploadError
+      if (uploadResult.error) throw uploadResult.error
 
       setUploadProgress(50)
 
