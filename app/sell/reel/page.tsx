@@ -134,7 +134,7 @@ export default function CreateReelPage() {
       const fileExt = videoFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
       
-      const uploadResult = await withTimeout(
+      const uploadResult = await withTimeout<Awaited<ReturnType<typeof supabase.storage.from<'reels'>['upload']>>>(
         supabase.storage
           .from('reels')
           .upload(fileName, videoFile, {
