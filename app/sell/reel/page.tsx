@@ -103,6 +103,24 @@ export default function CreateReelPage() {
     setError(null)
     setUploadProgress(0)
 
+    // Helper to guard against long-running uploads
+    const withTimeout = async <T,>(promise: Promise<T>, ms: number) => {
+      return new Promise<T>((resolve, reject) => {
+        const timer = setTimeout(() => {
+          reject(new Error(t('uploadTimeout') || 'Upload timed out. Please try again.'))
+        }, ms)
+        promise
+          .then((val) => {
+            clearTimeout(timer)
+            resolve(val)
+          })
+          .catch((err) => {
+            clearTimeout(timer)
+            reject(err)
+          })
+      })
+    }
+
     try {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser()
@@ -116,12 +134,14 @@ export default function CreateReelPage() {
       const fileExt = videoFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
       
-      const { error: uploadError, data } = await supabase.storage
+      const uploadPromise = supabase.storage
         .from('reels')
         .upload(fileName, videoFile, {
           cacheControl: '3600',
           upsert: false
         })
+
+      const { error: uploadError } = await withTimeout(uploadPromise, 2 * 60 * 1000) // 2 minutes
 
       if (uploadError) throw uploadError
 
@@ -148,11 +168,13 @@ export default function CreateReelPage() {
 
       setUploadProgress(100)
 
-      // Redirect to reels feed
-      router.push('/reels')
+      // Redirect to reels feed (replace to avoid back to posting)
+      router.replace('/reels')
     } catch (err: any) {
       console.error('Error uploading reel:', err)
       setError(err.message || t('uploadFailed'))
+    } finally {
+      // Ensure button resets even if navigation fails
       setLoading(false)
     }
   }

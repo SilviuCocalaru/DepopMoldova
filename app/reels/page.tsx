@@ -12,16 +12,10 @@ export default async function ReelsPage() {
     redirect('/login')
   }
 
-  // Fetch reels with user profiles and likes
+  // Fetch reels (without profile join; no FK to public.profiles)
   const { data: reels, error } = await supabase
     .from('reels')
-    .select(`
-      *,
-      profiles:user_id (
-        username,
-        avatar_url
-      )
-    `)
+    .select('*')
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -47,6 +41,31 @@ export default async function ReelsPage() {
     )
   }
 
+  // Fetch profiles for all reel user_ids
+  const userIds = Array.from(new Set(reels.map(r => r.user_id).filter(Boolean)))
+  let profilesMap: Record<string, { username: string; avatar_url: string | null }> = {}
+  if (userIds.length > 0) {
+    const { data: profilesData, error: profilesError } = await supabase
+      .from('profiles')
+      .select('id, username, avatar_url')
+      .in('id', userIds)
+
+    if (profilesError) {
+      console.error('Error fetching profiles for reels:', profilesError)
+    } else {
+      profilesMap = (profilesData || []).reduce((acc: Record<string, any>, p: any) => {
+        acc[p.id] = { username: p.username, avatar_url: p.avatar_url }
+        return acc
+      }, {})
+    }
+  }
+
+  // Attach profiles to reels for the UI
+  const reelsWithProfiles = reels.map((r: any) => ({
+    ...r,
+    profiles: profilesMap[r.user_id] ? profilesMap[r.user_id] : null
+  }))
+
   // Fetch user's likes
   const { data: userLikes } = await supabase
     .from('reel_likes')
@@ -57,7 +76,7 @@ export default async function ReelsPage() {
 
   return (
     <ReelsViewer
-      reels={reels}
+      reels={reelsWithProfiles}
       currentUserId={user.id}
       initialLikedReelIds={Array.from(likedReelIds)}
     />
