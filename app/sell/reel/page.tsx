@@ -134,14 +134,15 @@ export default function CreateReelPage() {
       const fileExt = videoFile.name.split('.').pop()
       const fileName = `${user.id}/${Date.now()}.${fileExt}`
       
-      const uploadPromise = supabase.storage
-        .from('reels')
-        .upload(fileName, videoFile, {
-          cacheControl: '3600',
-          upsert: false
-        })
-
-      const { error: uploadError } = await withTimeout(uploadPromise, 2 * 60 * 1000) // 2 minutes
+      const { error: uploadError, data } = await withTimeout(
+        supabase.storage
+          .from('reels')
+          .upload(fileName, videoFile, {
+            cacheControl: '3600',
+            upsert: false
+          }),
+        2 * 60 * 1000 // 2 minutes
+      )
 
       if (uploadError) throw uploadError
 
